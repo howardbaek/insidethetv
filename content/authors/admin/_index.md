@@ -1,8 +1,7 @@
 ---
 authors:
 - admin
-bio: My research interests include distributed robotics, mobile computing and programmable
-  matter.
+bio: I'm a 3rd Year Statistics Major concentrating in Computer Science at University of British Columbia.
 education:
   courses:
   - course: BSc in Statistics
@@ -17,7 +16,7 @@ name: Howard Baik
 organizations:
 - name: University of British Columbia
   url: ""
-role: 3rd Year
+role: 3rd Year Statistics Major 
 social:
 - icon: envelope
   icon_pack: fas

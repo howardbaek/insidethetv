@@ -1,0 +1,537 @@
+---
+title: Independent Learning from Tidy Tuesday Screencast Part 1
+author: Howard Baik
+date: '2019-07-05'
+slug: independent-learning-from-tidy-tuesday-screencast
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-07-05T17:37:26-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE)
+```
+
+<br>
+
+Since October 2018, I've watched David Robinson's Tidy Tuesday [screencasts](https://www.youtube.com/user/safe4democracy/videos) and learned so much about data analysis in R. As a result, I'm writing a series of posts called Independent Learning from Tidy Tuesday Screencast. These are mostly written so that I can refer to them in the future, but by sharing these I hope they serve as useful cheatsheets for data analysis in the tidyverse.
+
+Why should you read these posts instead of just reading through David's [code](https://github.com/dgrtwo/data-screencasts) from the screencasts? Well, these posts include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis that David talks about in his screencasts, but doesn't write down. Hope you enjoy.
+
+---
+
+<br>
+
+# College Majors Screencast
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nx5yhXAQLxw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales)
+library(ggrepel)
+library(plotly)
+library(broom)
+
+theme_set(theme_light())
+
+recent_grads <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-10-16/recent-grads.csv")
+
+majors_processed <- recent_grads %>%
+  arrange(desc(Median)) %>%
+  mutate(Major = str_to_title(Major),
+         Major = fct_reorder(Major, Median))
+
+by_major_category <- majors_processed %>% 
+  filter(!is.na(Total)) %>% 
+  group_by(Major_category) %>% 
+  summarize(Men = sum(Men),
+            Women = sum(Women),
+            Total = sum(Total),
+            # Weighted Median: High sample size will have more effect on outcome
+            MedianSalary = sum(Median * Sample_size) / sum(Sample_size)) %>% 
+  mutate(ShareWomen = Women / Total) %>% 
+  arrange(desc(ShareWomen))
+```
+
+- When beginning your analysis, always load up the `tidyverse`, import the raw data, and `View` it.
+- After exploratory data analysis on the raw data, which includes asking questions about the data with graphs, you should perform necessary data cleaning steps to the raw data and assign the cleaned data to another variable (ex. `majors_processed`, `by_major_category`).
+- Generate alot of barplots in early analysis stage to get a sense for categorical variables.
+
+
+```{r}
+recent_grads %>% 
+  mutate(Major_category = fct_reorder(Major_category, Median)) %>% 
+  ggplot(aes(Major_category, Median)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(x = "",
+       y = "Median salary") +
+  ggtitle("Distr. of Median Salary by Major Category") +
+  coord_flip()
+```
+
+- `mutate(Major_category = fct_reorder(Major_category, Median))` reorders Major Categories by the Median salary so the reader sees an ordered boxplot. 
+- _This line of code is used pretty much in every one of David's screencasts._
+
+---
+
+<br>
+
+```{r}
+recent_grads %>% 
+  count(Major_category, wt = Total, sort = TRUE) %>% 
+  mutate(Major_category = fct_reorder(Major_category, n)) %>% 
+  ggplot(aes(x = Major_category, y = n, fill = Major_category)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = comma_format()) +
+  labs(x = "",
+       y = "Total # of graduates",
+       title = "What major categories were most common?") +
+  theme(legend.position = "none")
+```
+
+- Useful barplot trick from [Julia Silge](https://twitter.com/juliasilge): Add colors to the bars with `fill = Major_category` and drop the legend to add rainbow effect to plot and make graph easier to look at.
+
+---
+
+<br>
+
+```{r}
+majors_processed %>% 
+  head(20) %>% 
+  ggplot(aes(Major, Median, color = Major_category)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = P25th, ymax = P75th)) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(title = "What are the highest earning majors?",
+       x = "",
+       y = "Median Salary",
+       color = NULL) +
+  # Start axis with Median at 0
+  expand_limits(y = 0)
+```
+
+- David mentions this graph is very insightful and would include in a blog post if he were to write one.
+- The error bars do NOT represent confidence intervals (We are NOT unsure about the median value.)
+- Court Reporting has a very thin interval, meaning that most people in court reporting make around 50K.
+
+---
+
+<br>
+
+```{r}
+majors_processed %>% 
+  tail(20) %>% 
+  ggplot(aes(Major, Median, color = Major_category)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = P25th, ymax = P75th)) +
+  coord_flip() +
+  scale_y_continuous(labels = dollar_format()) +
+  labs(x = "",
+       y = "Median Salary",
+       color = "") +
+  # Start axis with Median at 0
+  expand_limits(y = 0) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+- Great thing about creating a cleaned dataset `major_processed` is we can easily run `tail(20)` to get the 20 lowest earning majors, like library science and counseling psychology.
+- David would drop this graph from a blog post because all majors have similar salaries.
+- Instead, he would build a Shiny app that allows readers to interact with the graph.
+- Lastly, he emphasizes the importance of sample size (`n`). If `n` is low, we can't really trust the data because it might contain alot of variation.
+
+---
+
+<br>
+
+```{r}
+majors_processed %>% 
+  ggplot(aes(Sample_size, Median)) +
+  geom_point(aes(color = Major_category)) +
+  scale_x_log10() +
+  labs(x = "Sample Size",
+       y = "Median Salary",
+       color = "Major Category") +
+  ggtitle("Bland–Altman plot")
+```
+
+- There are too many categories in this graph to be insightful.
+- David mentions that if his screencasts were intended to teach, he would show this kind of graph that don't work _before_ moving on to useful graphs.
+
+---
+
+<br>
+
+```{r}
+majors_processed %>% 
+  ggplot(aes(Sample_size, Median)) +
+  geom_point() +
+  geom_text(aes(label = Major), check_overlap = TRUE, vjust = 1, hjust = 1) +
+  scale_x_log10() +
+  labs(x = "Sample Size")
+```
+
+- The `geom_text` argument `check_overlap = TRUE` is just a work of art. 
+
+---
+
+<br>
+
+```{r}
+majors_processed %>%
+  select(Major, Major_category, Total, ShareWomen, Sample_size, Median) %>%
+  add_count(Major_category) %>%
+  filter(n >= 10) %>%
+  nest(-Major_category) %>%
+  mutate(model = map(data, ~ lm(Median ~ ShareWomen, data = ., weights = Sample_size)),
+         tidied = map(model, tidy)) %>%
+  unnest(tidied) %>%
+  # Filter out Intercept
+  filter(term == "ShareWomen") %>%
+  arrange(estimate) %>%
+  mutate(fdr = p.adjust(p.value, method = "fdr"))
+```
+
+- The above code chunk seeks to answer the question: _Within engineering, within health, within business, what is the correlation between share of women and salary?_
+- For better understanding, take this DataCamp course: [Machine Learning in the Tidyverse](https://www.datacamp.com/courses/machine-learning-in-the-tidyverse)
+- False Discovery Rate (`fdr`) adjusts the p-value.
+- If you are writing to publish a paper, be very careful about fdr values. For internal reports, this is fine.
+- At least a few major categories have negative correlations in terms of share of women and typical salaries. 
+
+---
+
+<br>
+<br>
+
+
+
+# Movie Profits Screencast
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3-DRwg9yeNA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+```{r, include=FALSE}
+library(lubridate)
+
+movie_profit_raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-10-23/movie_profit.csv") 
+```
+
+- If you see warning messages when importing data, you can pull up a dataframe of these messages and more with `problems(movie_profit_raw)`
+
+
+```{r}
+movie_profit <- movie_profit_raw %>% 
+  # Get rid of row number column
+  select(-X1) %>% 
+  # Parse release date
+  mutate(release_date = as.Date(parse_date_time(release_date, "%m!/%d/%Y"))) %>%
+  # Skip 2018 year 
+  filter(release_date < "2018-01-01") %>% 
+  # Way of reversing order of rows
+  arrange(desc(row_number())) %>% 
+  # Very dirty data because rows are duplicated. 
+  #  By running distinct() after reversing order of rows, we are keeping the second row for each pair
+  distinct(movie, release_date, .keep_all = TRUE) %>% 
+  mutate(distributor = fct_lump(distributor, 6)) %>% 
+  filter(worldwide_gross > 0) %>% 
+  mutate(profit_ratio = worldwide_gross / production_budget) %>% 
+  mutate(decade = 10 * floor(year(release_date) / 10))
+```
+
+```{r}
+# Histogram
+movie_profit %>% 
+  ggplot(aes(production_budget)) +
+  geom_histogram() +
+  labs(x = "Production Budget",
+       y = "Count") +
+  scale_x_log10(labels = dollar_format())
+```
+
+- Anytime you are dealing with money data, you are going to need to put it on a log scale (`scale_x_log10`)
+
+---
+
+<br>
+
+```{r}
+movie_profit %>% 
+  ggplot(aes(distributor, production_budget)) +
+  geom_boxplot() +
+  scale_y_log10(labels = dollar_format()) +
+  labs(x = "Distributor",
+       y = "Production Budget") +
+  coord_flip()
+```
+
+- This graph shows that movies that have no distributors make way less money than movies with distributors.
+
+---
+
+<br>
+
+```{r}
+movie_profit %>%
+  mutate(genre = fct_reorder(genre, production_budget)) %>% 
+  filter(!is.na(distributor)) %>% 
+  ggplot(aes(genre, production_budget)) +
+  geom_boxplot() +
+  labs(y = "Production Budget",
+       x = NULL) +
+  scale_y_log10(labels = dollar_format()) +
+  coord_flip() +
+  facet_wrap(~distributor) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+- Across all seven studios, Action and Adventure movies cost the most money. 
+- Horror generally costs the least money to produce.
+
+---
+
+<br>
+
+```{r}
+movie_profit %>%
+  group_by(genre, year = year(release_date)) %>% 
+  summarize(median_profit_ratio = median(profit_ratio),
+            movies = n()) %>%
+  ungroup() %>%
+  filter(year >= 2000) %>% 
+  arrange(desc(median_profit_ratio)) %>% 
+  mutate(genre = fct_reorder(genre, median_profit_ratio)) %>% 
+  ggplot(aes(year, median_profit_ratio, color = genre)) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Median Profit Ratio",
+       color = "Genre") +
+  scale_y_continuous(labels = function(x) paste0(x, "X"))
+```
+
+- Apparently, horror movies started being way more profitable around 2013.
+- Here, we see `fct_reorder(genre, median_profit_ratio)` again!
+- You can adjust the way labels are shown with a function: `scale_y_continuous(labels = function(x) paste0(x, "X"))`
+
+---
+
+<br>
+
+```{r}
+horror_movies <- movie_profit %>% 
+  filter(genre == "Horror") %>% 
+  arrange(desc(profit_ratio))  
+
+horror_movies %>% 
+  head(20) %>% 
+  mutate(movie = paste0(movie, " (", year(release_date), ")"),
+         movie = fct_reorder(movie, profit_ratio)) %>% 
+  ggplot(aes(movie, profit_ratio)) +
+  geom_col(aes(fill = distributor)) +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) paste0(x, "X")) +
+  labs(x = "",
+       y = "Ratio of worldwide gross to production budget",
+       fill = "Distributor") +
+  ggtitle("What horror movies have most outgrossed their budget?")
+```
+
+- This graph shows us that most of the movies that have outgrossed their budget are recent.
+- Paranormal Activity, The Blair Witch Project, and Halloween have made far more than other horror movies.
+
+
+---
+
+<br>
+
+```{r}
+movie_profit %>% 
+  filter(!is.na(distributor)) %>% 
+  count(distributor, genre) %>% 
+  ggplot(aes(genre, n, fill = genre)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~distributor, scales = "free_x") +
+  labs(x = "",
+       y = "") +
+  coord_flip()
+```
+
+- This is a facetted barplot with genres on the x-axis. This way, you can look at one distributor's breakdown on genres of movies.
+- Interpretation of graph: Horror is always rarest in all distributors.
+- Anytime making a barplot, you need a `coord_flip()` for readability.
+- `scales = free_x` is important to show distribution of genre within each distributor 
+- Give each barplot a `fill` parameter to make it easier to read. Add `show.legend = FALSE`
+
+---
+
+<br>
+
+```{r}
+horror_movies %>% 
+  filter(release_date >= "1994-01-01",
+         profit_ratio >= 0.01) %>% 
+  ggplot(aes(release_date, profit_ratio)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_text(aes(label = movie), vjust = 1, hjust = 1, check_overlap = TRUE) +
+  labs(x = "Release Date",
+       y = "Profit Ratio",
+       title = "") +
+  scale_y_log10(labels = function(x) paste0(x, "X"), breaks = c(0.1, 1, 10, 100)) 
+```
+
+- You absolutely need `check_overlap = TRUE` in these kind of graphs that have overlapping labels
+- When David sees an upward trend, he likes to throw in a line of best fit.
+
+---
+
+<br>
+
+```{r}
+g <- movie_profit %>% 
+  filter(release_date >= "1990-01-01",
+         profit_ratio >= 0.01) %>% 
+  ggplot(aes(release_date, profit_ratio, label = movie)) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  labs(x = "Release Date",
+       y = "Profit Ratio") +
+  scale_y_log10(labels = function(x) paste0(x, "X"), breaks = c(0.1, 1, 10, 100)) +
+  facet_wrap(~genre)
+  
+library(plotly)
+
+ggplotly(g)
+```
+
+<br>
+
+- [Plotly](https://github.com/ropensci/plotly) graph to allow people to zoom in on particular movies
+- Reader understands that all genres of movies have flat lines except horror movies, due to movies such as Paranormal Activity, Insidious, Saw, etc
+- Warning: `plotly` does not support `check_overlap = TRUE`
+
+---
+
+<br>
+<br>
+
+# R Downloads Screencast
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nms9F-XubJU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+```{r, include=FALSE}
+library(countrycode)
+
+r_downloads_year_raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-10-30/r_downloads_year.csv")
+
+r_downloads_year <- r_downloads_year_raw %>% 
+  select(-X1) %>% 
+  mutate(country_name = countrycode(country, "iso2c", "country.name")) 
+```
+
+```{r}
+r_downloads_year %>% 
+  count(date) %>% 
+  ggplot(aes(date, n)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  labs(y = "# of R downloads per day",
+       x = "")
+```
+
+```{r}
+r_downloads_year %>% 
+  # floor_date is a great lubridate function for aggregating over week
+  count(week = floor_date(date, "week")) %>% 
+  filter(week > min(week)) %>% 
+  ggplot(aes(week, n)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  labs(y = "# of R downloads per week",
+       x = "")
+```
+
+- This graph is showing the same data as the first graph, but we are aggregating over weeks, thus showing a clearer trend.
+
+---
+
+<br>
+
+```{r}
+r_download_gaps <- r_downloads_year %>% 
+  mutate(datetime = as.POSIXlt(date) + time) %>% 
+  arrange(datetime) %>% 
+  group_by(ip_id) %>% 
+  mutate(gap = as.numeric(datetime - lag(datetime))) %>% 
+  filter(!is.na(gap))
+
+r_download_gaps
+```
+
+- Interestingly, we are creating `datetime` by literally adding date and time: `datetime = as.POSIXlt(date) + time`
+
+---
+
+<br>
+
+```{r}
+r_download_gaps %>% 
+  ggplot(aes(gap)) +
+  geom_histogram() +
+  geom_vline(color = "red", lty = 2, xintercept = 86400) +
+  labs(x = "Gap", y = "Count") +
+  scale_x_log10(breaks = 60 ^ (0:4),
+                labels = c("Second", "Minute", "Hour", "2.5 Days", "120 Days"))
+```
+
+- This is a bimodal log-normal distribution.
+- Along with money data, anytime you have time, you want to use a log scale (`scale_x_log10`)
+- Bunch of people install R in gaps of 1 day. 
+- David thinks that this is an automated system that install R every single day.
+
+---
+
+<br>
+
+```{r}
+package_downloads <- read_csv("http://cran-logs.rstudio.com/2018/2018-10-27.csv.gz")
+
+package_downloads %>% 
+  filter(country %in% c("US", "IN")) %>% 
+  count(country, package, sort = TRUE) %>% 
+  spread(country, n, fill = 0) %>% 
+  mutate(total = US + IN,
+         IN = (IN + 1) / sum(IN + 1),
+         US = (US + 1) / sum(US + 1),
+         ratio = US / IN) %>% 
+  filter(total > 1000) %>% 
+  arrange(desc(total)) %>% 
+  arrange(desc(ratio))
+```
+
+- When calculating ratio, add 1 to numerator and to denominator (Laplace meaning) to prevent ratio from looking like an infinite ratio. 
+- `arrange(desc(ratio))` looks at packages installed the most in USA
+- `arrange(ratio)` looks at packages installed the most in India
