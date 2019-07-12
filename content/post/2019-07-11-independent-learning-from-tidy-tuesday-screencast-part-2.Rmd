@@ -1,0 +1,467 @@
+---
+title: Independent Learning from Tidy Tuesday Screencast Part 2
+author: Howard Baik
+date: '2019-07-11'
+slug: independent-learning-from-tidy-tuesday-screencast-part-2
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-07-11T21:41:46-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE)
+```
+
+<br>
+
+Since October 2018, I've watched David Robinson's Tidy Tuesday [screencasts](https://www.youtube.com/user/safe4democracy/videos) and learned so much about data analysis in R. As a result, I'm writing a series of posts called Independent Learning from Tidy Tuesday Screencast. These are mostly written so that I can refer to them in the future, but by sharing these I hope they serve as useful cheatsheets for data analysis in the tidyverse.
+
+Why should you read these posts instead of just reading through David's [code](https://github.com/dgrtwo/data-screencasts) from the screencasts? Well, these posts include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis that David talks about in his screencasts, but doesn't write down. Hope you enjoy.
+
+[Independent Learning from Tidy Tuesday Screencast Part 1](https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast/)
+
+---
+
+<br>
+
+# US Winds
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/O1oDIQV6VKU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+
+```{r, include=FALSE}
+library(tidyverse)
+library(mapproj)
+theme_set(theme_light())
+
+us_wind <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-11-06/us_wind.csv")
+
+us_wind_processed <- us_wind %>% 
+  filter(!t_state %in% c("AK", "HI", "GU", "PR")) %>% 
+  mutate(p_year = ifelse(p_year < -8000, NA, p_year)) %>% 
+  mutate_if(is.numeric, ~ ifelse(. == -9999, NA, .))
+```
+
+
+```{r}
+us_wind %>% 
+  filter(!t_state %in% c("AK", "HI", "GU", "PR")) %>% 
+  mutate(p_name = fct_lump(p_name, 6)) %>% 
+  ggplot(aes(xlong, ylat, color = p_name)) +
+  # borders("state") throws borders of US states on map
+  borders("state") +
+  geom_point() +
+  labs(color = "Project Names") +
+  # coord_map() reflects ratio of map
+  coord_map() +
+  theme_void()
+```
+
+- When looking at continental US (48 states + District of Columbia), use `filter(!t_state %in% c("AK", "HI", "GU", "PR"))`
+- `borders("state")` draws borders of the US
+- When plotting maps, David always adds  `coord_map()` (to reflect ratio of a real map) and   `theme_void()` (get rid of axis)
+- We only see pink points representing "Other" projects because `geom_point()` plotted `Other` project names last, thus covering up project names such as `Green Ridge Power` or `Sky River`.
+- We solve this problem below.
+
+---
+
+<br>
+
+
+```{r}
+us_wind %>% 
+  filter(!t_state %in% c("AK", "HI", "GU", "PR")) %>% 
+  mutate(p_name = fct_lump(p_name, 6)) %>% 
+  arrange(p_name !=  "Other") %>% 
+  ggplot(aes(xlong, ylat, color = p_name)) +
+  # borders("state") throws borders of US states on map
+  borders("state") +
+  geom_point() +
+  # coord_map() reflects ratio of map
+  coord_map() +
+  theme_void() +
+  labs(color = "Project Names")
+```
+
+- `arrange(p_name !=  "Other")` puts `p_name = "Other"` at the top and the rest of project names at the bottom. This is because we are arranging in increasing order. 
+- `p_name !=  "Other"` means that `Other` project names get the value of 0 (FALSE) whereas the rest of the project names (`Cedar Creek`, `Green Ridge Power`, etc) get the value of 1 (TRUE).
+- So, `Other` project names are placed at the top and thus, plotted before the rest of the project names (`Cedar Creek`, `Green Ridge Power`, etc)
+- This sorting process ensures that we don't cover up all the project names with `Other`
+
+---
+
+<br>
+
+# Malaria
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5_6O2oDy5Jk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+```{r, include=FALSE}
+library(malariaAtlas)
+
+kenya_pr <- tbl_df(malariaAtlas::getPR(ISO = "KEN", species = "BOTH")) %>% 
+  filter(!is.na(pr))
+```
+
+
+```{r}
+kenya_pr %>% 
+  ggplot(aes(longitude, latitude, color = year_start)) +
+  geom_point() +
+  labs(color = "Year Start") +
+  theme_void() +
+  coord_map()
+```
+
+- We are missing data on alot of `year_start`, so we take a look at `kenya_pr %>% filter(is.na(year_start)) %>% View()`
+- We see `No permission to release data` inside `permissions_info` column, telling us that we can't get any info out of it, so filter those NA columns!
+
+---
+
+<br>
+
+```{r}
+kenya_pr %>% 
+  ggplot(aes(longitude, latitude, color = year_start)) +
+  borders("world", regions = "Kenya") +
+  geom_point() +
+  labs(color = "Year Start") +
+  theme_void() +
+  coord_map()
+```
+
+- We can add borders for particular countries with the `regions` parameter.
+- Order of code is IMPORTANT: You want to put `borders()` before `geom_point()` so that you don't cover up any points with the borders.
+
+---
+
+<br>
+
+```{r}
+kenya_pr %>% 
+  arrange(pr) %>% 
+  ggplot(aes(longitude, latitude, color = pr)) +
+  borders("world", regions = "Kenya") +
+  geom_point() +
+  scale_color_gradient2(low = "blue", high = "red", midpoint = 0.5,
+                        labels = scales::percent_format()) +
+  theme_void() +
+  coord_map() +
+  labs(color = "Prevalence Rate")
+```
+
+- Trick to plot the highest `pr` points last (similar to the one introduced in previous dataset): `arrange(pr)` the `pr` values in increasing order so that you can move all the highest `pr` values to the bottom and thus, plot em last.
+
+---
+
+<br>
+<br>
+
+
+# Thanksgiving
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rxJZT0duwfU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+```{r, include=FALSE}
+thanksgiving_survey <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-11-20/thanksgiving_meals.csv")
+```
+
+
+- When running `summarise`, always remember to include sample size. 
+- Summary values with low sample size mean high variation.
+
+---
+
+<br>
+
+
+```{r}
+thanksgiving_survey %>% 
+  filter(cranberry %in% c("Canned", "Homemade")) %>% 
+  group_by(family_income) %>% 
+  summarize(homemade = sum(cranberry == "Homemade"),
+            total = n(),
+            low = qbeta(0.025, homemade + 0.5, total - homemade  + 0.5),
+            high = qbeta(0.975, homemade + 0.5, total - homemade  + 0.5)) %>% 
+  ggplot(aes(family_income, homemade / total, group = 1)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = low, ymax = high), alpha = 0.1) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_light() +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Family Income",
+       y = "% Serving Homemade") 
+```
+
+- Here, we are getting [Jeffreys Interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Jeffreys_interval), which is very similar to [Clopper-Pearson Interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Clopper%E2%80%93Pearson_interval)
+
+---
+
+<br>
+
+```{r}
+thanksgiving_survey %>% 
+  group_by(family_income) %>% 
+  summarize(celebrate = sum(celebrate == "Yes"),
+            total = n(),
+            low = qbeta(0.025, celebrate + 0.5, total - celebrate  + 0.5),
+            high = qbeta(0.975, celebrate + 0.5, total - celebrate  + 0.5)) %>% 
+  ggplot(aes(family_income, celebrate / total, group = 1)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = low, ymax = high), alpha = 0.1) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_light() +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Family Income",
+       y = "% celebrating Thanksgiving")
+```
+
+- Great thing about this code chunk is that it is exactly the same one as the previous chunk, except for `celebrate = sum(celebrate == "Yes")`. 
+- [Reproducibility of R code](https://ropensci.github.io/reproducibility-guide/sections/introduction/) is on full display here.
+
+---
+
+<br>
+
+
+```{r}
+food_gathered <- thanksgiving_survey %>% 
+  select(id, starts_with("side"), starts_with("pie"), starts_with("dessert")) %>% 
+  gather(type, value, -id) %>% 
+  filter(!is.na(value),
+         !value %in% c("None", "Other (please specify)")) %>% 
+  mutate(type = str_remove(type, "\\d+"))
+```
+
+- Tip on naming cleaned datsets: Name em after the operation you used to create that cleaned dataset.
+- Here we used `gather`, so we name variable `XXX_gathered`
+- Also, when you want to remove digits from a string, use `str_remove(type, "\\d+")`
+
+---
+
+<br>
+
+
+```{r}
+library(widyr)
+
+food_gathered <- thanksgiving_survey %>%
+  select(id, starts_with("side"),
+         starts_with("pie"),
+         starts_with("dessert")) %>%
+  select(-side15, -pie13, -dessert12) %>%
+  gather(type, value, -id) %>%
+  filter(!is.na(value),
+         !value %in% c("None", "Other (please specify)")) %>%
+  mutate(type = str_remove(type, "\\d+"))
+
+
+# Find pairwise correlation of rows in value column based on id column
+food_cors <- food_gathered %>%
+  pairwise_cor(value, id, sort = TRUE)
+```
+
+- The [`widyr`](https://github.com/dgrtwo/widyr) R package is David's open source contribution and it is a package for discovering relationships among the rows in a column, turning the data into wide data and then turning into back through a process such as correlation. 
+- First argument is `item`, an item to compare. Second argument is `feature`, a column describing the feature that links one item to others.
+
+---
+
+<br>
+
+
+```{r}
+library(ggraph)
+library(igraph)
+
+set.seed(2018)
+
+food_types <- food_gathered %>% 
+  count(value, type, sort = TRUE)
+
+food_cors %>% 
+  head(75) %>% 
+  graph_from_data_frame(vertices = food_types) %>% 
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(color = type, size = n)) +
+  geom_node_text(aes(label = name), hjust = 1, vjust = 1, repel = TRUE) +
+  scale_size_continuous(labels = scales::percent_format()) +
+  theme_void() +
+  labs(title = "What food get served together at Thanksgiving?",
+       color = "",
+       size = "% of Respondents")
+```
+
+- When `ggraph`-ing, always `set.seed()` to keep results consistent
+- `color = type` inside `geom_node_point()` enables each point to get its own type
+- `size = n` inside `geom_node_point()` shows number of respondents 
+- ` repel = TRUE` inside `geom_node_text` prevents overlapping texts
+
+---
+
+<br>
+<br>
+
+# Maryland Bridges
+
+<br>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kzM-4jMh9Qs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<br>
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales)
+theme_set(theme_light())
+
+maryland_bridges <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2018/2018-11-27/baltimore_bridges.csv") %>%
+  select(-vehicles) %>%
+  mutate(inspection_yr = inspection_yr + 2000,
+         decade = 10 * (yr_built %/% 10),
+         responsibility = fct_lump(responsibility, 4),
+         county = str_to_title(county))
+```
+
+
+```{r}
+maryland_bridges %>%
+  filter(yr_built >= 1900) %>%
+  group_by(decade) %>%
+  summarize(pct_good = mean(bridge_condition == "Good"),
+            total = n()) %>%
+  ggplot(aes(decade, pct_good)) +
+  geom_line() +
+  scale_y_continuous(labels = percent_format()) +
+  expand_limits(y = 0) +
+  labs(x = "Decade",
+       y = "% of `Good` Condition Bridges") +
+  theme_light()
+```
+
+- We would not consider most bridges built before 1970 in "Good" condition (though it doesn't matter how long before 1970 they were built).
+- A vast majority of bridges built since 2000 are in "Good" condition.
+
+---
+
+<br>
+
+```{r}
+maryland_bridges %>%
+  ggplot(aes(long, lat, color = avg_daily_traffic)) +
+  borders("state", regions = "Maryland") +
+  geom_point() +
+  scale_color_gradient2(low = "blue",
+                        high = "red",
+                        midpoint = log10(median(maryland_bridges$avg_daily_traffic)),
+                        trans = "log10",
+                        labels = comma_format()) +
+  coord_map() +
+  theme_void() +
+  labs(color = "Avg Daily Traffic") 
+```
+
+- Since average daily traffic shows a logarithmic distribution, we can transform the scales to log scale with `trans = "log10"` inside `scale_color_gradient2()`. 
+- Also, the midpoint would be `log10(median(maryland_bridges$avg_daily_traffic)),` instead of `(median(maryland_bridges$avg_daily_traffic)`
+
+---
+
+<br>
+
+```{r}
+# fit a logistic model: Is the bridge rated good? (good or not good)
+bridges <- maryland_bridges %>%
+  filter(yr_built >= 1900)
+
+library(broom)
+library(splines)
+
+simple_model <- bridges %>%
+  mutate(good = bridge_condition == "Good") %>%
+  glm(good ~ ns(yr_built, 4), data = ., family = "binomial")
+
+model <- bridges %>%
+  mutate(good = bridge_condition == "Good") %>%
+  glm(good ~ ns(yr_built, 4) + responsibility + county, data = ., family = "binomial")
+
+augment(simple_model, bridges, type.predict = "response") %>%
+  ggplot(aes(yr_built, .fitted)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(y = "Predicted probability a bridge is rated 'Good'",
+       x = "Year Built") +
+  theme_light()
+```
+
+- If the bridge was built in 1900, chances are there is a low percentage that bridge is rated "Good". 
+- If bridge was built closer to 2010, chances are high that bridge is rated "Good".
+
+---
+
+<br>
+
+```{r}
+augment(model, bridges, type.predict = "response") %>%
+  ggplot(aes(yr_built, .fitted, color = responsibility)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  facet_wrap(~ county) +
+  scale_y_continuous(labels = percent_format()) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "Predicted probability a bridge is rated 'Good'",
+       x = "Year Built",
+       color = NULL)
+```
+
+- Use `ns()` around `yr_built` to give graph more freedom (not have to be sigmoidal) 
+- Graphs are excellent for summarizing models. Graph is a way better display of model than `summary(model)`. 
+- For example, when you run `summary(model)`, the Intercept has no meaning as a number, but making a graph is so much more illustrative of the model.
+
+---
+
+<br>
+
+
+```{r}
+model %>%
+  tidy(conf.int = TRUE) %>%
+  filter(str_detect(term, "responsibility|county")) %>%
+  mutate(term = reorder(term, estimate)) %>%
+  ggplot(aes(estimate, term)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_vline(xintercept = 0, color = "red", lty = 2) +
+  labs(x = "Estimate", y = NULL) +
+  theme_light()
+```
+
+- `conf.int = TRUE` in `tidy()` adds confidence intervals to output
+- Graph shows the influence of `term` on the probability that bridge is rated Good. For example, if bridge is County Highway Agency's responsibility, there is a positive influence on the probability that bridge is rated Good since estimate is positive.
+- Importantly, we haven't found evidence of an effect of geography or ownership on bridge condition, once we control for time (all confidence intervals cross estimate of 0)
+

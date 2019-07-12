@@ -6,10 +6,356 @@
     <description>Recent content in Academic on Inside the Tidyverse</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/tags/academic/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Independent Learning from Tidy Tuesday Screencast Part 2</title>
+      <link>/post/independent-learning-from-tidy-tuesday-screencast-part-2/</link>
+      <pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/independent-learning-from-tidy-tuesday-screencast-part-2/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Since October 2018, I’ve watched David Robinson’s Tidy Tuesday &lt;a href=&#34;https://www.youtube.com/user/safe4democracy/videos&#34;&gt;screencasts&lt;/a&gt; and learned so much about data analysis in R. As a result, I’m writing a series of posts called Independent Learning from Tidy Tuesday Screencast. These are mostly written so that I can refer to them in the future, but by sharing these I hope they serve as useful cheatsheets for data analysis in the tidyverse.&lt;/p&gt;
+&lt;p&gt;Why should you read these posts instead of just reading through David’s &lt;a href=&#34;https://github.com/dgrtwo/data-screencasts&#34;&gt;code&lt;/a&gt; from the screencasts? Well, these posts include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis that David talks about in his screencasts, but doesn’t write down. Hope you enjoy.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast/&#34;&gt;Independent Learning from Tidy Tuesday Screencast Part 1&lt;/a&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;us-winds&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;US Winds&lt;/h1&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/O1oDIQV6VKU&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;us_wind %&amp;gt;% 
+  filter(!t_state %in% c(&amp;quot;AK&amp;quot;, &amp;quot;HI&amp;quot;, &amp;quot;GU&amp;quot;, &amp;quot;PR&amp;quot;)) %&amp;gt;% 
+  mutate(p_name = fct_lump(p_name, 6)) %&amp;gt;% 
+  ggplot(aes(xlong, ylat, color = p_name)) +
+  # borders(&amp;quot;state&amp;quot;) throws borders of US states on map
+  borders(&amp;quot;state&amp;quot;) +
+  geom_point() +
+  labs(color = &amp;quot;Project Names&amp;quot;) +
+  # coord_map() reflects ratio of map
+  coord_map() +
+  theme_void()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When looking at continental US (48 states + District of Columbia), use &lt;code&gt;filter(!t_state %in% c(&amp;quot;AK&amp;quot;, &amp;quot;HI&amp;quot;, &amp;quot;GU&amp;quot;, &amp;quot;PR&amp;quot;))&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;borders(&amp;quot;state&amp;quot;)&lt;/code&gt; draws borders of the US&lt;/li&gt;
+&lt;li&gt;When plotting maps, David always adds &lt;code&gt;coord_map()&lt;/code&gt; (to reflect ratio of a real map) and &lt;code&gt;theme_void()&lt;/code&gt; (get rid of axis)&lt;/li&gt;
+&lt;li&gt;We only see pink points representing “Other” projects because &lt;code&gt;geom_point()&lt;/code&gt; plotted &lt;code&gt;Other&lt;/code&gt; project names last, thus covering up project names such as &lt;code&gt;Green Ridge Power&lt;/code&gt; or &lt;code&gt;Sky River&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;We solve this problem below.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;us_wind %&amp;gt;% 
+  filter(!t_state %in% c(&amp;quot;AK&amp;quot;, &amp;quot;HI&amp;quot;, &amp;quot;GU&amp;quot;, &amp;quot;PR&amp;quot;)) %&amp;gt;% 
+  mutate(p_name = fct_lump(p_name, 6)) %&amp;gt;% 
+  arrange(p_name !=  &amp;quot;Other&amp;quot;) %&amp;gt;% 
+  ggplot(aes(xlong, ylat, color = p_name)) +
+  # borders(&amp;quot;state&amp;quot;) throws borders of US states on map
+  borders(&amp;quot;state&amp;quot;) +
+  geom_point() +
+  # coord_map() reflects ratio of map
+  coord_map() +
+  theme_void() +
+  labs(color = &amp;quot;Project Names&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;arrange(p_name !=  &amp;quot;Other&amp;quot;)&lt;/code&gt; puts &lt;code&gt;p_name = &amp;quot;Other&amp;quot;&lt;/code&gt; at the top and the rest of project names at the bottom. This is because we are arranging in increasing order.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p_name !=  &amp;quot;Other&amp;quot;&lt;/code&gt; means that &lt;code&gt;Other&lt;/code&gt; project names get the value of 0 (FALSE) whereas the rest of the project names (&lt;code&gt;Cedar Creek&lt;/code&gt;, &lt;code&gt;Green Ridge Power&lt;/code&gt;, etc) get the value of 1 (TRUE).&lt;/li&gt;
+&lt;li&gt;So, &lt;code&gt;Other&lt;/code&gt; project names are placed at the top and thus, plotted before the rest of the project names (&lt;code&gt;Cedar Creek&lt;/code&gt;, &lt;code&gt;Green Ridge Power&lt;/code&gt;, etc)&lt;/li&gt;
+&lt;li&gt;This sorting process ensures that we don’t cover up all the project names with &lt;code&gt;Other&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;malaria&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Malaria&lt;/h1&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/5_6O2oDy5Jk&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;kenya_pr %&amp;gt;% 
+  ggplot(aes(longitude, latitude, color = year_start)) +
+  geom_point() +
+  labs(color = &amp;quot;Year Start&amp;quot;) +
+  theme_void() +
+  coord_map()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We are missing data on alot of &lt;code&gt;year_start&lt;/code&gt;, so we take a look at &lt;code&gt;kenya_pr %&amp;gt;% filter(is.na(year_start)) %&amp;gt;% View()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;We see &lt;code&gt;No permission to release data&lt;/code&gt; inside &lt;code&gt;permissions_info&lt;/code&gt; column, telling us that we can’t get any info out of it, so filter those NA columns!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;kenya_pr %&amp;gt;% 
+  ggplot(aes(longitude, latitude, color = year_start)) +
+  borders(&amp;quot;world&amp;quot;, regions = &amp;quot;Kenya&amp;quot;) +
+  geom_point() +
+  labs(color = &amp;quot;Year Start&amp;quot;) +
+  theme_void() +
+  coord_map()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can add borders for particular countries with the &lt;code&gt;regions&lt;/code&gt; parameter.&lt;/li&gt;
+&lt;li&gt;Order of code is IMPORTANT: You want to put &lt;code&gt;borders()&lt;/code&gt; before &lt;code&gt;geom_point()&lt;/code&gt; so that you don’t cover up any points with the borders.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;kenya_pr %&amp;gt;% 
+  arrange(pr) %&amp;gt;% 
+  ggplot(aes(longitude, latitude, color = pr)) +
+  borders(&amp;quot;world&amp;quot;, regions = &amp;quot;Kenya&amp;quot;) +
+  geom_point() +
+  scale_color_gradient2(low = &amp;quot;blue&amp;quot;, high = &amp;quot;red&amp;quot;, midpoint = 0.5,
+                        labels = scales::percent_format()) +
+  theme_void() +
+  coord_map() +
+  labs(color = &amp;quot;Prevalence Rate&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Trick to plot the highest &lt;code&gt;pr&lt;/code&gt; points last (similar to the one introduced in previous dataset): &lt;code&gt;arrange(pr)&lt;/code&gt; the &lt;code&gt;pr&lt;/code&gt; values in increasing order so that you can move all the highest &lt;code&gt;pr&lt;/code&gt; values to the bottom and thus, plot em last.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;thanksgiving&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Thanksgiving&lt;/h1&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/rxJZT0duwfU&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When running &lt;code&gt;summarise&lt;/code&gt;, always remember to include sample size.&lt;/li&gt;
+&lt;li&gt;Summary values with low sample size mean high variation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;thanksgiving_survey %&amp;gt;% 
+  filter(cranberry %in% c(&amp;quot;Canned&amp;quot;, &amp;quot;Homemade&amp;quot;)) %&amp;gt;% 
+  group_by(family_income) %&amp;gt;% 
+  summarize(homemade = sum(cranberry == &amp;quot;Homemade&amp;quot;),
+            total = n(),
+            low = qbeta(0.025, homemade + 0.5, total - homemade  + 0.5),
+            high = qbeta(0.975, homemade + 0.5, total - homemade  + 0.5)) %&amp;gt;% 
+  ggplot(aes(family_income, homemade / total, group = 1)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = low, ymax = high), alpha = 0.1) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_light() +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = &amp;quot;Family Income&amp;quot;,
+       y = &amp;quot;% Serving Homemade&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Here, we are getting &lt;a href=&#34;https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Jeffreys_interval&#34;&gt;Jeffreys Interval&lt;/a&gt;, which is very similar to &lt;a href=&#34;https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Clopper%E2%80%93Pearson_interval&#34;&gt;Clopper-Pearson Interval&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;thanksgiving_survey %&amp;gt;% 
+  group_by(family_income) %&amp;gt;% 
+  summarize(celebrate = sum(celebrate == &amp;quot;Yes&amp;quot;),
+            total = n(),
+            low = qbeta(0.025, celebrate + 0.5, total - celebrate  + 0.5),
+            high = qbeta(0.975, celebrate + 0.5, total - celebrate  + 0.5)) %&amp;gt;% 
+  ggplot(aes(family_income, celebrate / total, group = 1)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = low, ymax = high), alpha = 0.1) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_light() +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = &amp;quot;Family Income&amp;quot;,
+       y = &amp;quot;% celebrating Thanksgiving&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Great thing about this code chunk is that it is exactly the same one as the previous chunk, except for &lt;code&gt;celebrate = sum(celebrate == &amp;quot;Yes&amp;quot;)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ropensci.github.io/reproducibility-guide/sections/introduction/&#34;&gt;Reproducibility of R code&lt;/a&gt; is on full display here.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;food_gathered &amp;lt;- thanksgiving_survey %&amp;gt;% 
+  select(id, starts_with(&amp;quot;side&amp;quot;), starts_with(&amp;quot;pie&amp;quot;), starts_with(&amp;quot;dessert&amp;quot;)) %&amp;gt;% 
+  gather(type, value, -id) %&amp;gt;% 
+  filter(!is.na(value),
+         !value %in% c(&amp;quot;None&amp;quot;, &amp;quot;Other (please specify)&amp;quot;)) %&amp;gt;% 
+  mutate(type = str_remove(type, &amp;quot;\\d+&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Tip on naming cleaned datsets: Name em after the operation you used to create that cleaned dataset.&lt;/li&gt;
+&lt;li&gt;Here we used &lt;code&gt;gather&lt;/code&gt;, so we name variable &lt;code&gt;XXX_gathered&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Also, when you want to remove digits from a string, use &lt;code&gt;str_remove(type, &amp;quot;\\d+&amp;quot;)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(widyr)
+
+food_gathered &amp;lt;- thanksgiving_survey %&amp;gt;%
+  select(id, starts_with(&amp;quot;side&amp;quot;),
+         starts_with(&amp;quot;pie&amp;quot;),
+         starts_with(&amp;quot;dessert&amp;quot;)) %&amp;gt;%
+  select(-side15, -pie13, -dessert12) %&amp;gt;%
+  gather(type, value, -id) %&amp;gt;%
+  filter(!is.na(value),
+         !value %in% c(&amp;quot;None&amp;quot;, &amp;quot;Other (please specify)&amp;quot;)) %&amp;gt;%
+  mutate(type = str_remove(type, &amp;quot;\\d+&amp;quot;))
+
+
+# Find pairwise correlation of rows in value column based on id column
+food_cors &amp;lt;- food_gathered %&amp;gt;%
+  pairwise_cor(value, id, sort = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href=&#34;https://github.com/dgrtwo/widyr&#34;&gt;&lt;code&gt;widyr&lt;/code&gt;&lt;/a&gt; R package is David’s open source contribution and it is a package for discovering relationships among the rows in a column, turning the data into wide data and then turning into back through a process such as correlation.&lt;/li&gt;
+&lt;li&gt;First argument is &lt;code&gt;item&lt;/code&gt;, an item to compare. Second argument is &lt;code&gt;feature&lt;/code&gt;, a column describing the feature that links one item to others.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(ggraph)
+library(igraph)
+
+set.seed(2018)
+
+food_types &amp;lt;- food_gathered %&amp;gt;% 
+  count(value, type, sort = TRUE)
+
+food_cors %&amp;gt;% 
+  head(75) %&amp;gt;% 
+  graph_from_data_frame(vertices = food_types) %&amp;gt;% 
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(color = type, size = n)) +
+  geom_node_text(aes(label = name), hjust = 1, vjust = 1, repel = TRUE) +
+  scale_size_continuous(labels = scales::percent_format()) +
+  theme_void() +
+  labs(title = &amp;quot;What food get served together at Thanksgiving?&amp;quot;,
+       color = &amp;quot;&amp;quot;,
+       size = &amp;quot;% of Respondents&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When &lt;code&gt;ggraph&lt;/code&gt;-ing, always &lt;code&gt;set.seed()&lt;/code&gt; to keep results consistent&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;color = type&lt;/code&gt; inside &lt;code&gt;geom_node_point()&lt;/code&gt; enables each point to get its own type&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;size = n&lt;/code&gt; inside &lt;code&gt;geom_node_point()&lt;/code&gt; shows number of respondents&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;repel = TRUE&lt;/code&gt; inside &lt;code&gt;geom_node_text&lt;/code&gt; prevents overlapping texts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;maryland-bridges&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Maryland Bridges&lt;/h1&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/kzM-4jMh9Qs&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;maryland_bridges %&amp;gt;%
+  filter(yr_built &amp;gt;= 1900) %&amp;gt;%
+  group_by(decade) %&amp;gt;%
+  summarize(pct_good = mean(bridge_condition == &amp;quot;Good&amp;quot;),
+            total = n()) %&amp;gt;%
+  ggplot(aes(decade, pct_good)) +
+  geom_line() +
+  scale_y_continuous(labels = percent_format()) +
+  expand_limits(y = 0) +
+  labs(x = &amp;quot;Decade&amp;quot;,
+       y = &amp;quot;% of `Good` Condition Bridges&amp;quot;) +
+  theme_light()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We would not consider most bridges built before 1970 in “Good” condition (though it doesn’t matter how long before 1970 they were built).&lt;/li&gt;
+&lt;li&gt;A vast majority of bridges built since 2000 are in “Good” condition.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;maryland_bridges %&amp;gt;%
+  ggplot(aes(long, lat, color = avg_daily_traffic)) +
+  borders(&amp;quot;state&amp;quot;, regions = &amp;quot;Maryland&amp;quot;) +
+  geom_point() +
+  scale_color_gradient2(low = &amp;quot;blue&amp;quot;,
+                        high = &amp;quot;red&amp;quot;,
+                        midpoint = log10(median(maryland_bridges$avg_daily_traffic)),
+                        trans = &amp;quot;log10&amp;quot;,
+                        labels = comma_format()) +
+  coord_map() +
+  theme_void() +
+  labs(color = &amp;quot;Avg Daily Traffic&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Since average daily traffic shows a logarithmic distribution, we can transform the scales to log scale with &lt;code&gt;trans = &amp;quot;log10&amp;quot;&lt;/code&gt; inside &lt;code&gt;scale_color_gradient2()&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Also, the midpoint would be &lt;code&gt;log10(median(maryland_bridges$avg_daily_traffic)),&lt;/code&gt; instead of &lt;code&gt;(median(maryland_bridges$avg_daily_traffic)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# fit a logistic model: Is the bridge rated good? (good or not good)
+bridges &amp;lt;- maryland_bridges %&amp;gt;%
+  filter(yr_built &amp;gt;= 1900)
+
+library(broom)
+library(splines)
+
+simple_model &amp;lt;- bridges %&amp;gt;%
+  mutate(good = bridge_condition == &amp;quot;Good&amp;quot;) %&amp;gt;%
+  glm(good ~ ns(yr_built, 4), data = ., family = &amp;quot;binomial&amp;quot;)
+
+model &amp;lt;- bridges %&amp;gt;%
+  mutate(good = bridge_condition == &amp;quot;Good&amp;quot;) %&amp;gt;%
+  glm(good ~ ns(yr_built, 4) + responsibility + county, data = ., family = &amp;quot;binomial&amp;quot;)
+
+augment(simple_model, bridges, type.predict = &amp;quot;response&amp;quot;) %&amp;gt;%
+  ggplot(aes(yr_built, .fitted)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(y = &amp;quot;Predicted probability a bridge is rated &amp;#39;Good&amp;#39;&amp;quot;,
+       x = &amp;quot;Year Built&amp;quot;) +
+  theme_light()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If the bridge was built in 1900, chances are there is a low percentage that bridge is rated “Good”.&lt;/li&gt;
+&lt;li&gt;If bridge was built closer to 2010, chances are high that bridge is rated “Good”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;augment(model, bridges, type.predict = &amp;quot;response&amp;quot;) %&amp;gt;%
+  ggplot(aes(yr_built, .fitted, color = responsibility)) +
+  geom_line() +
+  expand_limits(y = 0) +
+  facet_wrap(~ county) +
+  scale_y_continuous(labels = percent_format()) +
+  theme_light() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = &amp;quot;Predicted probability a bridge is rated &amp;#39;Good&amp;#39;&amp;quot;,
+       x = &amp;quot;Year Built&amp;quot;,
+       color = NULL)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;code&gt;ns()&lt;/code&gt; around &lt;code&gt;yr_built&lt;/code&gt; to give graph more freedom (not have to be sigmoidal)&lt;/li&gt;
+&lt;li&gt;Graphs are excellent for summarizing models. Graph is a way better display of model than &lt;code&gt;summary(model)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;For example, when you run &lt;code&gt;summary(model)&lt;/code&gt;, the Intercept has no meaning as a number, but making a graph is so much more illustrative of the model.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model %&amp;gt;%
+  tidy(conf.int = TRUE) %&amp;gt;%
+  filter(str_detect(term, &amp;quot;responsibility|county&amp;quot;)) %&amp;gt;%
+  mutate(term = reorder(term, estimate)) %&amp;gt;%
+  ggplot(aes(estimate, term)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_vline(xintercept = 0, color = &amp;quot;red&amp;quot;, lty = 2) +
+  labs(x = &amp;quot;Estimate&amp;quot;, y = NULL) +
+  theme_light()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-11-independent-learning-from-tidy-tuesday-screencast-part-2_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;conf.int = TRUE&lt;/code&gt; in &lt;code&gt;tidy()&lt;/code&gt; adds confidence intervals to output&lt;/li&gt;
+&lt;li&gt;Graph shows the influence of &lt;code&gt;term&lt;/code&gt; on the probability that bridge is rated Good. For example, if bridge is County Highway Agency’s responsibility, there is a positive influence on the probability that bridge is rated Good since estimate is positive.&lt;/li&gt;
+&lt;li&gt;Importantly, we haven’t found evidence of an effect of geography or ownership on bridge condition, once we control for time (all confidence intervals cross estimate of 0)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Independent Learning from Tidy Tuesday Screencast Part 1</title>
