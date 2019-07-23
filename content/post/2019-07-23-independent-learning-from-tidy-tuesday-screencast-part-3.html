@@ -1,0 +1,140 @@
+---
+title: Independent Learning from Tidy Tuesday Screencast Part 3
+author: Howard Baik
+date: '2019-07-23'
+slug: independent-learning-from-tidy-tuesday-screencast-part-3
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-07-23T13:01:23-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<p><br></p>
+<p>Since October 2018, I’ve watched David Robinson’s Tidy Tuesday <a href="https://www.youtube.com/user/safe4democracy/videos">screencasts</a> and learned so much about data analysis in R. As a result, I’m writing a series of posts called Independent Learning from Tidy Tuesday Screencast. These are mostly written so that I can refer to them in the future, but by sharing these I hope they serve as useful cheatsheets for data analysis in the tidyverse.</p>
+<p>Why should you read these posts instead of just reading through David’s <a href="https://github.com/dgrtwo/data-screencasts">code</a> from the screencasts? Well, these posts include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis that David talks about in his screencasts, but doesn’t write down. Hope you enjoy.</p>
+<p><a href="https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast/">Independent Learning from Tidy Tuesday Screencast Part 1</a></p>
+<p><a href="https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast-part-2/">Independent Learning from Tidy Tuesday Screencast Part 2</a></p>
+<hr />
+<p><br></p>
+<div id="medium-articles" class="section level1">
+<h1>Medium Articles</h1>
+<p><br></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C69QyycHsgE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p><br></p>
+<pre class="r"><code>medium_processed %&gt;% 
+  ggplot(aes(claps)) +
+  geom_histogram() +
+  labs(x = &quot;Claps&quot;,
+       y = &quot;Count&quot;) +
+  scale_x_log10(labels = scales::comma_format())</code></pre>
+<p><img src="/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ul>
+<li>Graph slightly shows log normal distribution</li>
+</ul>
+<hr />
+<p><br></p>
+<pre class="r"><code>medium_words &lt;- medium_processed %&gt;% 
+  filter(!is.na(title)) %&gt;% 
+  transmute(post_id, title, subtitle, year, reading_time, claps) %&gt;% 
+  unnest_tokens(word, title) %&gt;% 
+  anti_join(stop_words, by = &quot;word&quot;) %&gt;% 
+  filter(!(word %in% c(&quot;de&quot;, &quot;en&quot;, &quot;la&quot;, &quot;para&quot;)),
+         str_detect(word, &quot;[a-z]&quot;))
+
+medium_words %&gt;% 
+  count(word, sort = TRUE) %&gt;% 
+  mutate(word = fct_reorder(word, n)) %&gt;% 
+  head(20) %&gt;% 
+  ggplot(aes(word, n)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = NULL,
+       y = NULL) +
+  ggtitle(&quot;Common Words in Medium Post Titles&quot;)</code></pre>
+<p><img src="/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ul>
+<li>Text Mining Tip: remove all the stop words with <code>anit_join(stop_words)</code></li>
+<li>Common Filtering Step: filter out numbers with <code>filter(str_detect(word, &quot;[a-z]&quot;))</code> (keep values with letters)</li>
+</ul>
+<hr />
+<p><br></p>
+<pre class="r"><code>medium_words_filtered &lt;- medium_words %&gt;% 
+  add_count(word) %&gt;% 
+  filter(n &gt;= 250)
+
+tag_claps &lt;- medium_words_filtered %&gt;% 
+  group_by(word) %&gt;% 
+  summarize(median_claps = median(claps),
+            geometric_mean_claps = exp(mean(log(claps + 1))) - 1,
+            occurences = n()) %&gt;% 
+  arrange(desc(median_claps))
+
+library(widyr)
+
+top_word_cors &lt;- medium_words_filtered %&gt;% 
+  select(post_id, word) %&gt;% 
+  pairwise_cor(word, post_id, sort = TRUE) %&gt;% 
+  head(100)
+
+library(ggraph)
+library(igraph)
+
+vertices &lt;- tag_claps %&gt;% 
+  filter(word %in% top_word_cors$item1 |
+           word %in% top_word_cors$item2)
+
+set.seed(2018)
+
+top_word_cors %&gt;% 
+  graph_from_data_frame(vertices = vertices) %&gt;% 
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(size = occurences * 1.1)) +
+  geom_node_point(aes(size = occurences, 
+                      color = geometric_mean_claps)) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  scale_color_gradient2(low = &quot;blue&quot;,
+                        high = &quot;red&quot;,
+                        midpoint = 10) +
+  labs(color = &quot;Claps (mean)&quot;,
+       title = &quot;What&#39;s hot and what&#39;s not in Medium data articles?&quot;,
+       subtitle = &quot;Color shows the geometric mean of # of claps on articles with this word in the title&quot;) +
+  theme_void()</code></pre>
+<p><img src="/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div id="network-graphs-with-the-grammar-of-graphics" class="section level4">
+<h4>Network Graphs with the Grammar of Graphics</h4>
+<ul>
+<li>Every node is an observation in data and every link is one correlation observation</li>
+<li>Add theme_void() because you don’t need axis</li>
+<li>We see “clusters” of words: (artifiicial, intelligence) (machine, learning, deep, reinforcement) (neural, networks, network)</li>
+<li>Adding <code>graph_from_data_frame(vertices = vertices)</code> and <code>size = occurences</code> sizes the nodes according to number of occurences (how common are the words?)</li>
+<li>Adding <code>color = geometric_mean_claps</code> shows what clusters tend to get more claps than others? We can focus on which clusters are particularly popular? What’s hot and what’s not on Medium?</li>
+<li>Deep Learning, Keras, Tensorflow are hot titles on Medium</li>
+<li>Artifical Intelligence and Business are not as hot</li>
+<li>Simple Linear Regression are hot titles</li>
+<li>Pro Tip: You can give each point an outline by adding a slightly larger point underneath <code>geom_node_point(aes(size = occurences * 1.1)) +</code>.</li>
+<li>Graph is a little bit more interpretable and easier to read.</li>
+</ul>
+<hr />
+<p><br></p>
+</div>
+</div>
+<div id="shiny-app-predicting-the-of-claps-based-on-title" class="section level1">
+<h1>Shiny App: Predicting the # of claps based on title</h1>
+<p><a href="https://howiebaik.shinyapps.io/medium-claps-predictor/">Link to App</a></p>
+<iframe src="https://howiebaik.shinyapps.io/medium-claps-predictor/" style="border: 1px solid #AAA; width: 900px; height: 800px">
+</iframe>
+</div>

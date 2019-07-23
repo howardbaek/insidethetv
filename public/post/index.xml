@@ -6,10 +6,139 @@
     <description>Recent content in Posts on Inside the Tidyverse</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 11 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Independent Learning from Tidy Tuesday Screencast Part 3</title>
+      <link>/post/independent-learning-from-tidy-tuesday-screencast-part-3/</link>
+      <pubDate>Tue, 23 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/independent-learning-from-tidy-tuesday-screencast-part-3/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Since October 2018, I’ve watched David Robinson’s Tidy Tuesday &lt;a href=&#34;https://www.youtube.com/user/safe4democracy/videos&#34;&gt;screencasts&lt;/a&gt; and learned so much about data analysis in R. As a result, I’m writing a series of posts called Independent Learning from Tidy Tuesday Screencast. These are mostly written so that I can refer to them in the future, but by sharing these I hope they serve as useful cheatsheets for data analysis in the tidyverse.&lt;/p&gt;
+&lt;p&gt;Why should you read these posts instead of just reading through David’s &lt;a href=&#34;https://github.com/dgrtwo/data-screencasts&#34;&gt;code&lt;/a&gt; from the screencasts? Well, these posts include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis that David talks about in his screencasts, but doesn’t write down. Hope you enjoy.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast/&#34;&gt;Independent Learning from Tidy Tuesday Screencast Part 1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://insidethetv.netlify.com/post/independent-learning-from-tidy-tuesday-screencast-part-2/&#34;&gt;Independent Learning from Tidy Tuesday Screencast Part 2&lt;/a&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;medium-articles&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Medium Articles&lt;/h1&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/C69QyycHsgE&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;medium_processed %&amp;gt;% 
+  ggplot(aes(claps)) +
+  geom_histogram() +
+  labs(x = &amp;quot;Claps&amp;quot;,
+       y = &amp;quot;Count&amp;quot;) +
+  scale_x_log10(labels = scales::comma_format())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Graph slightly shows log normal distribution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;medium_words &amp;lt;- medium_processed %&amp;gt;% 
+  filter(!is.na(title)) %&amp;gt;% 
+  transmute(post_id, title, subtitle, year, reading_time, claps) %&amp;gt;% 
+  unnest_tokens(word, title) %&amp;gt;% 
+  anti_join(stop_words, by = &amp;quot;word&amp;quot;) %&amp;gt;% 
+  filter(!(word %in% c(&amp;quot;de&amp;quot;, &amp;quot;en&amp;quot;, &amp;quot;la&amp;quot;, &amp;quot;para&amp;quot;)),
+         str_detect(word, &amp;quot;[a-z]&amp;quot;))
+
+medium_words %&amp;gt;% 
+  count(word, sort = TRUE) %&amp;gt;% 
+  mutate(word = fct_reorder(word, n)) %&amp;gt;% 
+  head(20) %&amp;gt;% 
+  ggplot(aes(word, n)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = NULL,
+       y = NULL) +
+  ggtitle(&amp;quot;Common Words in Medium Post Titles&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Text Mining Tip: remove all the stop words with &lt;code&gt;anit_join(stop_words)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Common Filtering Step: filter out numbers with &lt;code&gt;filter(str_detect(word, &amp;quot;[a-z]&amp;quot;))&lt;/code&gt; (keep values with letters)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;medium_words_filtered &amp;lt;- medium_words %&amp;gt;% 
+  add_count(word) %&amp;gt;% 
+  filter(n &amp;gt;= 250)
+
+tag_claps &amp;lt;- medium_words_filtered %&amp;gt;% 
+  group_by(word) %&amp;gt;% 
+  summarize(median_claps = median(claps),
+            geometric_mean_claps = exp(mean(log(claps + 1))) - 1,
+            occurences = n()) %&amp;gt;% 
+  arrange(desc(median_claps))
+
+library(widyr)
+
+top_word_cors &amp;lt;- medium_words_filtered %&amp;gt;% 
+  select(post_id, word) %&amp;gt;% 
+  pairwise_cor(word, post_id, sort = TRUE) %&amp;gt;% 
+  head(100)
+
+library(ggraph)
+library(igraph)
+
+vertices &amp;lt;- tag_claps %&amp;gt;% 
+  filter(word %in% top_word_cors$item1 |
+           word %in% top_word_cors$item2)
+
+set.seed(2018)
+
+top_word_cors %&amp;gt;% 
+  graph_from_data_frame(vertices = vertices) %&amp;gt;% 
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(size = occurences * 1.1)) +
+  geom_node_point(aes(size = occurences, 
+                      color = geometric_mean_claps)) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  scale_color_gradient2(low = &amp;quot;blue&amp;quot;,
+                        high = &amp;quot;red&amp;quot;,
+                        midpoint = 10) +
+  labs(color = &amp;quot;Claps (mean)&amp;quot;,
+       title = &amp;quot;What&amp;#39;s hot and what&amp;#39;s not in Medium data articles?&amp;quot;,
+       subtitle = &amp;quot;Color shows the geometric mean of # of claps on articles with this word in the title&amp;quot;) +
+  theme_void()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-23-independent-learning-from-tidy-tuesday-screencast-part-3_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;network-graphs-with-the-grammar-of-graphics&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Network Graphs with the Grammar of Graphics&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Every node is an observation in data and every link is one correlation observation&lt;/li&gt;
+&lt;li&gt;Add theme_void() because you don’t need axis&lt;/li&gt;
+&lt;li&gt;We see “clusters” of words: (artifiicial, intelligence) (machine, learning, deep, reinforcement) (neural, networks, network)&lt;/li&gt;
+&lt;li&gt;Adding &lt;code&gt;graph_from_data_frame(vertices = vertices)&lt;/code&gt; and &lt;code&gt;size = occurences&lt;/code&gt; sizes the nodes according to number of occurences (how common are the words?)&lt;/li&gt;
+&lt;li&gt;Adding &lt;code&gt;color = geometric_mean_claps&lt;/code&gt; shows what clusters tend to get more claps than others? We can focus on which clusters are particularly popular? What’s hot and what’s not on Medium?&lt;/li&gt;
+&lt;li&gt;Deep Learning, Keras, Tensorflow are hot titles on Medium&lt;/li&gt;
+&lt;li&gt;Artifical Intelligence and Business are not as hot&lt;/li&gt;
+&lt;li&gt;Simple Linear Regression are hot titles&lt;/li&gt;
+&lt;li&gt;Pro Tip: You can give each point an outline by adding a slightly larger point underneath &lt;code&gt;geom_node_point(aes(size = occurences * 1.1)) +&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Graph is a little bit more interpretable and easier to read.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;shiny-app-predicting-the-of-claps-based-on-title&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Shiny App: Predicting the # of claps based on title&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://howiebaik.shinyapps.io/medium-claps-predictor/&#34;&gt;Link to App&lt;/a&gt;&lt;/p&gt;
+&lt;iframe src=&#34;https://howiebaik.shinyapps.io/medium-claps-predictor/&#34; style=&#34;border: 1px solid #AAA; width: 900px; height: 800px&#34;&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Independent Learning from Tidy Tuesday Screencast Part 2</title>
