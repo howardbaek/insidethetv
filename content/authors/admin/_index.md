@@ -1,11 +1,11 @@
 ---
 authors:
 - admin
-bio: I'm a 3rd Year Statistics Major concentrating in Computer Science at University of British Columbia.
+bio: I'm an undergraduate at University of Washington.
 education:
   courses:
-  - course: BSc in Statistics
-    institution: University of British Columbia
+  - course: BSc 
+    institution: University of Washington
     year: Present
 email: ""
 interests:
@@ -14,9 +14,9 @@ interests:
 - Interactive Web Applications
 name: Howard Baik
 organizations:
-- name: University of British Columbia
+- name: University of Washington
   url: ""
-role: 3rd Year Statistics Major 
+role: Undergraduate 
 social:
 - icon: envelope
   icon_pack: fas
@@ -33,4 +33,4 @@ user_groups:
 - Visitors
 ---
 
-Howard Baik is a 3rd Year Statistics major at University of British Columbia (UBC), with a concentration in Computer Science
+Howard Baik is an undergraduate at University of Washington.
