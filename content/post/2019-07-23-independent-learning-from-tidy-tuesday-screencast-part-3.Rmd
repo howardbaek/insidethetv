@@ -169,7 +169,7 @@ top_word_cors %>%
 <br>
 
 
-# Shiny App: Predicting the # of claps based on title This is a test
+# Shiny App: Predicting the # of claps 
 
 [Link to App](https://howiebaik.shinyapps.io/medium-claps-predictor/)
 

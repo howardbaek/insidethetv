@@ -227,8 +227,8 @@ top_word_cors %&amp;gt;%
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;shiny-app-predicting-the-of-claps-based-on-title-this-is-a-test&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Shiny App: Predicting the # of claps based on title This is a test&lt;/h1&gt;
+&lt;div id=&#34;shiny-app-predicting-the-of-claps&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Shiny App: Predicting the # of claps&lt;/h1&gt;
 &lt;p&gt;&lt;a href=&#34;https://howiebaik.shinyapps.io/medium-claps-predictor/&#34;&gt;Link to App&lt;/a&gt;&lt;/p&gt;
 &lt;iframe src=&#34;https://howiebaik.shinyapps.io/medium-claps-predictor/&#34; style=&#34;border: 1px solid #AAA; width: 900px; height: 800px&#34;&gt;
 &lt;/iframe&gt;
