@@ -1,11 +1,11 @@
 ---
 date: "2016-04-27T00:00:00Z"
-external_link: http://example.org
+external_link: https://howiebaik.shinyapps.io/medium-claps-predictor/
 image:
-  caption: Photo by Toa Heftiba on Unsplash
+  caption: Medium Claps
   focal_point: Smart
-summary: An example of linking directly to an external project website using `external_link`.
+summary: A Shiny app
 tags:
-- Demo
-title: External Project
+- Shiny app
+title: Medium Clap Predictor App
 ---
