@@ -20,7 +20,7 @@
       <description>
 
 
-&lt;p&gt;&lt;em&gt;This is the second post about EPV. Click here for the &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;first post.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This is the second post about EPV. Click here for the &lt;a href=&#34;http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/&#34;&gt;first post.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In this &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf&#34;&gt;MIT Sloan Sports Analytics Conference Research Paper&lt;/a&gt;, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
@@ -53,7 +53,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-52.gif&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-52.GIF&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As the ball rolls toward the sidelines, two Heat players double team Paul Pierce (#34), who dishes off to Andrei Kirilenko (#47). Then, the Nets incrementally increase the value of the possession by passing the ball twice, from Kirilenko to Andray Blatche (#0) and from Blatche to a wide open John Terry (#3), who knocks down the 3-pointer. During this sequence of events, EPV increases like a step function with each pass, resulting in a high percentage 3-point shot.&lt;/p&gt;
-&lt;p&gt;A &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;previous EPV post&lt;/a&gt; talks about a similar play, “Frantic Action leading to Chalmers 3-Pointer”, where the ball is in no man’s land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/&#34;&gt;The previous EPV post&lt;/a&gt; talks about a similar play, “Frantic Action leading to Chalmers 3-Pointer”, where the ball is in no man’s land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;lebron-james-alley-oop&#34; class=&#34;section level3&#34;&gt;
@@ -210,6 +210,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;li&gt;&lt;p&gt;EPV plateaus when player holds onto ball without dribbling.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;EPV shows great fluctuations in loose ball situations when players deviate from offensive/defensive structure.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;If you enjoyed this post, you will enjoy &lt;a href=&#34;http://insidethetv.rbind.io/post/epv-the-epilogue/&#34;&gt;Animating Expected Possession Value in the NBA: Part 2&lt;/a&gt; &lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;appendix&#34; class=&#34;section level1&#34;&gt;

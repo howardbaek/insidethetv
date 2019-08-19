@@ -23,10 +23,10 @@
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
-&lt;p&gt;As part of the &lt;a href=&#34;https://community.rstudio.com/t/shiny-contest-winners-full-list/36347&#34;&gt;1st RStudio Shiny Contest&lt;/a&gt;, I created the &lt;a href=&#34;https://jsonbaik.shinyapps.io/nhl-pbp/&#34;&gt;NHL Play-by-Play App&lt;/a&gt;. Previously, I wrote about the makings of this app (&lt;a href=&#34;LINK&#34;&gt;Hacking the NHL Play-by-Play App in Shiny&lt;/a&gt;), but I realized that I should provide an example of how this app can be used to extract information. As a result, in this post, I will be showing &lt;em&gt;insights from looking at a regular season game between the Montreal Canadiens and the Toronto Maple Leafs&lt;/em&gt; on October 3rd, 2018.&lt;/p&gt;
+&lt;p&gt;As part of the &lt;a href=&#34;https://community.rstudio.com/t/shiny-contest-winners-full-list/36347&#34;&gt;1st RStudio Shiny Contest&lt;/a&gt;, I created the &lt;a href=&#34;https://jsonbaik.shinyapps.io/nhl-pbp/&#34;&gt;NHL Play-by-Play App&lt;/a&gt;. Previously, I wrote about the makings of this app (&lt;a href=&#34;http://insidethetv.rbind.io/post/hacking-the-nhl-pbp-app-in-shiny/&#34;&gt;Hacking the NHL Play-by-Play App in Shiny&lt;/a&gt;), but I realized that I should provide an example of how this app can be used to extract information. As a result, in this post, I will be showing &lt;em&gt;insights from looking at a regular season game between the Montreal Canadiens and the Toronto Maple Leafs&lt;/em&gt; on October 3rd, 2018.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;div id=&#34;how-to-search-for-game&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;How to Search for Game&lt;/h3&gt;
+&lt;div id=&#34;how-to-search-for-game-id&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;How to Search for Game ID&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/search-game.gif&#34; /&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;Select Season from NHL Season dropdown menu&lt;/li&gt;
@@ -61,7 +61,7 @@ defensemen were more involved in the offense than Toronto’s right defensemen.&
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-animation.gif&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;A real-time representation of the Play-By-Play data that look at two event types, shots/goals. Since both event types are directed toward the net, the animation shows all points moving towards the net.&lt;/li&gt;
-&lt;li&gt;In the near future with real-time rendering of &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and the advent of &lt;a href=&#34;https://www.nhl.com/news/nhl-plans-to-deploy-puck-and-player-tracking-technology-in-2019-2020/c-304218820&#34;&gt;NHL tracking data&lt;/a&gt;, I can create a more accurate animation of the puck and players, similar to my &lt;a href=&#34;INSERT%20EPV%20LINK%20HERE&#34;&gt;NBA animations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;In the near future with real-time rendering of &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and the advent of &lt;a href=&#34;https://www.nhl.com/news/nhl-plans-to-deploy-puck-and-player-tracking-technology-in-2019-2020/c-304218820&#34;&gt;NHL tracking data&lt;/a&gt;, I can create a more accurate animation of the puck and players, similar to my &lt;a href=&#34;http://insidethetv.rbind.io/post/epv-the-epilogue/&#34;&gt;NBA animations&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
@@ -155,7 +155,7 @@ defensemen were more involved in the offense than Toronto’s right defensemen.&
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;After several months of learning the concept of survival analysis and applying it to hockey, I published my article, &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;Quantifying Differences between the Regular Season and Playoffs using Survival Analysis&lt;/a&gt;. This post is a brief analysis to answer the question: “Can I repeat my previous analysis for regular season by period?”. First, I only look at regular season data and change the treatment variable from whether the game is played during the regular season or playoffs to whether it was played in &lt;strong&gt;Period X vs Period Y&lt;/strong&gt;. Then, I approach the question in a different way by keeping the treatment variable as regular season vs playoffs, but &lt;strong&gt;filter for the 1st, 2nd, and 3rd periods&lt;/strong&gt;. This further shows the discrepancy in change in rates of events by period.&lt;/p&gt;
+&lt;p&gt;After several months of learning the concept of survival analysis and applying it to hockey, I published my article, &lt;a href=&#34;http://insidethetv.rbind.io/post/quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis/&#34;&gt;Quantifying Differences between the Regular Season and Playoffs using Survival Analysis&lt;/a&gt;. This post is a brief analysis to answer the question: “Can I repeat my previous analysis for regular season by period?”. First, I only look at regular season data and change the treatment variable from whether the game is played during the regular season or playoffs to whether it was played in &lt;strong&gt;Period X vs Period Y&lt;/strong&gt;. Then, I approach the question in a different way by keeping the treatment variable as regular season vs playoffs, but &lt;strong&gt;filter for the 1st, 2nd, and 3rd periods&lt;/strong&gt;. This further shows the discrepancy in change in rates of events by period.&lt;/p&gt;
 &lt;p&gt;Finally, I respond to some additional feedback from Ron Schultz: “Have you looked at the same comparisons, but with just the regular season games between the teams who ended up in the playoffs?”. I checked the differences between the regular season and playoffs by running my survival analysis on just the playoff teams in the 2017-2018 season. I discovered that this type of analysis yields a statistically significant difference in all event types.&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
@@ -459,11 +459,9 @@ defensemen were more involved in the offense than Toronto’s right defensemen.&
 &lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Overall, rebound shooting percentages are not repeatable since I can draw a horizontal line through the confidence band.&lt;/li&gt;
-&lt;li&gt;As can be seen in the graph below, the sample size (rebound shot on goal) is small and thus, I caution the reader from drawing a strong conclusion.&lt;/li&gt;
+&lt;li&gt;As can be seen in the graph below, the sample size (rebound shot on goal) is small and thus, I caution the reader from drawing a strong conclusion.
+&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;## Warning: The labeller API has been updated. Labellers taking `variable`and
-## `value` arguments are now deprecated. See labellers documentation.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;key-takeaways&#34; class=&#34;section level1&#34;&gt;

@@ -120,6 +120,8 @@ The final minute of this game revealed several insights about Expected Possessio
 
 5. EPV shows great fluctuations in loose ball situations when players deviate from offensive/defensive structure.
 
+_If you enjoyed this post, you will enjoy [Animating Expected Possession Value in the NBA: Part 2](http://insidethetv.rbind.io/post/epv-the-epilogue/) _
+
 <br>
 
 # Appendix

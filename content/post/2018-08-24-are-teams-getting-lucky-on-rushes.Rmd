@@ -716,7 +716,7 @@ pass_final %>%
 
 * Overall, rebound shooting percentages are not repeatable since I can draw a horizontal line through the confidence band. 
 * As can be seen in the graph below, the sample size (rebound shot on goal) is small and thus, I caution the reader from drawing a strong conclusion.
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
 season_label <- list(
   "first" = "15/16 Season",
   "second" = "16/17 Season",

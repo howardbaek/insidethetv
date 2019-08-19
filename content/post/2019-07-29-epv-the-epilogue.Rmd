@@ -20,7 +20,7 @@ projects: []
 ---
 
 
-_This is the second post about EPV. Click here for the [first post.](INSERT LINK HERE)_ 
+_This is the second post about EPV. Click here for the [first post.](http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/)_ 
 
 
 
@@ -76,7 +76,7 @@ The code used in this post is stored [here](https://github.com/howardbaik/nba-an
 
 As the ball rolls toward the sidelines, two Heat players double team Paul Pierce (#34), who dishes off to Andrei Kirilenko (#47). Then, the Nets incrementally increase the value of the possession by passing the ball twice, from Kirilenko to Andray Blatche (#0) and from Blatche to a wide open John Terry (#3), who knocks down the 3-pointer. During this sequence of events, EPV increases like a step function with each pass, resulting in a high percentage 3-point shot. 
 
-A [previous EPV post](INSERT LINK HERE) talks about a similar play, "Frantic Action leading to Chalmers 3-Pointer", where the ball is in no man's land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.
+[The previous EPV post](http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/) talks about a similar play, "Frantic Action leading to Chalmers 3-Pointer", where the ball is in no man's land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.
 
 <br>
 
