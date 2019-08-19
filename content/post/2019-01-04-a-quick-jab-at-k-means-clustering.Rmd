@@ -8,7 +8,7 @@ categories:
 tags:
   - Data Analysis
 subtitle: ''
-summary: 'I grouped twitter accounts by "popularity measure", a quick and easy way (I came up with it) to quantify the popularity of a twitter account'
+summary: 'I grouped Twitter accounts by "popularity measure", a quick and easy way (I came up with it) to quantify the popularity of a twitter account'
 authors: []
 lastmod: '2019-08-17T18:25:10+09:00'
 featured: no

@@ -794,3 +794,5 @@ pass_final %>%
 Hockey is an unpredictable sport. This signifies that a team that may have a horrible record before January 1st still can bounce back to become one of the league's best teams. Just ask the [2018 Arizona Coyotes](https://www.azcentral.com/story/sports/nhl/coyotes/2018/04/08/tale-two-seasons-how-coyotes-turned-around-second-half/497308002/). On Dec 31st, the Coyotes were 9-26-5 and were last in the league. "But since Feb. 8, only four NHL teams had more points than Arizona over than span." The conclusion drawn from this analysis of different offensive statistics helps explain the resurgence of the Arizona Coyotes in the second half. 
 
 I would like to thank Sam Ventura for his valuable advice.
+
+[Code](https://github.com/howardbaik/insidethetv-code/blob/master/are-teams-getting-lucky-nhl.Rmd)

@@ -1362,7 +1362,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;li&gt;Rate of hits differ the most from regular season to playoffs.&lt;/li&gt;
 &lt;li&gt;On average, there is a larger discrepancy from regular season to playoffs in 5-on-5 situations since 5-on-5 play is more fluid.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Code is available &lt;a href=&#34;INSERT%20LINK&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Code is available &lt;a href=&#34;https://github.com/howardbaik/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The author would like to thank Alex Novet and Sam Ventura for their contributions to this article.&lt;/p&gt;
 &lt;/div&gt;
 </description>
@@ -1509,6 +1509,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;li&gt;Power play survival curves for hits are the most different out of all the survival curves.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The author would like to thank Sam Ventura for the original idea for this article and feedback, Alex Novet for his feedback, and Corey Sznajder and Evan Oppenheimer for reading over the initial version of this article.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/howardbaik/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd&#34;&gt;Code&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
