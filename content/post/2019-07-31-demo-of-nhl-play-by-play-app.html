@@ -1,0 +1,96 @@
+---
+title: Demo of NHL Play-by-Play App
+author: Howard Baik
+date: '2019-07-31'
+slug: demo-of-nhl-play-by-play-app
+categories:
+  - R
+tags:
+  - Hockey Analytics
+subtitle: ''
+summary: 'In this post, I will be showing insights from looking at a regular season game between the Montreal Canadiens and the Toronto Maple Leafs on October 3rd, 2018.'
+authors: []
+lastmod: '2019-07-31T15:29:27-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<p><br></p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>As part of the <a href="https://community.rstudio.com/t/shiny-contest-winners-full-list/36347">1st RStudio Shiny Contest</a>, I created the <a href="https://jsonbaik.shinyapps.io/nhl-pbp/">NHL Play-by-Play App</a>. Previously, I wrote about the makings of this app (<a href="LINK">Hacking the NHL Play-by-Play App in Shiny</a>), but I realized that I should provide an example of how this app can be used to extract information. As a result, in this post, I will be showing <em>insights from looking at a regular season game between the Montreal Canadiens and the Toronto Maple Leafs</em> on October 3rd, 2018.</p>
+<p><br></p>
+<div id="how-to-search-for-game" class="section level3">
+<h3>How to Search for Game</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/search-game.gif" /></p>
+<ol style="list-style-type: decimal">
+<li>Select Season from NHL Season dropdown menu</li>
+<li>Find Game ID from Table</li>
+<li>Enter Game ID in NHL.COM GAME ID</li>
+</ol>
+<p><br></p>
+</div>
+<div id="shot-chart" class="section level3">
+<h3>Shot Chart</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-chart.png" width="400" height="400" /></p>
+<ul>
+<li><p>Montreal Canadiens shot locations are displayed on the left half of the rink containing the Canadiens logo. Toronto Maple Leafs shot locations are displayed on the right half of the rink containing the Maple Leafs logo.</p></li>
+<li><p>Looking at the region between the faceoff circle and the blue line, Toronto took significantly more shots on the left side (5 vs 1), signifying that Toronto’s attack was tilted to the left-side and perhaps, Toronto’s left
+defensemen were more involved in the offense than Toronto’s right defensemen.</p></li>
+<li><p>The Canadiens took alot of shots around the net whereas Toronto’s shots are spread out. There is one Canadiens shot outside the blue line that we can explore further using the interactive shot chart below.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="interactive-shot-chart" class="section level3">
+<h3>Interactive Shot Chart</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/interactive-shot.gif" /></p>
+<ul>
+<li><p>Interactive Shot chart shows information that the static shot chart doesn’t contain: distance of shot from goal, name of the shooter, players who assisted the goal (if shot is a goal), number of goals/assists a player scored, type of shot, and goal probability (probability that the shot is a goal).</p></li>
+<li><p>Large circles represent goals whereas small circles represent shots</p></li>
+<li><p>Generally, shots taken closer to the net and toward the middle of the ice have higher goal probability. A good example of this is Armia’s shot; it is taken outside the blue line and has a 1.6% chance of going in the net. On the other hand, Lehkonen’s goal, 4 ft from the net, has a 14.5% goal probability.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="shot-animation" class="section level3">
+<h3>Shot Animation</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-animation.gif" /></p>
+<ul>
+<li>A real-time representation of the Play-By-Play data that look at two event types, shots/goals. Since both event types are directed toward the net, the animation shows all points moving towards the net.</li>
+<li>In the near future with real-time rendering of <a href="https://gganimate.com/"><code>gganimate</code></a> and the advent of <a href="https://www.nhl.com/news/nhl-plans-to-deploy-puck-and-player-tracking-technology-in-2019-2020/c-304218820">NHL tracking data</a>, I can create a more accurate animation of the puck and players, similar to my <a href="INSERT%20EPV%20LINK%20HERE">NBA animations</a></li>
+</ul>
+<p><br></p>
+</div>
+<div id="shot-distance" class="section level3">
+<h3>Shot Distance</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-distance.png" /></p>
+<ul>
+<li><p>Histogram of shot distances support what we learned from the shot chart: “Montreal took a lot of shots around the net whereas Toronto’s shots are spread out”</p></li>
+<li><p>Histogram contains vertical lines for the goal line, faceoff dots, and blue line. This helps users visualize the placement of shots on the ice as another angle to the shot chart.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="goal-probability-animation" class="section level3">
+<h3>Goal Probability Animation</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/goal-probability.gif" /></p>
+<ul>
+<li>It shows the ebbs and flows of the game very well since it visualizes the momentum swings of the game.</li>
+<li>Vertical lines represent end of periods 1,2,3</li>
+</ul>
+<p><br></p>
+</div>
+<div id="game-recap" class="section level3">
+<h3>Game Recap</h3>
+<p><img src="/post/2019-07-31-demo-of-nhl-play-by-play-app_files/nhl-recap.gif" /></p>
+<ul>
+<li>Official <a href="www.nhl.com">NHL.com</a> Recap</li>
+<li>Watch highlights, box score, and the summary of the game.</li>
+</ul>
+<p><br></p>
+</div>
+</div>

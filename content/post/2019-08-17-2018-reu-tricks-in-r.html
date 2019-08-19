@@ -1,0 +1,174 @@
+---
+title: 2018 REU Tricks in R
+author: Howard Baik
+date: '2018-07-19'
+slug: 2018-reu-tricks-in-r
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: 'My intent in this blog post is to share some of the tricks I learned in R to manipulate and visualize data inside the tidyverse'
+authors: []
+lastmod: '2019-08-17T18:06:41+09:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<div id="introduction-seven-weeks-of-r" class="section level1">
+<h1>Introduction: Seven Weeks of R</h1>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/data-science.png" /></p>
+<p>It has been seven weeks since I started my summer research in Educational Data Mining. That means seven weeks of using R to import, tidy, transform, and visualize data (Grolemund and Wickham, R for Data Science). While I really wanted to work in R, I ran into many obstacles, major and minor. There were many data manipulation and visualization issues that I had to deal with in order to extract insights from the data. My intent in this blog post is to share some of the tricks I learned in R to manipulate and visualize data <strong>inside the tidyverse</strong></p>
+<p><br></p>
+</div>
+<div id="data-manipulation-and-visualization-tricks" class="section level1">
+<h1>Data Manipulation and Visualization Tricks</h1>
+<ol style="list-style-type: decimal">
+<li>Throughout the summer, the most important skill I gained is <strong>validation of my code.</strong> For example, I checked whether <code>group_by</code> and <code>summarise</code> did what I intended it to do, as in this code chunk:</li>
+</ol>
+<div id="test-code" class="section level3">
+<h3>Test Code</h3>
+<pre class="r"><code>library(tidyverse)
+test &lt;- data.frame(anon_screen_name = c(&quot;howard&quot;, &quot;baik&quot;, &quot;tomatoes&quot;, &quot;bannas&quot;),
+                   cluster = c(1, 1, 2, 2))
+
+test_dropout &lt;- c(&quot;howard&quot;, &quot;tomatoes&quot;)
+
+test %&gt;% 
+     group_by(cluster) %&gt;% 
+     summarise(dropout_prop = mean(anon_screen_name %in% test_dropout))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   cluster dropout_prop
+##     &lt;dbl&gt;        &lt;dbl&gt;
+## 1       1          0.5
+## 2       2          0.5</code></pre>
+<ul>
+<li>I wanted to test whether my <code>dplyr</code> code actually calculated the proportion of matches between values in a column inside my dataframe (<code>anon_screen_name</code>) and a separate vector(<code>test_dropout</code>).</li>
+<li>The test revealed it did!</li>
+</ul>
+<p><br></p>
+</div>
+<div id="original-code" class="section level3">
+<h3>Original Code</h3>
+<pre class="r"><code>bar_first &lt;- new_clust_first_kmeans %&gt;% 
+  mutate(cluster = as.character(cluster)) %&gt;% 
+  group_by(cluster) %&gt;% 
+  summarise(dropout_prop = mean(anon_screen_name %in% total_dropout))</code></pre>
+<p><em>When in doubt of my code, I learned to test the same code on a dummy dataset and see if the output matches my expectations. That way, I can be confident that my code will bring me an accurate output on my original dataset</em></p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li><code>dplyr::distinct()</code> is a super useful verb for selecting distinct / unique rows. According to the documentation, <em><code>distinct</code> retains only unique/distinct rows from an input tbl. This is similar to <code>unique.data.frame</code>, but considerably faster.</em></li>
+</ol>
+</div>
+<div id="table-with-duplicate-rows" class="section level3">
+<h3>Table with Duplicate Rows</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/distinct.png" width="600" height="300" /></p>
+</div>
+<div id="cleaned-table" class="section level3">
+<h3>Cleaned Table</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/distinct_solved.png" width="600" height="200" /></p>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li><code>tidyr::replace_na()</code> allows you to replace missing values. After I saw the below table, I immediately turned to <code>replace_na()</code> to replace all the NA columns with 0.</li>
+</ol>
+<pre class="r"><code>replace_na(list(&quot;1&quot; = 0,
+                  &quot;2&quot; = 0,
+                  &quot;3&quot; = 0,
+                  &quot;4&quot; = 0,
+                  &quot;5&quot; = 0,
+                  &quot;6&quot; = 0,
+                  &quot;7&quot; = 0,
+                  &quot;8&quot; = 0,
+                  &quot;9&quot; = 0,
+                  &quot;10&quot; = 0))</code></pre>
+</div>
+<div id="messy-table" class="section level3">
+<h3>Messy Table</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/replace_na.png" width="800" height="300" /></p>
+<p><br></p>
+</div>
+<div id="cleaned-table-1" class="section level3">
+<h3>Cleaned Table</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/replace_na_after.png" width="800" height="300" /></p>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>The <code>col.names</code> parameter in <code>kableExtra::kable</code> allows you to change the column names.</li>
+</ol>
+</div>
+<div id="table-with-raw-column-names" class="section level3">
+<h3>Table with Raw Column Names</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/kable_before_final.png" width="650" height="150" /></p>
+<p><br></p>
+</div>
+<div id="table-with-customized-column-names" class="section level3">
+<h3>Table with Customized Column Names</h3>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/kable_after_final.png" width="650" height="150" /></p>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>The <code>scales::percent_format</code> allows you to change the labels on your plots to percentages!</li>
+</ol>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/percentages_final.png" width="100" height="300" /></p>
+<p><br></p>
+<ol start="6" style="list-style-type: decimal">
+<li>When drawing boxplots, I found too many outliers and loved to somehow <code>jitter</code> just these points. The <code>outlier.alpha</code> parameter in <code>geom_boxplot</code> changes the transparency of <strong>only the outliers</strong></li>
+</ol>
+<p><img src="/post/2019-08-17-2018-reu-tricks-in-r_files/outliers_alpha_final.png" width="800" height="400" /></p>
+<p><br></p>
+<ol start="7" style="list-style-type: decimal">
+<li><code>dplyr::case_when</code> is a super useful function that replaces my old trick of nested <code>ifelse</code> statements.</li>
+</ol>
+</div>
+<div id="an-incomprehensible-example-of-ifelse" class="section level3">
+<h3>An Incomprehensible Example of ifelse</h3>
+<pre class="r"><code># Code from another project:
+odd_man = ifelse(odd_man %in% c(&quot;1-0&quot;, &quot;2-1&quot;, &quot;3-2&quot;, &quot;4-3&quot;), &quot;one_man&quot;, 
+                                 ifelse(odd_man %in% c(&quot;2-0&quot;, &quot;3-1&quot;, &quot;4-2&quot;, &quot;3-0&quot;), &quot;two_plus_man&quot;,
+                                        &quot;all_other_shots&quot;))) </code></pre>
+</div>
+<div id="a-readable-example-of-case_when" class="section level3">
+<h3>A Readable Example of case_when</h3>
+<pre class="r"><code>case_when(
+           between(first_submit, week_seq[1], week_seq[2]) ~ 1,
+           first_submit &lt;= week_seq[3] &amp; first_submit &gt;= as.Date(&quot;2014-07-02&quot;) ~ 2,
+           first_submit &lt;= week_seq[4] &amp; first_submit &gt;= as.Date(&quot;2014-07-09&quot;) ~ 3,
+           first_submit &lt;= week_seq[5] &amp; first_submit &gt;= as.Date(&quot;2014-07-16&quot;) ~ 4,
+           first_submit &lt;= week_seq[6] &amp; first_submit &gt;= as.Date(&quot;2014-07-23&quot;) ~ 5,
+           first_submit &lt;= week_seq[7] &amp; first_submit &gt;= as.Date(&quot;2014-07-30&quot;) ~ 6,
+           first_submit &lt;= week_seq[8] &amp; first_submit &gt;= as.Date(&quot;2014-08-06&quot;) ~ 7,
+           first_submit &lt;= week_seq[9] &amp; first_submit &gt;= as.Date(&quot;2014-08-13&quot;) ~ 8,
+           first_submit &lt;= week_seq[10] &amp; first_submit &gt;= as.Date(&quot;2014-08-20&quot;) ~ 9,
+           first_submit &lt;= week_seq[11] &amp; first_submit &gt;= as.Date(&quot;2014-08-27&quot;) ~ 10,
+           TRUE ~ 0</code></pre>
+<p><br></p>
+<ol start="8" style="list-style-type: decimal">
+<li><code>ggplot2::scale_fill_hue</code> has a <code>labels</code> parameter that allows you to change the labels of the legend.</li>
+</ol>
+<div class="figure">
+<img src="/post/2019-08-17-2018-reu-tricks-in-r_files/scale_fill_hue.png" alt="scale_fill_hue(labels = c(&quot;High&quot;, &quot;Low&quot;, &quot;Medium&quot;))" width="100" height="100" />
+<p class="caption"><code>scale_fill_hue(labels = c(&quot;High&quot;, &quot;Low&quot;, &quot;Medium&quot;))</code></p>
+</div>
+<p><br></p>
+<ol start="9" style="list-style-type: decimal">
+<li><code>broom::augment</code> is a helpful function when tidying models. According to the documentation, <em>augment adds columns to a dataset, containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have . prefix to prevent existing columns from being overwritten.</em></li>
+</ol>
+<p>In my case, I used <code>augment</code> in clustering by adding on a new column called <code>cluster</code> with the number of cluster.</p>
+<p><br></p>
+<ol start="10" style="list-style-type: decimal">
+<li>Last but not least, the compound assignment pipe operator, <code>%&lt;&gt;%</code>, is very convenient as it saves you time and space. Less code means less errors.</li>
+</ol>
+</div>
+<div id="instead-of" class="section level3">
+<h3>Instead of</h3>
+<pre class="r"><code>df &lt;- df %&gt;% mutate(time = c(a,b,c))</code></pre>
+</div>
+<div id="you-can-do" class="section level3">
+<h3>You can do</h3>
+<pre class="r"><code>df %&lt;&gt;% mutate(time = c(a,b,c))</code></pre>
+</div>
+</div>

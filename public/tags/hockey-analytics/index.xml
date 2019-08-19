@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hockey Analytics on Inside the Tidyverse</title>
+    <link>/tags/hockey-analytics/</link>
+    <description>Recent content in Hockey Analytics on Inside the Tidyverse</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/hockey-analytics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Demo of NHL Play-by-Play App</title>
+      <link>/post/demo-of-nhl-play-by-play-app/</link>
+      <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/demo-of-nhl-play-by-play-app/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;As part of the &lt;a href=&#34;https://community.rstudio.com/t/shiny-contest-winners-full-list/36347&#34;&gt;1st RStudio Shiny Contest&lt;/a&gt;, I created the &lt;a href=&#34;https://jsonbaik.shinyapps.io/nhl-pbp/&#34;&gt;NHL Play-by-Play App&lt;/a&gt;. Previously, I wrote about the makings of this app (&lt;a href=&#34;LINK&#34;&gt;Hacking the NHL Play-by-Play App in Shiny&lt;/a&gt;), but I realized that I should provide an example of how this app can be used to extract information. As a result, in this post, I will be showing &lt;em&gt;insights from looking at a regular season game between the Montreal Canadiens and the Toronto Maple Leafs&lt;/em&gt; on October 3rd, 2018.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;how-to-search-for-game&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;How to Search for Game&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/search-game.gif&#34; /&gt;&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Select Season from NHL Season dropdown menu&lt;/li&gt;
+&lt;li&gt;Find Game ID from Table&lt;/li&gt;
+&lt;li&gt;Enter Game ID in NHL.COM GAME ID&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;shot-chart&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Shot Chart&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-chart.png&#34; width=&#34;400&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Montreal Canadiens shot locations are displayed on the left half of the rink containing the Canadiens logo. Toronto Maple Leafs shot locations are displayed on the right half of the rink containing the Maple Leafs logo.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Looking at the region between the faceoff circle and the blue line, Toronto took significantly more shots on the left side (5 vs 1), signifying that Toronto’s attack was tilted to the left-side and perhaps, Toronto’s left
+defensemen were more involved in the offense than Toronto’s right defensemen.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The Canadiens took alot of shots around the net whereas Toronto’s shots are spread out. There is one Canadiens shot outside the blue line that we can explore further using the interactive shot chart below.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;interactive-shot-chart&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Interactive Shot Chart&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/interactive-shot.gif&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Interactive Shot chart shows information that the static shot chart doesn’t contain: distance of shot from goal, name of the shooter, players who assisted the goal (if shot is a goal), number of goals/assists a player scored, type of shot, and goal probability (probability that the shot is a goal).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Large circles represent goals whereas small circles represent shots&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Generally, shots taken closer to the net and toward the middle of the ice have higher goal probability. A good example of this is Armia’s shot; it is taken outside the blue line and has a 1.6% chance of going in the net. On the other hand, Lehkonen’s goal, 4 ft from the net, has a 14.5% goal probability.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;shot-animation&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Shot Animation&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-animation.gif&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A real-time representation of the Play-By-Play data that look at two event types, shots/goals. Since both event types are directed toward the net, the animation shows all points moving towards the net.&lt;/li&gt;
+&lt;li&gt;In the near future with real-time rendering of &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and the advent of &lt;a href=&#34;https://www.nhl.com/news/nhl-plans-to-deploy-puck-and-player-tracking-technology-in-2019-2020/c-304218820&#34;&gt;NHL tracking data&lt;/a&gt;, I can create a more accurate animation of the puck and players, similar to my &lt;a href=&#34;INSERT%20EPV%20LINK%20HERE&#34;&gt;NBA animations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;shot-distance&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Shot Distance&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/shot-distance.png&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Histogram of shot distances support what we learned from the shot chart: “Montreal took a lot of shots around the net whereas Toronto’s shots are spread out”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Histogram contains vertical lines for the goal line, faceoff dots, and blue line. This helps users visualize the placement of shots on the ice as another angle to the shot chart.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;goal-probability-animation&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Goal Probability Animation&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/goal-probability.gif&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It shows the ebbs and flows of the game very well since it visualizes the momentum swings of the game.&lt;/li&gt;
+&lt;li&gt;Vertical lines represent end of periods 1,2,3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;game-recap&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Game Recap&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-31-demo-of-nhl-play-by-play-app_files/nhl-recap.gif&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Official &lt;a href=&#34;www.nhl.com&#34;&gt;NHL.com&lt;/a&gt; Recap&lt;/li&gt;
+&lt;li&gt;Watch highlights, box score, and the summary of the game.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hacking the NHL PBP App in Shiny</title>
+      <link>/post/hacking-the-nhl-pbp-app-in-shiny/</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/hacking-the-nhl-pbp-app-in-shiny/</guid>
+      <description>
+
+
+&lt;p&gt;I created a web application for interactively visualizing shot data for all games in the 2017-2018 season. In this article, I will walk through a month-long process building the &lt;a href=&#34;https://jsonbaik.shinyapps.io/nhl-pbp/&#34;&gt;National Hockey League Play-by-Play App&lt;/a&gt; from scratch, giving a behind-the-scenes look.&lt;/p&gt;
+&lt;p&gt;What started this project was this &lt;a href=&#34;https://twitter.com/rstudio/status/1082349589922041858&#34;&gt;#rstats Shiny contest tweet&lt;/a&gt;. Shiny is a R package built by RStudio for creating interactive web applications. It allows R programmers to create web applications without having to exclusively code in HTML, CSS or JavaScript. I had looked at several sports visualizations (e.g. &lt;a href=&#34;https://ryo-n7.github.io/2018-07-24-visualize-worldcup-part-3/&#34;&gt;Ryo’s Visualize the World Cup&lt;/a&gt;) and wanted to create something similar in hockey. This announcement provided the motivation for me to start.&lt;/p&gt;
+&lt;p&gt;I started sharpening my Shiny skills by taking &lt;a href=&#34;https://www.datacamp.com/courses/building-web-applications-in-r-with-shiny&#34;&gt;DataCamp’s Shiny Course&lt;/a&gt;. I particularly found Chapter 2 (Inputs, outputs, and rendering functions) and Chapter 3 (Reactive Programming) helpful in reminding myself of the essence of Shiny. They are great visual learning resources and I highly recommend beginners in Shiny take this course.&lt;/p&gt;
+&lt;p&gt;Now, I focused on the structure of my application. The organization of a product is instrumental in its usability, so I wanted to get it right. I looked at the &lt;a href=&#34;https://shiny.rstudio.com/articles/layout-guide.html&#34;&gt;Shiny Application Layout Guide&lt;/a&gt; and decided to go with the Grid Layout, which contains a plot at the top and parameters of the plot at the bottom in a three column format. This is the best organization for focusing the users on the animation at the top. The secondary features, which are the parameters controlling the plot, are stationed at the bottom.&lt;/p&gt;
+&lt;p&gt;Now, to the animation. I relied on Ryo’s World Cup animations, which was rendered in &lt;a href=&#34;https://gganimate.com/&#34;&gt;gganimate&lt;/a&gt;, a R package for animations compatible with &lt;code&gt;ggplot2&lt;/code&gt;. Unfortunately, unlike Ryo’s dataset, my dataset doesn’t contain coordinate data points with the location of each player over time. Rather, my Play-by-Play, Real Time Scoring System dataset contains shot location:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/shot-location-table.png&#34; alt=&#34;Figure 1: Snapshot of raw shot data by Corsica&#34; width=&#34;620&#34; height=&#34;180&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Figure 1: Snapshot of raw shot data by Corsica&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;If the NHL had tracked real time coordinate data like the NFL, I could have created a fluid animation like &lt;a href=&#34;http://bit.ly/nfl-bigdata&#34;&gt;this&lt;/a&gt;:&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/nfl-bigdata-bowl.gif&#34; alt=&#34;Tyreek Hill’s TD reception during Week 1 of 17/18 season&#34; /&gt;
+&lt;/p&gt;
+&lt;p&gt;So, here is a hack I came up with. First, I’ve normalized the shot locations so that all shots taken by the home team were shown on the right and shots taken by the away team were shown on the left. Then, after every shot location data, I input (x,y) coordinates (82, 0) and (-82, 0) to mark the location of both nets. Next, I created a column called event_index that groups each pair of shot data (1 row for shot location, 1 row for net location). I then created a column called event_frame that numerates all the rows. Last, I used group aesthetic on event_index and added &lt;a href=&#34;https://gganimate.com/reference/transition_components.html&#34;&gt;transition_components(time = event_frame)&lt;/a&gt; to render the animation.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/animation-processed-table.png&#34; alt=&#34;Figure 3: Data Processed for animation&#34; width=&#34;620&#34; height=&#34;180&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Figure 3: Data Processed for animation&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This was all great, but I realized that the gganimate package doesn’t yet work with Shiny. There is no function designed to render gganimate animations on Shiny. In other words, there was no natural way to put my animations on my end product, which was a huge concern.&lt;/p&gt;
+&lt;p&gt;This &lt;a href=&#34;https://stackoverflow.com/questions/35421923/how-to-create-and-display-an-animated-gif-in-shiny&#34;&gt;StackOverflow answer&lt;/a&gt; was super helpful in coming up with another &lt;em&gt;hack&lt;/em&gt;. It recommended saving the animation as a .gif file and returning the file as a list along with the dimensions of the animation. There is one drawback to this method though: the animation looks stretched out if I increase the width too much, and it moves downward if I increase the height too much. As a result, what I currently have is the best I could come up with: high image resolution and optimal placement.&lt;/p&gt;
+&lt;p&gt;The animation happens on a NHL ice rink created by War On Ice. I added “reactive” team logos on Shiny to clearly indicate which side is the home/away side. Also, in the app, users need to input the official game ID in order to navigate between games. In order to facilitate this process, I included a datatable of all the game IDs, game dates, home teams, and away teams next to the animation. That way, the user can find the desired game by searching through game dates or teams, locate the right Game ID, and render the right animation.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/example-shot-animation.gif&#34; alt=&#34;Figure 4: Animation of a Regular Season Game between the Toronto Maple Leafs and the Winnipeg Jets&#34; /&gt;
+&lt;/p&gt;
+&lt;p&gt;Now, the other visualizations. I took a long, hard look at the dataset and thought about which columns to make use of. I thought the shot distance was pretty interesting, so I created a histogram of the shot distance. This illustrates the number of shots a team took at a certain distance from the net. To help the user interpret the distances, I labelled the location of the faceoff circles, blue line, and the red line. Furthermore, expected goal probability is a frequently occuring metric in hockey analytic discussions. I thought it would be interesting to see its change throughout the game. As a result, I animated expected goal probabilities for each team. This plot generated the most buzz.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/goal-prob-anim.gif&#34; alt=&#34;Figure 5: Animation of Expected Goal Probability during a Regular Season Game between the Toronto Maple Leafs and the Winnipeg Jets&#34; /&gt;
+&lt;/p&gt;
+&lt;p&gt;Last, I wanted to include a summary of the game by showing the boxscore. However, I ran into too many roadblocks with html / css, so I decided to simply show the nhl.com official recap.&lt;/p&gt;
+&lt;p&gt;Some neat features I added to the app include a short tour using the rintrojs package. When the user presses the Help bottom on the top right corner, Shiny gives a short tour, explaining what each of the parameters do. Also, the “Share” button allows users to easily share the app with a custom message I included and the “Code” button redirects users to the Github repo.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/rintrojs-example.gif&#34; alt=&#34;Figure 6: Illustration of the rintrojs package&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Figure 6: Illustration of the rintrojs package&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;The final product is available here: &lt;a href=&#34;https://jsonbaik.shinyapps.io/nhl-pbp/&#34;&gt;NHL Play-by-Play App&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Update: This app received a Honorable Mention from &lt;a href=&#34;https://blog.rstudio.com/2019/04/05/first-shiny-contest-winners/?utm_content=buffere0bd9&amp;amp;utm_medium=social&amp;amp;utm_source=twitter&amp;amp;utm_campaign=buffer&#34;&gt;RStudio’s 1st Shiny Contest&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Epilogue to Quantifying Differences between the Regular Season and the Playoffs</title>
+      <link>/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/</link>
+      <pubDate>Mon, 28 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;After several months of learning the concept of survival analysis and applying it to hockey, I published my article, &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;Quantifying Differences between the Regular Season and Playoffs using Survival Analysis&lt;/a&gt;. This post is a brief analysis to answer the question: “Can I repeat my previous analysis for regular season by period?”. First, I only look at regular season data and change the treatment variable from whether the game is played during the regular season or playoffs to whether it was played in &lt;strong&gt;Period X vs Period Y&lt;/strong&gt;. Then, I approach the question in a different way by keeping the treatment variable as regular season vs playoffs, but &lt;strong&gt;filter for the 1st, 2nd, and 3rd periods&lt;/strong&gt;. This further shows the discrepancy in change in rates of events by period.&lt;/p&gt;
+&lt;p&gt;Finally, I respond to some additional feedback from Ron Schultz: “Have you looked at the same comparisons, but with just the regular season games between the teams who ended up in the playoffs?”. I checked the differences between the regular season and playoffs by running my survival analysis on just the playoff teams in the 2017-2018 season. I discovered that this type of analysis yields a statistically significant difference in all event types.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hazard-ratios-period-1-vs-period-2&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hazard Ratios: Period 1 vs Period 2&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/p1-vs-p2.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;First, let’s compare event rates in the first period to the second. There are big differences in many of them: every event is statistically significant except for goals. Furthermore, they all move in the same direction: they decrease from first period to second period. The rate of hits decrease the most by almost 20%, leading me to believe that fatigue plays a factor as players slow down after 20 minutes. &lt;strong&gt;Long changes in the second period may contribute to fatigue as teams must skate farther to make changes.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, this FiveThirtyEight article, &lt;a href=&#34;https://fivethirtyeight.com/features/to-make-the-playoffs-hockey-teams-play-not-to-win/&#34;&gt;To Make The Playoffs, Hockey Teams Play Not To Win&lt;/a&gt; by Noah Davis and Michael Lopez, makes a different observation with this plot:&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/fivethirtyeight-plot.png&#34; width=&#34;500&#34; height=&#34;400&#34; /&gt;
+&lt;/p&gt;
+&lt;p&gt;This graph illustrates the expected goal rate by minute from 2007 to 2015 in tied games and one-goal games. According to Sam Ventura’s &lt;a href=&#34;http://statsportsconsulting.com/main/wp-content/uploads/VENTURA_OTTANALYTICS.pdf&#34;&gt;presentation slides&lt;/a&gt; at Ottawa Hockey Analytics conference, “a teams’ or players’ expected goals for is equal to the sum of the goal-probabilities of all their on-ice shot-attempts”. These goal-probabilities are explained using location, distance from goal, shot type, shot feature, and transformations / interactions of these variables.&lt;/p&gt;
+&lt;p&gt;The Expected Goal rate shows an increasing trend from the first period to the second period in both tied games and one-goal games. On the other hand, the hazard ratio for goals indicates a decrease in the rate of goals in the second period. &lt;strong&gt;This means that we “expect” more goals in the second period based on Ventura’s model, but survival analysis tells us that the rate of goals decreases.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hazard-ratio-period-2-vs-period-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hazard Ratio: Period 2 vs Period 3&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/p2-vs-p3.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Now let’s compare the second period to the third. Again we see meaningful changes across the board. Notably, the rate of hits decrease by more than 10% and the rates of goals and shots all show a statistically significant decrease. One explanation is the change of motivation in the latter part of the game. Realistically, teams consider the longevity of the regular season. It is 82 games of grueling hockey from October to April, and then possibly another two more months of playoff hockey. As a result, teams may change the intensity of play in the third period to preserve their energy level for the next game, week, month, and hopefully, the playoffs.&lt;/p&gt;
+&lt;p&gt;This view is supported in the FiveThirtyEight article. Francois Beauchemin reveals that his team, the Ducks, won’t take as many risks late in the third period in order to go to overtime and earn at least one point. Todd Reirden, then an assistant coach with the Capitals, agreed: “Sit back, play defense, make sure we get a point…” His late in-game tactics are to shorten the bench and play guys “he knows will stay home and limit the opposition’s attacking chances, even if that means sacrificing a shot at getting a goal”. &lt;strong&gt;This stay-at-home mentality in both players and coaches contribute to such statistical results.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hazard-ratio-by-period&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hazard Ratio by Period&lt;/h2&gt;
+&lt;p&gt;My original piece found differences between play in the regular season and the playoffs. Do these results change if we split them up by period?&lt;/p&gt;
+&lt;p&gt;In the first period, the hazard ratio for goals is 1.007, meaning as we move from regular season to the playoffs, goals increase by approximately 0.7%. In the second period, the rate of goals decreases by 2.4%, and in the third period, decreases by 2%. These results are not statistically significant. &lt;strong&gt;Significantly, the rate of goals increases in the first period from the regular season to the playoffs, but decreases by roughly the same amount in the rest of the game.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The rate of hits increase in the playoffs independent of period: approximately 45% in the first period, 30% in the second period, and 25% in the third period. &lt;strong&gt;Notably, hits swing the most from the regular season to the playoffs as its corresponding point is farthest from the vertical line representing a hazard ratio of 1.0.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;With hazard ratios of 1.087 (first period), 1.062 (second period), and 1.081 (third period), the rate of stoppages in play increase in the playoffs in all three periods. I suspect these rates help explain the consistent increase in the rate of faceoffs throughout the game; once the play is blown down, the referee needs to resume play with a faceoff. &lt;strong&gt;More faceoffs mean more opportunities for faceoffs set plays in the playoffs.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hazard-ratio-1718-playoff-teams-only&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hazard Ratio: 17/18 Playoff Teams Only&lt;/h2&gt;
+&lt;p&gt;In my previous piece, I looked at data for all teams, regardless of whether they made the playoffs or not. As a result, non-playoff teams were not accounted for in my analysis looking at the difference between the regular season and playoffs. One astute reader pointed that out and suggested I run the analysis on the teams who ended up in the playoffs. This ensures that I have evenly distributed data from the regular season and the playoffs.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/1718-playoff.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The average percentage of change (hazard ratio - 1.00) on 5-on-5 situations for all events is 45% while on the power play is 37%, revealing &lt;strong&gt;bigger discrepancy in 5-on-5 situations from the regular season to the playoffs.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The reason, I’d argue, is that the power play is a more structured game within the game where teams typically play in one end of the rink. Attacking teams have a set formation once they gain control of the puck, and the penalized teams have their own style. This rigidity lends itself to less change from the regular season to the playoffs since a power play situation in the playoffs can be similar to that in the regular season. On the other hand, 5-on-5 play changes more dramatically from the regular season to the playoffs as the play is more fluid, with teams exchanging chances at both ends of the rink.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;key-takeaways&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Key Takeaways&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;From Period 1 to Period 2, the rate of all events go down: Long changes in Period 2 may contribute to fatigue as teams have to skate farther to their benches for changes&lt;/li&gt;
+&lt;li&gt;We “expect” more goals in Period 2, according to Ventura’s model with location, distance from goal, shot type, and shot feature, but our survival analysis indicates this rate decreases.&lt;/li&gt;
+&lt;li&gt;Taking into account the longevity of the regular season, teams dial down their intensity of play in the third period to preserve their energy level.&lt;/li&gt;
+&lt;li&gt;Rate of hits differ the most from regular season to playoffs.&lt;/li&gt;
+&lt;li&gt;On average, there is a larger discrepancy from regular season to playoffs in 5-on-5 situations since 5-on-5 play is more fluid.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Code is available &lt;a href=&#34;INSERT%20LINK&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The author would like to thank Alex Novet and Sam Ventura for their contributions to this article.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Quantifying Differences between the Regular Season and Playoffs using Survival Analysis</title>
+      <link>/post/quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis/</link>
+      <pubDate>Mon, 07 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/intro.gif&#34; /&gt;
+&lt;/p&gt;
+&lt;p&gt;From a casual fan’s perspective, the intensity traditionally ramps up in the playoffs because teams are closer to the grand prize, the Stanley Cup. Fans are hyped up by the storylines and rivalries for every series, and so each event feels all the more momentous. So, how different are the rates of goals, shots, or hits from the regular season to the playoffs? Does the fact that a game is played during the playoffs change these rates significantly? Which rates don’t change that much?&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Methods&lt;/h2&gt;
+&lt;p&gt;The rates of events such as goals or shots follow a Poisson process, which counts the rate of events happening in a certain time period, such as a day or a week. One of the key assumptions of Poisson processes is that interarrival times, the time between events, follow an exponential distribution. Some real world examples of Poisson processes include number of car accidents in an area or the requests on a web server.&lt;/p&gt;
+&lt;p&gt;Since Poisson processes do not account for the event not occuring in the duration of a game (ex.A 2-0 game where the losing team doesn’t score), I pivoted my focus to survival analysis. According to this &lt;a href=&#34;https://stats.stackexchange.com/questions/44046/what-are-the-differences-between-survival-analysis-and-poisson-regression&#34;&gt;Cross Validated post&lt;/a&gt;, in survival analysis, the response variable is the time that has elapsed between events. Importantly, survival analysis deals with censoring-we might have incomplete information where the event of interest doesn’t occur in the duration of the game. I consider the treatment variable to be whether the game is played during the regular season or the playoffs. Also, I account for different situations in the game: 5-on-5 and power play (PP) situations. PP includes both 5 on 4 and 5 on 3 situations and accounts for roughly 25% of the time in my dataset. 5-on-5 situations make up 48% of the data.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;cox-proportional-hazards-model-and-plot-of-hazard-ratio&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Cox Proportional Hazards Model and Plot of Hazard Ratio&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Cox Proportional Hazards Model is a popular regression technique in Survival Analysis, where the measure of interest is hazard ratios.&lt;/li&gt;
+&lt;li&gt;A hazard ratio &lt;em&gt;greater than one&lt;/em&gt; indicates that as we move from the regular season to the playoffs, there is &lt;em&gt;an increase&lt;/em&gt; in the event of interest.&lt;/li&gt;
+&lt;li&gt;A hazard ratio &lt;em&gt;smaller than one&lt;/em&gt; indicates that as we move from the regular season to the playoffs, there is &lt;em&gt;a decrease&lt;/em&gt; in the event of interest.&lt;/li&gt;
+&lt;li&gt;The article contains scatterplots of hazard ratios by event types that contain horizontal lines at a hazard ratio of 1, which signifies a &lt;em&gt;constant rate between the regular season and playoffs.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;If the confidence intervals for hazard ratios include 1.0, &lt;em&gt;the difference between the regular season and the playoffs is not significant.&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;survival-curves&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Survival Curves&lt;/h3&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/survival-curve-sample.png&#34; width=&#34;300&#34; height=&#34;200&#34; /&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The survival curve is another visualization that shows the difference in rates between regular season and playoffs, but the curve uses a log-rank test to see if the difference is significant.&lt;/li&gt;
+&lt;li&gt;I think of the relationship between the plots of hazard ratios and survival curves using a log-rank test as similar to that between confidence intervals (a.k.a hazard ratios) and hypothesis testing (a.k.a log-rank test). A one-to-one correspondence.&lt;/li&gt;
+&lt;li&gt;The graphs display two curves, one for playoffs and the other for the regular season.&lt;/li&gt;
+&lt;li&gt;In our graphs, the x-axis shows time during the game and the y-axis represents survival probability, which is the probability of our event &lt;em&gt;not occuring.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;For example, if our event is goals, the survival probability equals the probability of &lt;em&gt;not scoring.&lt;/em&gt; As a result, the lower curve signifies higher rate of event.&lt;/li&gt;
+&lt;li&gt;If a curve decreases faster (curve is steeper), that means we are more likely to observe the event of interest in the early stages of a game.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tools-and-resources&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Tools and Resources&lt;/h3&gt;
+&lt;p&gt;My main tool for organizing the data is the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt;, an opinionated collection of R packages that share an underlying design philosophy, grammar, and data structures. For the survival analysis, I used additional R packages, including &lt;code&gt;survival&lt;/code&gt;, &lt;code&gt;survminer&lt;/code&gt;, &lt;code&gt;ggfortify&lt;/code&gt;, and &lt;code&gt;rms&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For additional research into the theory behind Survival Analysis, have a look at this &lt;a href=&#34;http://dustintran.com/blog/survival-analysis-counting-processes-and-cox-models&#34;&gt;blog post&lt;/a&gt; by Dustin Tran, research scientist at Google Brain. For a tutorial of Survival Analysis in R, click &lt;a href=&#34;http://www.sthda.com/english/wiki/survival-analysis-basics&#34;&gt;here&lt;/a&gt;. Alboukadel is the author of the survminer R package, which analyzes and draws patient’s survival curves.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/pbp-sample.png&#34; width=&#34;600&#34; height=&#34;200&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I will be using Play by Play (PBP) data from 2007-2008 to 2017-2018 NHL seasons provided by Emmanuel Perry, creator of Corsica Hockey. The dataset contains 56 variables and over 13 million rows. Noteworthy variables I’ll be using for my analysis include Session (P for Playoffs and R for Regular Season), Event Type(Goals, Hits, Blocked Shots, Penalties, etc), Game Strength State (5v5, 4v5, 5v4, etc), and Game Seconds (Time of event during game in seconds).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/survival-data-sample.png&#34; width=&#34;600&#34; height=&#34;200&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I wrangled the data into a format for survival analysis. Again, &lt;code&gt;Session&lt;/code&gt; describes whether game was held during regular season(R) or playoffs(P). &lt;code&gt;Event Type&lt;/code&gt; specifies whether event of interest (in this case, goals) happened (1). A value of 0 for &lt;code&gt;Event Type&lt;/code&gt; refers to the end of the game. &lt;code&gt;Time Difference&lt;/code&gt; is the survival time in minutes, or in this case the time intervals between goals.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot-of-hazard-ratios&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plot of Hazard Ratios&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/hazard-ratio-5v5.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;First, let’s look at the results for goals. The hazard ratio is 0.910, meaning that &lt;em&gt;as we move from regular season to the playoffs, goals decrease by approximately 9 percent in 5-on-5 situations&lt;/em&gt;. This matches what prior work has shown: a &lt;a href=&#34;https://www.theglobeandmail.com/sports/hockey/globe-on-hockey/round-2-when-the-goals-go-away-in-the-nhl-playoffs/article18583679/&#34;&gt;Globe and Mail piece&lt;/a&gt; by James Mirtle reveals that the number of shots on goal, shot attempts and the amount of time spent on the power play are similar between the regular season and playoffs. However, the rate of goals drops because save percentage is higher in the playoffs.&lt;/p&gt;
+&lt;p&gt;This makes intuitive sense. In the playoffs, teams have better goaltending since backups no longer play games. Furthermore, teams that deeper into the playoffs tend to have higher quality goaltenders, who are likely to have a higher save percentage than regular season league average. In truth, my analysis reveals that this change in saving behavior makes goal scoring decrease by almost 10% in the playoffs.&lt;/p&gt;
+&lt;p&gt;The second result is the hazard ratio for hits, 1.319, signifying &lt;em&gt;an increase of 32% in hits from regular season to playoffs in 5-on-5 situations.&lt;/em&gt; As the graph shows, the magnitude of the increase in hits greatly outweighs that of other events. Evidently, the playoffs show a certain level of violence stemming from referees calling less penalties in the playoffs, as described by Chris Peters in a &lt;a href=&#34;https://www.cbssports.com/nhl/news/stanley-cup-playoffs-lack-of-penalties-increases-risk-decreases-goals/&#34;&gt;CBS Sports article.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The hazard ratio for blocked shots is 1.077, illustrating that &lt;em&gt;as we move from regular season to the playoffs, blocks increase by 7.7% in 5-on-5 situations.&lt;/em&gt; As mentioned before, postseason hockey is all about chasing the grand prize, the Stanley Cup. This &lt;a href=&#34;https://www.cbc.ca/sports/hockey/nhl/shot-blocking-a-last-resort-in-nhl-playoffs-1.4099442&#34;&gt;Associated Press article&lt;/a&gt; reveals that players display dedication and sacrifice to attain the ultimate prize: “It’s something that there’s a high desperation level come playoffs and everybody’s doing it,” said Ian Cole, who has 31 blocks in nine games.&lt;/p&gt;
+&lt;p&gt;Lastly, let’s observe coach’s challenges, a recent addition to the NHL rulebook. The hazard ratio is 0.916. In other words, coach’s challenge &lt;em&gt;decreases by 8.5% in 5-on-5 situations from the regular season to playoffs.&lt;/em&gt; During postseason hockey, the coaches are more conservative since they don’t want to lose the opportunity to call a timeout and draw up a play in the last minutes of the game. Notably, the confidence interval for the hazard ratio of coach’s challenges is extremely wide, demonstrating that this change is &lt;em&gt;not statistically significant.&lt;/em&gt; Thus, I would caution the reader from making a conclusion whenever we have this wide of a confidence interval for any events.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/hazard-ratio-pp.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the power play, the hazard ratio for goals is 1.022, meaning that &lt;em&gt;as we move from regular season to the playoffs, goals change by a factor of 1.022, or increase by 2%.&lt;/em&gt; This result is validated by the fact that the top 16 teams in the league play postseason hockey, where only the best players elevate their game to compete for the Stanley Cup. The offensively gifted players, such as Sidney Crosby, Alexander Ovechkin, and Steven Stamkos, are lethal on the power play and convert chances at a higher rate than your average NHLer.&lt;/p&gt;
+&lt;p&gt;The distinction between the hazard ratio for goals at 5-on-5 (0.910) and on the power play (1.022) is worth discussing. At 5-on-5, I’d argue goalies essentially have five defenders protecting the net in different ways. Forwards are covering the points and fighting in puck battles along the boards, and defensemen are focused on guarding the area around the net by preventing forwards from screening the goalie and clearing rebounds. As a result, top notch goalies can perform better in the playoffs, leading to a decrease in the rate of goals. On the other hand, when defending a power play, goalies have one less player to help out. With the extra space gained from the man advantage, teams on the power play can more freely deploy their offensive weapons. In the playoffs, only the best remain and thus, we see a higher rate of goals.&lt;/p&gt;
+&lt;p&gt;Importantly, &lt;em&gt;the change in rates of power play goals and shots&lt;/em&gt; between the regular season and playoffs is &lt;em&gt;not statistically significant&lt;/em&gt; since the confidence intervals for both hazard ratios include 1.0. On the other hand, &lt;em&gt;the change in rates of 5-on-5 goals and shots are statistically significant&lt;/em&gt; since the confidence intervals &lt;em&gt;do not include&lt;/em&gt; hazard ratios of 1.0.&lt;/p&gt;
+&lt;p&gt;The hazard ratios of hits in 5v5 and PP situations are very similar (1.319 and 1.324). This reveals that &lt;em&gt;the change in rate of hits doesn’t depend on game situations.&lt;/em&gt; Players will ramp up their game level intensity during the playoffs and play more violently in both 5-on-5 situations and on power plays. This creates for a playoff atmosphere that NHL fans all love and entails huge swings in momentum and an increase in injuries. After the playoffs, few players come out unscathed.&lt;/p&gt;
+&lt;p&gt;Let’s finally look at coach’s challenges. This event displays a wide confidence interval, similar to the confidence interval for 5-on-5 situations. Statistically, this can be interpreted as a consequence of small sample size or high standard deviation. This is due to two factors: the league only introduced coach’s challenges in 2015-2016 and they don’t occur regularly during games, certainly not as regularly as shots or hits. The former means that the Play by Play data consists mostly of seasons played before the league implemented this rule. The latter is partly due to a recent change in &lt;a href=&#34;https://scoutingtherefs.com/2017/09/19563/nhl-adopts-rule-changes-for-2017-18-season/&#34;&gt;NHL Rule for Failed Offside Challenges&lt;/a&gt;: “the team that issued the challenge shall be assessed a minor penalty for delaying the game.” NHL commissioner Gary Bettman states: “We’re in effect trying to discourage using the coach’s challenge on offside unless you’re really 100 per cent certain that you’re going to win because it was a blown call,” said NHL Commissioner Gary Bettman. “The coach’s challenge was really intended to focus on glaring errors. And by imposing a two-minute penalty if you’re wrong, it should limit the number of challenges to those instances where there’s a glaring error.”&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;v5-survival-curve&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;5v5 Survival Curve&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/survival-curve-5v5.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;legend&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Legend&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Red curve represents playoffs&lt;/li&gt;
+&lt;li&gt;Sky bluish curve represents the regular season.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;analysis&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Analysis&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;The first result is goals, where the log-rank test reveals the difference in curves is significant.&lt;/li&gt;
+&lt;li&gt;There are higher rates of goals in the regular season as its survival curve is lower than the playoff survival curve.&lt;/li&gt;
+&lt;li&gt;The graphs for hits and shots contain steeper survival curves, signaling that we are likely to observe a hit earlier in the game than goals, whose survival curves is more rounded.&lt;/li&gt;
+&lt;li&gt;This matches an apparent observation of hockey games; goals rarely, if ever, precede hits or shots.&lt;/li&gt;
+&lt;li&gt;Future work would be to analyze factors leading to difference in goal-scoring rates and shot rates. Shot angles, shot distance, or quality of goaltending are possible candidates.&lt;/li&gt;
+&lt;li&gt;The coach’s challenge survival curve during the playoffs looks significantly different.&lt;/li&gt;
+&lt;li&gt;The rate of coach’s challenge during playoffs is noticeably lower during later part of 2nd period and most of the 3rd period.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pp-survival-curve&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;PP Survival Curve&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-01-07-quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis_files/survival-curve-pp.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;legend-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Legend&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Red curve represents playoffs&lt;/li&gt;
+&lt;li&gt;Sky bluish curve represents the regular season.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;analysis-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Analysis&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;On the power play, the goal survival curves look slightly different, but the log-rank test indicates that they are not statistically different.&lt;/li&gt;
+&lt;li&gt;This confirms the hazard ratio of goals, whose confidence interval includes 1.0.&lt;/li&gt;
+&lt;li&gt;Hits survival curves are the most different out of all the survival curves and demonstrate that the game level intensity jumps alot.&lt;/li&gt;
+&lt;li&gt;The blocked shot survival curves tell a similar story: There is higher attrition and risk of injuries in playoffs due to players putting their bodies on the line to win.&lt;/li&gt;
+&lt;li&gt;In terms of giveaways, the survival curves reveal that playoffs have higher rates of giveaways than regular season.&lt;/li&gt;
+&lt;li&gt;Fatigue and faster game tempo lead to more giveaways and exciting hockey for fans. Not so much for coaches.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;key-takeaways&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Key Takeaways:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;As we move from regular season to the playoffs, goals decrease by approximately 9 percent in 5-on-5 situations.&lt;/li&gt;
+&lt;li&gt;In 5-on-5 situations, there is an increase of 32% in hits and 7.7% in blocks from regular season to playoffs.&lt;/li&gt;
+&lt;li&gt;On the power play, goals increase by 2% from the regular season to the playoffs&lt;/li&gt;
+&lt;li&gt;Importantly, the change in rates of power play goals and shots between the regular season and playoffs is not statistically significant,&lt;/li&gt;
+&lt;li&gt;On the other hand, the change in rates of 5-on-5 goals and shots are statistically significant.&lt;/li&gt;
+&lt;li&gt;The change in rate of hits doesn’t depend on game situations.&lt;/li&gt;
+&lt;li&gt;The steepness of survival curves show that goals rarely, if ever, precede hits or shots&lt;/li&gt;
+&lt;li&gt;Power play survival curves for hits are the most different out of all the survival curves.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The author would like to thank Sam Ventura for the original idea for this article and feedback, Alex Novet for his feedback, and Corey Sznajder and Evan Oppenheimer for reading over the initial version of this article.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Are Teams getting Lucky on Rushes?</title>
+      <link>/post/are-teams-getting-lucky-on-rushes/</link>
+      <pubDate>Fri, 24 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/are-teams-getting-lucky-on-rushes/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/odd-man.jpeg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;When you watch an offensive rush in hockey, do you ever wonder about the numbers behind it? For example, is the number of shots that were preceded by passes repeatable over an entire season? What about shooting percentages? If repeatable, do zones of the primary pass (the pass preceding a shot) influence this repeatability? What about rebounds and rebound shooting percentages (the goals scored from rebounds)?&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;terminology&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Terminology&lt;/h2&gt;
+&lt;p&gt;In hockey, “odd-man rushes” is a term frequently used to refer to offensive attacks such as the above where the attacking team has more players than the defending team. In my analysis, I will be slightly deviating from this jargon and instead use “odd-player rushes”, which consist of shots that were preceded by passes and taken on breakaways, 2-on-1, 3-on-2, etc. Any shots that are not rush shots with a player advantage are categorized as &lt;code&gt;all_other_shots&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In the later parts of this analysis, I will be using the terms, “rebound shot” and “rebound shooting percentage”. The first indicates a shot on goal following a rebound and the second is calculated as rebound goals (goals that follow rebounds) divided by rebound shots.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data&lt;/h2&gt;
+&lt;p&gt;To investigate these questions, I will be using the Passing Project Data from the 2015-2016, 2016-2017, and 2017-2018 NHL seasons organized by &lt;a href=&#34;https://twitter.com/RK_Stimp&#34;&gt;Ryan Stimson&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/ShutdownLine&#34;&gt;Corey Sznajder&lt;/a&gt;. The data was collected by a group of volunteers who tracked &lt;strong&gt;every pass leading to a shot.&lt;/strong&gt; According to Ryan’s &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf&#34;&gt;MIT Sloan Sports Analytics Conference paper&lt;/a&gt;, “Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted.”&lt;/p&gt;
+&lt;p&gt;There are 44 variables and over 150,000 observations in this dataset. Some notable metrics that I will be using for my analysis include &lt;code&gt;shot_on_goal&lt;/code&gt; (1 for yes and 0 for no), &lt;code&gt;goal&lt;/code&gt; (1 for yes and 0 for no), &lt;code&gt;odd_man&lt;/code&gt; (number of players involved in player advantages during rushes), &lt;code&gt;shooting_percentage&lt;/code&gt; (number of goals / number of shots on goals), &lt;code&gt;shot_type&lt;/code&gt; (one-timer, slap shot, wrist/snap shot, backhand, etc), &lt;code&gt;a1_zone&lt;/code&gt; (zone that the primary assist originated), and &lt;code&gt;rebound_shot_on_goal&lt;/code&gt; (if a rebound occured and resulted in a shot on goal).&lt;/p&gt;
+&lt;p&gt;Many researchers have used this dataset to explore interesting research topics in hockey. For example, &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf&#34;&gt;Ryan Stimson’s paper&lt;/a&gt; discusses repeatability of certain metrics on a team level and player level. Among other analysis, &lt;a href=&#34;https://www.nhlnumbers.com/2016/08/10/passing-project-dangerous-primary-shot-contributions&#34;&gt;this NHL Numbers post&lt;/a&gt; covers repeatability of passes that crosses through the royal road (the line that goes directly through the middle of the ice from one net to the other) and provides visualizations.&lt;/p&gt;
+&lt;p&gt;In this analysis, I will look at repeatability of shots that were preceded by passes and taken during rushes with player advantages, shooting percentages, rebound shots, and rebound shooting percentages in &lt;strong&gt;5v5 situations.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Methods&lt;/h2&gt;
+&lt;p&gt;My main analysis tools are &lt;strong&gt;scatterplots&lt;/strong&gt; and &lt;strong&gt;linear regression lines&lt;/strong&gt;. I use linear regression to examine the relationship between first-half statistics (x-axis on all plots below) and second-half statistics (y-axis on all plots below) within the same seasons at the team level. To do this, I split each of the 2015-16, 2016-17, and 2017-18 seasons into first-half (before Jan 1st) and second-half (after Jan 1st) and then calculated the quantities of interest at the team level within each half-season. I then matched up the team statistics from each half-season with its counterpart (e.g. Vancouver’s 2016-17 first-half statistics with Vancouver’s 2016-17 second-half statistics).&lt;/p&gt;
+&lt;p&gt;I utilized &lt;a href=&#34;http://hadley.nz/&#34;&gt;Hadley Wickham’s&lt;/a&gt; &lt;code&gt;ggplot2&lt;/code&gt; package, a &lt;a href=&#34;https://ggplot2.tidyverse.org/&#34;&gt;“system declaratively creating graphics, based on The Grammar of Graphics”&lt;/a&gt; to plot this information on a scatterplot and layered the regression line on each graph. I included 95% confidence bands, which provide a confidence interval on the slope of the regression line. In other words, we are 95% confident that the true regression line falls within the confidence bands, given the data we observed.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If I can draw a horizontal line completely within the confidence bands, this means there exists a regression line with a slope of 0 within the 95% confidence band. This indicates that there is &lt;strong&gt;no significant relationship&lt;/strong&gt; between the x-variable and the y-variable.&lt;/li&gt;
+&lt;li&gt;If I &lt;strong&gt;cannot&lt;/strong&gt; draw a horizontal line completely within the confidence bands, this means that a regression line with a slope of 0 falls outside the 95% confidence band. In other words, there is &lt;strong&gt;a significant relationship&lt;/strong&gt; between the x-variable and the y-variable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In each of the graphs below, there are three logos of each team, corresponding to each of the three seasons in the data. In terms of the linear regression graphs, the x-variable is a statistic from the first half of the season and the y-variable is a statistic from the second half of the season. As a result, we are really examining the relationship between the past and future of a statistic, or the &lt;em&gt;repeatability&lt;/em&gt; of a statistic.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;repeatability-of-odd-man-rush-shots&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Repeatability of Odd-Man Rush Shots&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Shots that were preceded by passes and taken on odd player rushes are not repeatable over a season; this signifies that &lt;strong&gt;the number of odd-player rush shots per game in the first half is not a good predictor of the number of odd-player rush shots per game in the second half.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;However, all other shots that were preceded by passes are repeatable, meaning that &lt;strong&gt;the number of shots per game in the first half is a good predictor of the number of shots per game in the second half.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;These findings suggest that hockey management and coaches must not read too much into the (lack of) offensive opportunities during odd player rushes in the first half; the second half presents a whole new playing field for players when it comes to odd player rushes.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;repeatability-of-shooting-percentage&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Repeatability of Shooting Percentage&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in &lt;a href=&#34;https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/&#34;&gt;“The roller coaster world of NHL shooting percentages”&lt;/a&gt;. Gretz opens the article with this statement: “A player’s shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he’s actually playing.” Furthermore, he claims, “They’re a wild roller coaster ride from year to year (and even during the season) that are always going up and down.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The scales for the two facetted graphs are vastly different: shooting percentages across the whole season are &lt;em&gt;significantly higher&lt;/em&gt; in odd player rushes than &lt;em&gt;all other shots&lt;/em&gt;. This discrepancy makes sense when we consider the offensive freedom players have during odd player rushes.&lt;/li&gt;
+&lt;li&gt;Unlike shots per game played, shooting percentages for &lt;em&gt;all other shots&lt;/em&gt; are not repeatable over a season.&lt;/li&gt;
+&lt;li&gt;Like shots per game played, shooting percentages are not repeatable during odd player rushes, which means that teams that have had extremely low shooting perentages in the first half may not have a similar second half. On the other hand, teams with extremely high shooting percentages in the first half may not enjoy this in the second half!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;These results confirm Gretz’s argument: “You just can’t count on a player to repeat or maintain a consistent shooting percentage, especially one that’s extremely high or, on the other end of the spectrum, extremely low.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;repeatability-of-shooting-percentages-by-zone-of-primary-pass&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Repeatability of Shooting Percentages by Zone of Primary Pass&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;None of these graphs show any signs of repeatability since I can draw a horizontal line through all these graphs.&lt;/li&gt;
+&lt;li&gt;Thus, the lane of a primary pass does not help explain the discrepancy in repeatability of shooting percentages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This tells us that set plays are not going to yield consistent results. For example, a premeditated faceoff play, which involves a primary pass from the same lane everytime, is not going to yield the same proportion of goals from the first half to the second half.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;repeatability-of-rebound-shots-per-gp&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Repeatability of Rebound Shots per GP&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hockey literature reveals that “goalies generally do not have an ability to control rebounds” &lt;a href=&#34;https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow&#34;&gt;(Pettapiece, 2018)&lt;/a&gt;. This accounts for the unpredictability of rebounds over a season.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This graph shows that rebound shots are not repeatable over a given season; there is no significant association between first half and second half rebound shots per GP and any association is minor.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This suggests that rebounds are intrinsically hard to predict over an entire season. Teams face different styles of goaltenders and even different goaltenders if the team plays its backup or AHL goaltender. This graph seems to provide a new perspective, as it contradicts the findings of Schuckers’ 2016 paper: &lt;a href=&#34;http://myslu.stlawu.edu/~msch/sports/StatEvalofGoalies2016Schuckers.pdf&#34;&gt;“Statistical Evaluation of Ice Hockey Goaltending”&lt;/a&gt;. Using 2009-2010, 2010-2011, 2011-2012, and 2012-2013 data, he suggests that “past rebound rates are not strongly predictive of future rates though they are consistent within a given season.” The above graph illustrates that rebound rates are not “consistent within a given season”.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;repeatability-of-rebound-shooting-percentage&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Repeatability of Rebound Shooting Percentage&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Overall, rebound shooting percentages are not repeatable since I can draw a horizontal line through the confidence band.&lt;/li&gt;
+&lt;li&gt;As can be seen in the graph below, the sample size (rebound shot on goal) is small and thus, I caution the reader from drawing a strong conclusion.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: The labeller API has been updated. Labellers taking `variable`and
+## `value` arguments are now deprecated. See labellers documentation.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;key-takeaways&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Key Takeaways&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;A team’s rate of odd man rush shots that were preceded by passes is not repeatable within seasons&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A team’s rate of shots in other situations that were preceded by passes is repeatable within seasons.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Shooting percentages across the whole season are significantly higher in odd player rushes.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Shooting percentages during odd player rushes and other situations are not repeatable within seasons.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The lane of a primary pass does not lead to a discrepancy in repeatability of shooting percentages.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals &lt;em&gt;(goals scored from rebounds)&lt;/em&gt; divided by rebound shots) are repeatable.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Hockey is an unpredictable sport. This signifies that a team that may have a horrible record before January 1st still can bounce back to become one of the league’s best teams. Just ask the &lt;a href=&#34;https://www.azcentral.com/story/sports/nhl/coyotes/2018/04/08/tale-two-seasons-how-coyotes-turned-around-second-half/497308002/&#34;&gt;2018 Arizona Coyotes&lt;/a&gt;. On Dec 31st, the Coyotes were 9-26-5 and were last in the league. “But since Feb. 8, only four NHL teams had more points than Arizona over than span.” The conclusion drawn from this analysis of different offensive statistics helps explain the resurgence of the Arizona Coyotes in the second half.&lt;/p&gt;
+&lt;p&gt;I would like to thank Sam Ventura for his valuable advice.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

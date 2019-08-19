@@ -8,7 +8,7 @@ categories:
 tags:
   - Academic
 subtitle: ''
-summary: ''
+summary: 'I am writing a series of posts called Independent Learning from Tidy Tuesday Screencast that include interpretations of graphs, tricks for better data visualization and manipulation, and advice about data analysis'
 authors: []
 lastmod: '2019-07-05T17:37:26-04:00'
 featured: no

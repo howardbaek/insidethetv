@@ -1,17 +1,17 @@
 ---
 authors:
 - admin
-bio: I'm an undergraduate at University of Washington.
+bio: Statistics Undergrad at the University of Washington who works on data analytics projects using R
 education:
   courses:
-  - course: BSc 
+  - course: BS in Statistics
     institution: University of Washington
     year: Present
 email: ""
 interests:
 - Tidyverse
-- Statistics
-- Interactive Web Applications
+- Sports Analytics
+- Interactive Web Applications (Shiny, Shinydashboard)
 name: Howard Baik
 organizations:
 - name: University of Washington
@@ -23,7 +23,7 @@ social:
   link: '#contact'
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/howiebaik
+  link: https://twitter.com/howard_baik
 - icon: github
   icon_pack: fab
   link: https://github.com/howardbaik
@@ -33,4 +33,4 @@ user_groups:
 - Visitors
 ---
 
-Howard Baik is an undergraduate at University of Washington.
+Statistics Undergrad at the University of Washington who works on data analytics projects using R

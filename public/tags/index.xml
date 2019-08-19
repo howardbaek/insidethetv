@@ -6,10 +6,28 @@
     <description>Recent content in Tags on Inside the Tidyverse</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hockey Analytics</title>
+      <link>/tags/hockey-analytics/</link>
+      <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/hockey-analytics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Basketball Analytics</title>
+      <link>/tags/basketball-analytics/</link>
+      <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/basketball-analytics/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Academic</title>
@@ -26,6 +44,15 @@
       <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/source-themes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Analysis</title>
+      <link>/tags/data-analysis/</link>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-analysis/</guid>
       <description></description>
     </item>
     

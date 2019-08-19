@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Basketball Analytics on Inside the Tidyverse</title>
+    <link>/tags/basketball-analytics/</link>
+    <description>Recent content in Basketball Analytics on Inside the Tidyverse</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	    <atom:link href="/tags/basketball-analytics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Animating Expected Possession Value in the NBA: Part 2</title>
+      <link>/post/epv-the-epilogue/</link>
+      <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/epv-the-epilogue/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;em&gt;This is the second post about EPV. Click here for the &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;first post.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In this &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf&#34;&gt;MIT Sloan Sports Analytics Conference Research Paper&lt;/a&gt;, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
+&lt;p&gt;The optical player tracking data is generated with &lt;a href=&#34;https://www.stats.com/sportvu-basketball/&#34;&gt;STATS SPORTVU&lt;/a&gt;, a six-camera system installed in basketball arenas to track the real-time positions of players and the ball 25 times per second.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif&#34; alt=&#34;Above: Demo of STATS SportVU&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Above: Demo of STATS SportVU&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;The model breaks down a possession into discrete (macrotransitions) and continuous actions (microtransitions). Macrotransitions include passes, shots, and turnovers whereas microtransitions are defined as every other movement that players make with the ball.&lt;/p&gt;
+&lt;p&gt;Mathematically,&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/epv-equation.png&#34; width=&#34;650&#34; height=&#34;70&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A snapshot of a single possession in a game between the Spurs and Thunder illustrates the practicality of EPV:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/paper-figure1.png&#34; width=&#34;650&#34; height=&#34;500&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Since EPV is calculated in &lt;em&gt;real time&lt;/em&gt;, the authors of the paper interpret EPV as a stock ticker. This lends itself well to an augmented graph where we have the spatial configuration of players on top and the stock ticker representation of EPV on the bottom:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/paper-figure2.png&#34; width=&#34;650&#34; height=&#34;320&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The above graph is best explained by the authors:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Consider the following possession from the Spurs/Cavaliers game on February 13, 2013. Down by 2 with less than 10 seconds left, the Spurs inbounded to Tony Parker, who drove to the basket, drawing defenders into the paint and leaving Kawhi Leonard wide open in the corner. Instead of attempting the tightly contested layup that would tie the game, Parker dished to a wide-open Leonard, who promptly sank the game-winning 3-pointer, almost unchallenged by the defense. While Leonard’s 3-pointer was this possession’s (and game’s) “checkmate”, we see from Figure 2
+how valuable Parker was in setting it up. Parker actually dramatically increased the value of the possession twice - first by driving towards the basket, and then by passing to Leonard.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I would like to extend this work by animating the above graph using &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and interpreting each movement during a NBA game on November 10th, 2013, between the &lt;a href=&#34;https://www.youtube.com/watch?v=K6twYcwd45U&#34;&gt;Miami Heat vs Brooklyn Nets&lt;/a&gt; within the context of Expected Possession Value. Unlike a static graph, an animated graph conveys a strong, clear narrative that help teams understand their tracking data.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A couple of notes: EPV is calculated as soon as the ball crosses the mid court line and the jersey numbers on each player are scraped from &lt;a href=&#34;https://www.swishanalytics.com/nba/players/player?id=214152&#34;&gt;Swish Analytics.&lt;/a&gt; The site reflects recent jersey numbers, which means Lebron James is #23 in the animations even though he wore #6 for the Miami Heat.&lt;/p&gt;
+&lt;p&gt;This work was enabled by Dan Cervone’s &lt;a href=&#34;https://github.com/dcervone/EPVDemo&#34;&gt;data and code&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;frantic-action-leading-to-terry-3-pointer&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Frantic Action leading to Terry 3-Pointer&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-52.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-52.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As the ball rolls toward the sidelines, two Heat players double team Paul Pierce (#34), who dishes off to Andrei Kirilenko (#47). Then, the Nets incrementally increase the value of the possession by passing the ball twice, from Kirilenko to Andray Blatche (#0) and from Blatche to a wide open John Terry (#3), who knocks down the 3-pointer. During this sequence of events, EPV increases like a step function with each pass, resulting in a high percentage 3-point shot.&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;INSERT%20LINK%20HERE&#34;&gt;previous EPV post&lt;/a&gt; talks about a similar play, “Frantic Action leading to Chalmers 3-Pointer”, where the ball is in no man’s land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lebron-james-alley-oop&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Lebron James Alley-Oop&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-97.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-97.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Rashard Lewis (#21) steals the pass from Pierce and dishes off to Lebron James (#23), who passes to Mario Chalmers (#6). On a fast break, Chalmers drives toward the basket with James and EPV jumps from just below 1.00 to more than 1.30, which illustrates a high value play. As Chalmers throws the ball up for a James’s alley-oop, EPV spikes to above 1.5, responding to the situation where James has a wide open opportunity to throw down 2 points. Lastly, as the ball is no longer in play, EPV plateaus, just like when the ball is in no man’s land during “Frantic Action leading to Chalmers 3-Pointer”. For the first time, we see the EPV dynamics of a fast break: the attacking team starts the possession with a EPV significantly higher than the EPV of a NBA baseline possession, 1.00.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;miami-heat-set-play&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Miami Heat Set Play&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-108.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-108.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This possession looks like a set play by Erik Spoelstra and the Heat. After Chalmers passess off to James, he knows exactly what is about to happen. He sneaks out to the corner 3-point position, losing his defender, Paul Pierce. While James drives the basket, Pierce stays in the paint trying to stop James. However, James knows exactly what to do next: dish off to a wide open Chalmers for an easy 3-point shot. As James passes to Chalmers, EPV spikes from 0.96 to 1.15, signifying a very positive contribution to the offense. Furthermore, judging from Chalmers’ body language (wide open arms), he was fully expecting the ball. All in all, this set play entails many fluctuations in EPV, but I believe it is a successful one because it culminates in an optimal 3-point shot; it was taken at the highest EPV in the entire possession.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;elite-passing-from-derron-williams&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Elite Passing from Derron Williams&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-222.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-222.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As Kevin Garnett (#21) screens for Derron Williams (#31), EPV slightly increases, demonstrating a positive contribution. Eventually, Williams finds open space and drives the basket, pulling in another defender. This leaves Joe Johnson (#7) open for an easy 3-point shot. As Williams drives the basket and dishes off to a wide open Johnson, EPV skyrockets from 0.95 to 1.50. This immense jump in EPV proves that Williams is an elite point guard; his ability to use the screen to find open space, draw defenders, and ultimately distribute the ball into optimal space for his teammates entails a tremendous increase in EPV.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;james-flies-through-the-air&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;James flies through the air&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-223.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-223.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;EPV is erratic as the Heat pass the ball around quite a bit in this possession. A notable change in EPV occurs when James finds a temporarily wide open Chalmers outside the 3-point line; EPV jumps from 0.95 to approximately 1.17. The defender closes in on him quickly and instead of shooting, Chalmers yields to a closely guarded Ray Allen (#34), decreasing EPV to 0.90. Allen forgoes the contested shot and finds James in the middle of the court. As James flies through the air towards the basket, EPV steadily increases to the maximum value in this possession (1.20), indicating that the Heat executed well by putting the ball in James hands.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;james-incredible-offensive-ability&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;James’ incredible offensive ability&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-90.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-90.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Norris Cole (#30) uses the screen set by Chris Bosh (#1) to beat his defender and drive the basket. During this drive, EPV spikes up from below 1.0 to more than 1.2. As seen in the film, the play ends on an isolation with the ball in James hands. As soon as he fakes one way and goes the other way, EPV increases tremendously from 1.02 to 1.60, revealing that James one-on-one talent is exceptional. The play concludes with James scoring an easy layup, demonstrating that James made the difference in this possession in terms of EPV with his one-on-one play.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-106.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-106.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In this possession, not much happens until the point guard throws the ball up for a James alley-oop. Again, as James throws down the dunk, EPV catapults instantly, from approximately 1.00 to more than 1.50. EPV demonstrates Lebron’s offensive awareness and ability to exploit the space near the basket.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;wades-smarts&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Wade’s Smarts&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-5.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-5.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Instead of shooting a contested 3-pointer, Dwayne Wade (#3) wisely uses the screen set by his teammate and slips away from his defender, increasing EPV. Using the newly created space by the screen, Wade knocks down a 2-pointer. EPV demonstrates Wade’s offensive smarts; when Wade is closely defended, EPV plummets to under 1.00, but when Wade uses the screen to make space for himself, EPV rises to above 1.03.&lt;/p&gt;
+&lt;p&gt;When ball goes to Lebron James, #23, EPV spikes up from 0.96 to more than 1.03, signifying that James is an excellent shooter. This reasoning is explained in the paper, in page 20, “our model estimates largely agree with basketball intuition… because LeBron James is a better shooter than Norris Cole, the value of his shot attempt is higher…”&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;observing-boshs-shot-with-epv&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Observing Bosh’s Shot with EPV&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-28.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-28.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Wade slowly dribbles up the court and surveys the defense’s formation. Wade seems to use the screen to go around his defender, but realizes that Bosh is wide open in the corner and passes off to James, who instantly relays to Bosh. As Wade passes to James, EPV rises marginally, but when James passes to Bosh, who is in position for a wide open 3-pointer, EPV shoots up from 1.12 to 1.62. Notably, with so much time and space, Bosh winds up for the shot leading to a decrease in EPV to 1.40. This illustrates that the more time he takes to take the shot, the lower the EPV because a defender could close down on him at any second and take away the wide open shot.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-86.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-86.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The most important and interesting moment during this possession is Bosh’s 2-point shot just inside the 3-point line. EPV falls off from above 1.05 to 0.98. Perhaps, EPV plummets at this time because Bosh is attempting a long range 2-point shot instead of taking a couple steps backwards and attempting a 3-pointer, which is 50% more valuable. Another explanation could be the congestion around the paint. There are four defenders around the paint- John Terry is the only defender far from the paint and defending Ray Allen and his deadly 3-point shot. Bosh has very little real estate to work with.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;drawback-of-epv-defensive-details&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Drawback of EPV: Defensive Details&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-207.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-207.GIF&#34; /&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/gamefilm-214.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-214.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;EPV can not account for defensive plays such as blocks. In the first possession, Bosh blocks the shot, but EPV doesn’t decrease at all. Instead, it just plateaus at 1.3 while the ball is rolling towards the sidelines. In the second possession, Pierce swats away a James layup, but EPV also just plateaus at 1.15. The reason is elaborated by the authors of EPV in their theoretical paper, &lt;a href=&#34;https://arxiv.org/abs/1408.0777&#34;&gt;“A Multiresolution Stochastic Process Model for Predicting Basketball Possession Outcomes”&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert&amp;quot;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Using EPV to analyze plays like this blog post allows coaches and analysts to put their players in the best position to succeed, which means making plays that yield maximum EPV. Expected Possession Value confirms and quantifies our basketball intuition of a valuable play: a wide open 3-point shot, a fast break in an odd man situation, or penetrating the defense for an easy layup or jumper. However, a shortcoming of EPV is its failure to account for defensive turnovers such as a block. As a result, like this blog post, coaches and analysts should combine EPV analysis with game film for the most accurate representation of a play. I’d like to end this post with a memorable quote from the authors:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;These insights, which can be reproduced for any valid NBA possession in our data set, have the potential to reshape the way we quantify players’ actions and decisions&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Animating Expected Possession Value in the NBA</title>
+      <link>/post/animating-expected-possession-value-in-the-nba/</link>
+      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/animating-expected-possession-value-in-the-nba/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In this &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf&#34;&gt;MIT Sloan Sports Analytics Conference Research Paper&lt;/a&gt;, Cervone, D’Amour, Bornn, and Kirk Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
+&lt;p&gt;The model breaks down a possession into discrete (macrotransitions) and continuous actions (microtransitions). Macrotransitions include passes, shots, and turnovers whereas microtransitions are defined as every other movement that players make with the ball.&lt;/p&gt;
+&lt;p&gt;Mathematically,&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/epv-equation.png&#34; width=&#34;650&#34; height=&#34;70&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A snapshot of a single possession in a game between the Spurs and Thunder illustrates the practicality of EPV:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/paper-figure1.png&#34; width=&#34;650&#34; height=&#34;500&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Since EPV is calculated in &lt;em&gt;real time&lt;/em&gt;, the authors of the paper interpret EPV as a stock ticker. This lends itself to an augmented graph where we have the spatial configuration of players on top and the stock ticker representation of EPV on the bottom:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/paper-figure2.png&#34; width=&#34;650&#34; height=&#34;320&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The above graph is best explained by the authors:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Consider the following possession from the Spurs/Cavaliers game on February 13, 2013. Down by 2 with less than 10 seconds left, the Spurs inbounded to Tony Parker, who drove to the basket, drawing defenders into the paint and leaving Kawhi Leonard wide open in the corner. Instead of attempting the tightly contested layup that would tie the game, Parker dished to a wide-open Leonard, who promptly sank the game-winning 3-pointer, almost unchallenged by the defense. While Leonard’s 3-pointer was this possession’s (and game’s) âcheckmateâ, we see from Figure 2
+how valuable Parker was in setting it up. Parker actually dramatically increased the value of the possession twice â first by driving towards the basket, and then by passing to Leonard.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;I would like to extend this work by animating the above graph using &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and interpreting each movement during final minute of a NBA game on November 10th, 2013, between the &lt;a href=&#34;https://www.youtube.com/watch?v=K6twYcwd45U&#34;&gt;Miami Heat vs Brooklyn Nets&lt;/a&gt; within the context of Expected Possession Value. Unlike a static graph, an animated graph conveys a strong, clear narrative that help teams understand their tracking data.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Briefly, this game is played at Brooklyn in the early stages of the 2013-2014 NBA season, with Brooklyn expected to challenge Miami for a championship in the spring. The home fans are expecting a victory as their team is up 8 points with one minute left.&lt;/p&gt;
+&lt;p&gt;A couple of notes: EPV is calculated as soon as the ball crosses the mid court line and the jersey numbers on each player are scraped from &lt;a href=&#34;https://www.swishanalytics.com/nba/players/player?id=214152&#34;&gt;Swish Analytics.&lt;/a&gt; The site reflects recent jersey numbers, which means Lebron James is #23 in the animations even though he wore #6 for the Miami Heat.&lt;/p&gt;
+&lt;p&gt;This work was enabled by Dan Cervone’s &lt;a href=&#34;https://github.com/dcervone/EPVDemo&#34;&gt;data and code&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;paul-pierce-isolation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Paul Pierce Isolation&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/gamefilm-228.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/anim-228.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At 1:13, the Nets move the ball up the court and as soon as the ball crosses the mid court line, EPV is calculated. The offense starts in an isolation formation with Paul Pierce being defended by Mario Chalmers. As Pierce dribbles toward the 3 point line, EPV steadily increases to approximately 1.00. However, as he drives the basket, EPV take a steep dive, demonstrating a negative contribution to the offense. From the moment the ball crosses the half circle, EPV has decreased from just over 1.00 all the way to 0.90. When Pierce pulls up for a 17-foot jumper near the free throw line, EPV sharply jumps to 0.93, then takes another plunge once the ball hits the back of the rim. Expected Possession Value tells us that Pierce drastically decreased the value of the possession by driving towards the basket.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;wide-open-3-point-shot-from-dwayne-wade&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Wide Open 3-point Shot from Dwayne Wade&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/gamefilm-229.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/anim-229.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At 1:03, Lebron James grabs the rebound and drives all the way to the basket. During this time, EPV drops from around 1.00 to 0.80. This resembles the previous change in EPV during Pierce’s drive towards the basket. Back to this play, instead of shooting a contested 2-point jumper or a layup, James incrementally increases the value of the possession by dishing to an open Chris Bosh at the 3- point line. Bosh wisely passes to Chalmers, a much better 3-point shooter. However, EPV decreases since Bosh was wide open wheras Chalmers faces defensive pressure from Joe Johnson. Once Chalmers dishes to Ray Allen, a prolific 3 point shooter, EPV goes down as Derron Willliams frantically runs to defend Allen. Allen makes the optimal decision and passes to Dwayne Wade in the corner. Wade is left wide open after Williams gambles on Allen shooting the three and Pierce’s unwillingness to defend. At this moment, EPV jumps by 0.1 and after Wade releases a wide open 3-pointer, shoots up to almost 1.60.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;kevin-garnett-shot-from-the-paint&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Kevin Garnett Shot from the Paint&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/gamefilm-230.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/anim-230.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At 50.4 seconds, Williams slowly dribbles toward the basket before Garnett sets a pick. As Williams moves to the center of the 3-point perimeter defended by Bosh, EPV slightly increases. When Williams passes off to Garnett, who is parked just inside the free throw line, EPV greatly decreases, signifying a very negative impact on the offense. Then, Garnett double clutches and shoots a 2-point jumper in the paint, at which EPV hovers around 0.8. Ultimately, he misses the shot and the ball is eventually rebounded by James. I would have liked Garnett to return the ball to Williams, which would have entailed higher value. The reason is that Bosh realizes that Wade is outmatched by the much taller Garnett and leaves Williams to help out Wade. As a result, Williams was wide open for a 3-pointer and would have had a better chance of knocking down the 3-pointer than Garnett, who was draped by Wade and Bosh.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;frantic-action-leading-to-chalmers-3-pointer&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Frantic Action leading to Chalmers 3-Pointer&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/gamefilm-231.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/anim-231.GIF&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At 33.0 seconds, James dribbles up the court and attempts a pass, which bounces off Anderson’s head to the sidelines. While the ball is in no-man’s land, EPV plateuas around 1.035, then takes quite a significant plunge when Allen runs over to the sidelines to retrieve the ball! As Allen passes up top to Chalmers who sets up the offense, EPV climbs back up, showing the recovery of offense’s value. Interestingly, as Chalmers dribbles on the periphery of the 3-point line, EPV spikes up to around 1.075 from 1.025. As Chalmers passes off to Bosh who then passes to James, EPV plateuas each time. As James gets ready to drive the basket, EPV increases, until he dishes off to Chalmers. This offensive possession shows hectic action starting with the ball bouncing off Anderson’s head to the sidelines. As Allen recovers possession and passes off to Chalmers, both sides are in a tumultous state as they try to reset formation. One example of this is shown in the beginning of the game film, when Ray Allen is tustling with Kevin Garnett to regain formation. Fortunately for the Heat, they are rewarded with a Chalmers 3-point shot.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/chalmers-celebration.gif&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;The final minute of this game revealed several insights about Expected Possession Value.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Driving towards the basket with a defender entails a guaranteed decrease in EPV.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Pulling up for a shot leads to an ephemeral spike in EPV.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;EPV drastically increases once a player passes to a wide open teammate but decreases once a defender closes down on him.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;EPV plateaus when player holds onto ball without dribbling.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;EPV shows great fluctuations in loose ball situations when players deviate from offensive/defensive structure.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;appendix&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Appendix&lt;/h1&gt;
+&lt;p&gt;This section contains static EPV curves with labels from the dataset, such as “Pass”, “Dribble”, or “Shot Made”. These plots supplement the animated EPV curves with real-time event annotations.&lt;/p&gt;
+&lt;div id=&#34;paul-pierce-isolation-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Paul Pierce Isolation&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/static-228-v5.png&#34; width=&#34;550&#34; height=&#34;340&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;wide-open-3-point-shot-from-dwayne-wade-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Wide Open 3-point Shot from Dwayne Wade&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/static-229.png&#34; width=&#34;550&#34; height=&#34;340&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;kevin-garnett-shot-from-the-paint-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Kevin Garnett Shot from the Paint&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/static-230.png&#34; width=&#34;550&#34; height=&#34;340&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;frantic-action-leading-to-chalmers-3-pointer-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Frantic Action leading to Chalmers 3-Pointer&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/static-231.png&#34; width=&#34;550&#34; height=&#34;340&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

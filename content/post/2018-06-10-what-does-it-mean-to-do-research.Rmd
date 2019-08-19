@@ -1,0 +1,31 @@
+---
+title: 2018 REU What does it mean to do research?
+author: Howard Baik
+date: '2018-06-10'
+slug: what-does-it-mean-to-do-research
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2019-08-17T10:20:04+09:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+Drawing upon my experience so far, I believe that research is the act of contributing new knowledge to society through hard work, creativity, and belief. In the next few paragraphs, I want to explain what each of these components mean and their connections to research.
+
+Research requires hard work. In order to start a research project, I need to read through many research papers that cover similar topics to understand the current knowledge in the field. Ultimately, I would like to think of what is missing. This whole process requires a lot of hard work that entails hours and hours of solitary thinking and reading. After putting in the hard work, I think collaboration with professors and fellow researchers is important. This means presenting my ideas and findings to my collaborators and listening to other people's work. After months of continued effort and sacrifice, I will have written a research paper that hopefully displays the amount of time and effort I put into it.
+
+Furthermore, I think excellent research requires brilliance and creativity. After reading many papers, I would need to think of new ways to improve upon the current state of research. Rather than coming up with small, incremental results that don't really change the current state of knowledge, I believe excellent research is characterized by significant discoveries. I can't currently think of any other method to do so other than putting in the hard work to understand and learn as much as possible about the field and discover new methods and approaches to a problem. Going back to the last paragraph, this means that creativity and some luck can only exist when I put in hard work. 
+
+The most important aspect of research is belief in the importance of research to society. I have met and studied prominent researchers in the field of statistics and machine learning. They all believe in the importance of their work and its everlasting impact on society. Fundamentally, their work improves society in the long run even though it may not be considered as a hot research project that garners attention from the media and the general public.
+
+As a researcher who has just took his first steps, I have many aspirations and high expectations for this summer. I believe hard work, creativity, and belief in the process are going to help me achieve my goals and meet my expectations.

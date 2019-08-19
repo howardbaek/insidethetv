@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Howard Baik">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="In this MIT SSAC Research Paper Cervone, DAmour, Bornn, and Goldsberry create Expected Possession Value, EPV">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/epv-the-epilogue/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.d9a97286e3cbad5765504c93a97229e1.css">
+
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-144547576-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/epv-the-epilogue/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Inside the Tidyverse">
+  <meta property="og:url" content="/post/epv-the-epilogue/">
+  <meta property="og:title" content="Animating Expected Possession Value in the NBA: Part 2 | Inside the Tidyverse">
+  <meta property="og:description" content="In this MIT SSAC Research Paper Cervone, DAmour, Bornn, and Goldsberry create Expected Possession Value, EPV"><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-07-29T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-07-29T19:55:54-04:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Animating Expected Possession Value in the NBA: Part 2 | Inside the Tidyverse</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Inside the Tidyverse</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Animating Expected Possession Value in the NBA: Part 2</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2019-07-29 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-07-29 19:55:54 -0400 -0400" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Jul 29, 2019</time>
+  </span>
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    <a href="/categories/r/">R</a></span>
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/epv-the-epilogue/&amp;text=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/epv-the-epilogue/&amp;t=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202&amp;body=/post/epv-the-epilogue/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/epv-the-epilogue/&amp;title=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202%20/post/epv-the-epilogue/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/epv-the-epilogue/&amp;title=Animating%20Expected%20Possession%20Value%20in%20the%20NBA:%20Part%202" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<p><em>This is the second post about EPV. Click here for the <a href="INSERT%20LINK%20HERE">first post.</a></em></p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf">MIT Sloan Sports Analytics Conference Research Paper</a>, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession <em>in real time</em>, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)</p>
+<p>The optical player tracking data is generated with <a href="https://www.stats.com/sportvu-basketball/">STATS SPORTVU</a>, a six-camera system installed in basketball arenas to track the real-time positions of players and the ball 25 times per second.</p>
+<div class="figure">
+<img src="/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif" alt="Above: Demo of STATS SportVU" />
+<p class="caption">Above: Demo of STATS SportVU</p>
+</div>
+<p><br></p>
+<p>The model breaks down a possession into discrete (macrotransitions) and continuous actions (microtransitions). Macrotransitions include passes, shots, and turnovers whereas microtransitions are defined as every other movement that players make with the ball.</p>
+<p>Mathematically,</p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/epv-equation.png" width="650" height="70" /></p>
+<p>A snapshot of a single possession in a game between the Spurs and Thunder illustrates the practicality of EPV:</p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/paper-figure1.png" width="650" height="500" /></p>
+<p>Since EPV is calculated in <em>real time</em>, the authors of the paper interpret EPV as a stock ticker. This lends itself well to an augmented graph where we have the spatial configuration of players on top and the stock ticker representation of EPV on the bottom:</p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/paper-figure2.png" width="650" height="320" /></p>
+<p>The above graph is best explained by the authors:</p>
+<blockquote>
+<p>Consider the following possession from the Spurs/Cavaliers game on February 13, 2013. Down by 2 with less than 10 seconds left, the Spurs inbounded to Tony Parker, who drove to the basket, drawing defenders into the paint and leaving Kawhi Leonard wide open in the corner. Instead of attempting the tightly contested layup that would tie the game, Parker dished to a wide-open Leonard, who promptly sank the game-winning 3-pointer, almost unchallenged by the defense. While Leonard’s 3-pointer was this possession’s (and game’s) “checkmate”, we see from Figure 2
+how valuable Parker was in setting it up. Parker actually dramatically increased the value of the possession twice - first by driving towards the basket, and then by passing to Leonard.</p>
+</blockquote>
+<p><br></p>
+<p><strong>I would like to extend this work by animating the above graph using <a href="https://gganimate.com/"><code>gganimate</code></a> and interpreting each movement during a NBA game on November 10th, 2013, between the <a href="https://www.youtube.com/watch?v=K6twYcwd45U">Miami Heat vs Brooklyn Nets</a> within the context of Expected Possession Value. Unlike a static graph, an animated graph conveys a strong, clear narrative that help teams understand their tracking data.</strong></p>
+<p>A couple of notes: EPV is calculated as soon as the ball crosses the mid court line and the jersey numbers on each player are scraped from <a href="https://www.swishanalytics.com/nba/players/player?id=214152">Swish Analytics.</a> The site reflects recent jersey numbers, which means Lebron James is #23 in the animations even though he wore #6 for the Miami Heat.</p>
+<p>This work was enabled by Dan Cervone’s <a href="https://github.com/dcervone/EPVDemo">data and code</a>.</p>
+<p>The code used in this post is stored <a href="https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd">here</a></p>
+<p><br></p>
+<div id="frantic-action-leading-to-terry-3-pointer" class="section level3">
+<h3>Frantic Action leading to Terry 3-Pointer</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-52.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-52.GIF" /></p>
+<p>As the ball rolls toward the sidelines, two Heat players double team Paul Pierce (#34), who dishes off to Andrei Kirilenko (#47). Then, the Nets incrementally increase the value of the possession by passing the ball twice, from Kirilenko to Andray Blatche (#0) and from Blatche to a wide open John Terry (#3), who knocks down the 3-pointer. During this sequence of events, EPV increases like a step function with each pass, resulting in a high percentage 3-point shot.</p>
+<p>A <a href="INSERT%20LINK%20HERE">previous EPV post</a> talks about a similar play, “Frantic Action leading to Chalmers 3-Pointer”, where the ball is in no man’s land and EPV perfectly plateuas around 1.035. In this possession, there is no one around the ball. Consequently, EPV, a metric that seems to account for the proximity of players around the ball, shows absolutely no change. On the other hand, in the beginning of this possession, when the ball is rolling towards the slidelines, EPV does not perfectly plateua. The reason is, I think, that in this posession, the ball is surrounded by three players who are chasing it and EPV accounts for the proximity of these players, thus changing slightly.</p>
+<p><br></p>
+</div>
+<div id="lebron-james-alley-oop" class="section level3">
+<h3>Lebron James Alley-Oop</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-97.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-97.GIF" /></p>
+<p>Rashard Lewis (#21) steals the pass from Pierce and dishes off to Lebron James (#23), who passes to Mario Chalmers (#6). On a fast break, Chalmers drives toward the basket with James and EPV jumps from just below 1.00 to more than 1.30, which illustrates a high value play. As Chalmers throws the ball up for a James’s alley-oop, EPV spikes to above 1.5, responding to the situation where James has a wide open opportunity to throw down 2 points. Lastly, as the ball is no longer in play, EPV plateaus, just like when the ball is in no man’s land during “Frantic Action leading to Chalmers 3-Pointer”. For the first time, we see the EPV dynamics of a fast break: the attacking team starts the possession with a EPV significantly higher than the EPV of a NBA baseline possession, 1.00.</p>
+<p><br></p>
+</div>
+<div id="miami-heat-set-play" class="section level3">
+<h3>Miami Heat Set Play</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-108.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-108.GIF" /></p>
+<p>This possession looks like a set play by Erik Spoelstra and the Heat. After Chalmers passess off to James, he knows exactly what is about to happen. He sneaks out to the corner 3-point position, losing his defender, Paul Pierce. While James drives the basket, Pierce stays in the paint trying to stop James. However, James knows exactly what to do next: dish off to a wide open Chalmers for an easy 3-point shot. As James passes to Chalmers, EPV spikes from 0.96 to 1.15, signifying a very positive contribution to the offense. Furthermore, judging from Chalmers’ body language (wide open arms), he was fully expecting the ball. All in all, this set play entails many fluctuations in EPV, but I believe it is a successful one because it culminates in an optimal 3-point shot; it was taken at the highest EPV in the entire possession.</p>
+<p><br></p>
+</div>
+<div id="elite-passing-from-derron-williams" class="section level3">
+<h3>Elite Passing from Derron Williams</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-222.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-222.GIF" /></p>
+<p>As Kevin Garnett (#21) screens for Derron Williams (#31), EPV slightly increases, demonstrating a positive contribution. Eventually, Williams finds open space and drives the basket, pulling in another defender. This leaves Joe Johnson (#7) open for an easy 3-point shot. As Williams drives the basket and dishes off to a wide open Johnson, EPV skyrockets from 0.95 to 1.50. This immense jump in EPV proves that Williams is an elite point guard; his ability to use the screen to find open space, draw defenders, and ultimately distribute the ball into optimal space for his teammates entails a tremendous increase in EPV.</p>
+<p><br></p>
+</div>
+<div id="james-flies-through-the-air" class="section level3">
+<h3>James flies through the air</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-223.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-223.GIF" /></p>
+<p>EPV is erratic as the Heat pass the ball around quite a bit in this possession. A notable change in EPV occurs when James finds a temporarily wide open Chalmers outside the 3-point line; EPV jumps from 0.95 to approximately 1.17. The defender closes in on him quickly and instead of shooting, Chalmers yields to a closely guarded Ray Allen (#34), decreasing EPV to 0.90. Allen forgoes the contested shot and finds James in the middle of the court. As James flies through the air towards the basket, EPV steadily increases to the maximum value in this possession (1.20), indicating that the Heat executed well by putting the ball in James hands.</p>
+<p><br></p>
+</div>
+<div id="james-incredible-offensive-ability" class="section level3">
+<h3>James’ incredible offensive ability</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-90.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-90.GIF" /></p>
+<p>Norris Cole (#30) uses the screen set by Chris Bosh (#1) to beat his defender and drive the basket. During this drive, EPV spikes up from below 1.0 to more than 1.2. As seen in the film, the play ends on an isolation with the ball in James hands. As soon as he fakes one way and goes the other way, EPV increases tremendously from 1.02 to 1.60, revealing that James one-on-one talent is exceptional. The play concludes with James scoring an easy layup, demonstrating that James made the difference in this possession in terms of EPV with his one-on-one play.</p>
+<p><br></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-106.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-106.GIF" /></p>
+<p>In this possession, not much happens until the point guard throws the ball up for a James alley-oop. Again, as James throws down the dunk, EPV catapults instantly, from approximately 1.00 to more than 1.50. EPV demonstrates Lebron’s offensive awareness and ability to exploit the space near the basket.</p>
+<p><br></p>
+</div>
+<div id="wades-smarts" class="section level3">
+<h3>Wade’s Smarts</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-5.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-5.GIF" /></p>
+<p>Instead of shooting a contested 3-pointer, Dwayne Wade (#3) wisely uses the screen set by his teammate and slips away from his defender, increasing EPV. Using the newly created space by the screen, Wade knocks down a 2-pointer. EPV demonstrates Wade’s offensive smarts; when Wade is closely defended, EPV plummets to under 1.00, but when Wade uses the screen to make space for himself, EPV rises to above 1.03.</p>
+<p>When ball goes to Lebron James, #23, EPV spikes up from 0.96 to more than 1.03, signifying that James is an excellent shooter. This reasoning is explained in the paper, in page 20, “our model estimates largely agree with basketball intuition… because LeBron James is a better shooter than Norris Cole, the value of his shot attempt is higher…”</p>
+<p><br></p>
+</div>
+<div id="observing-boshs-shot-with-epv" class="section level3">
+<h3>Observing Bosh’s Shot with EPV</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-28.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-28.GIF" /></p>
+<p>Wade slowly dribbles up the court and surveys the defense’s formation. Wade seems to use the screen to go around his defender, but realizes that Bosh is wide open in the corner and passes off to James, who instantly relays to Bosh. As Wade passes to James, EPV rises marginally, but when James passes to Bosh, who is in position for a wide open 3-pointer, EPV shoots up from 1.12 to 1.62. Notably, with so much time and space, Bosh winds up for the shot leading to a decrease in EPV to 1.40. This illustrates that the more time he takes to take the shot, the lower the EPV because a defender could close down on him at any second and take away the wide open shot.</p>
+<p><br></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-86.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-86.GIF" /></p>
+<p>The most important and interesting moment during this possession is Bosh’s 2-point shot just inside the 3-point line. EPV falls off from above 1.05 to 0.98. Perhaps, EPV plummets at this time because Bosh is attempting a long range 2-point shot instead of taking a couple steps backwards and attempting a 3-pointer, which is 50% more valuable. Another explanation could be the congestion around the paint. There are four defenders around the paint- John Terry is the only defender far from the paint and defending Ray Allen and his deadly 3-point shot. Bosh has very little real estate to work with.</p>
+<p><br></p>
+</div>
+<div id="drawback-of-epv-defensive-details" class="section level3">
+<h3>Drawback of EPV: Defensive Details</h3>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-207.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-207.GIF" /></p>
+<hr />
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/gamefilm-214.gif" /></p>
+<p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-214.GIF" /></p>
+<p>EPV can not account for defensive plays such as blocks. In the first possession, Bosh blocks the shot, but EPV doesn’t decrease at all. Instead, it just plateaus at 1.3 while the ball is rolling towards the sidelines. In the second possession, Pierce swats away a James layup, but EPV also just plateaus at 1.15. The reason is elaborated by the authors of EPV in their theoretical paper, <a href="https://arxiv.org/abs/1408.0777">“A Multiresolution Stochastic Process Model for Predicting Basketball Possession Outcomes”</a></p>
+<blockquote>
+<p>A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert&quot;</p>
+</blockquote>
+<p><br></p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>Using EPV to analyze plays like this blog post allows coaches and analysts to put their players in the best position to succeed, which means making plays that yield maximum EPV. Expected Possession Value confirms and quantifies our basketball intuition of a valuable play: a wide open 3-point shot, a fast break in an odd man situation, or penetrating the defense for an easy layup or jumper. However, a shortcoming of EPV is its failure to account for defensive turnovers such as a block. As a result, like this blog post, coaches and analysts should combine EPV analysis with game film for the most accurate representation of a play. I’d like to end this post with a memorable quote from the authors:</p>
+<blockquote>
+<p>These insights, which can be reproduced for any valid NBA possession in our data set, have the potential to reshape the way we quantify players’ actions and decisions</p>
+</blockquote>
+<p><br></p>
+</div>
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/basketball-analytics/">Basketball Analytics</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hue480e6d301f2880eae61a41b2d28ab90_3471257_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Howard Baik</a></h5>
+      <h6 class="card-subtitle">Undergraduate</h6>
+      <p class="card-text" itemprop="description">Statistics Undergrad at the University of Washington who works on data analytics projects using R</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="/#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/howard_baik" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/howardbaik" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/animating-expected-possession-value-in-the-nba/">Animating Expected Possession Value in the NBA</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.f1a21f988a77cdbdeeb2f60c710009d1.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="/privacy/">Privacy Policy</a>
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

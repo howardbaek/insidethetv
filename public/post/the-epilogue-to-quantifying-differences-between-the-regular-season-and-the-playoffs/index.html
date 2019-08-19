@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Howard Baik">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This is a brief analysis to answer a question by Tom Tango on my article, Quantifying Differences between the Regular Season and the Playoffs ">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.d9a97286e3cbad5765504c93a97229e1.css">
+
+  
+
+  
+  
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-144547576-1', 'auto');
+      
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      ga('send', 'pageview');
+    </script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
+    
+  
+  
+
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/">
+
+  
+  
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="Inside the Tidyverse">
+  <meta property="og:url" content="/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/">
+  <meta property="og:title" content="The Epilogue to Quantifying Differences between the Regular Season and the Playoffs | Inside the Tidyverse">
+  <meta property="og:description" content="This is a brief analysis to answer a question by Tom Tango on my article, Quantifying Differences between the Regular Season and the Playoffs "><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2019-01-28T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2019-08-18T22:29:53&#43;09:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>The Epilogue to Quantifying Differences between the Regular Season and the Playoffs | Inside the Tidyverse</title>
+
+</head>
+
+
+<body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" role="textbox" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">Inside the Tidyverse</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#about"><span>Home</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-dark-toggle" href="#"><i class="fas fa-moon" aria-hidden="true"></i></a>
+        </li>
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">The Epilogue to Quantifying Differences between the Regular Season and the Playoffs</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2019-01-28 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2019-08-18 22:29:53 &#43;0900 KST" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    <time>Aug 18, 2019</time>
+  </span>
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder"></i>
+    <a href="/categories/r/">R</a></span>
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/&amp;text=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/&amp;t=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs&amp;body=/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/&amp;title=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs%20/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs/&amp;title=The%20Epilogue%20to%20Quantifying%20Differences%20between%20the%20Regular%20Season%20and%20the%20Playoffs" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>After several months of learning the concept of survival analysis and applying it to hockey, I published my article, <a href="INSERT%20LINK%20HERE">Quantifying Differences between the Regular Season and Playoffs using Survival Analysis</a>. This post is a brief analysis to answer the question: “Can I repeat my previous analysis for regular season by period?”. First, I only look at regular season data and change the treatment variable from whether the game is played during the regular season or playoffs to whether it was played in <strong>Period X vs Period Y</strong>. Then, I approach the question in a different way by keeping the treatment variable as regular season vs playoffs, but <strong>filter for the 1st, 2nd, and 3rd periods</strong>. This further shows the discrepancy in change in rates of events by period.</p>
+<p>Finally, I respond to some additional feedback from Ron Schultz: “Have you looked at the same comparisons, but with just the regular season games between the teams who ended up in the playoffs?”. I checked the differences between the regular season and playoffs by running my survival analysis on just the playoff teams in the 2017-2018 season. I discovered that this type of analysis yields a statistically significant difference in all event types.</p>
+<p><br></p>
+</div>
+<div id="hazard-ratios-period-1-vs-period-2" class="section level2">
+<h2>Hazard Ratios: Period 1 vs Period 2</h2>
+<p><img src="/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/p1-vs-p2.png" width="600" height="400" /></p>
+<p>First, let’s compare event rates in the first period to the second. There are big differences in many of them: every event is statistically significant except for goals. Furthermore, they all move in the same direction: they decrease from first period to second period. The rate of hits decrease the most by almost 20%, leading me to believe that fatigue plays a factor as players slow down after 20 minutes. <strong>Long changes in the second period may contribute to fatigue as teams must skate farther to make changes.</strong></p>
+<p>Interestingly, this FiveThirtyEight article, <a href="https://fivethirtyeight.com/features/to-make-the-playoffs-hockey-teams-play-not-to-win/">To Make The Playoffs, Hockey Teams Play Not To Win</a> by Noah Davis and Michael Lopez, makes a different observation with this plot:</p>
+<p align="center">
+<img src="/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/fivethirtyeight-plot.png" width="500" height="400" />
+</p>
+<p>This graph illustrates the expected goal rate by minute from 2007 to 2015 in tied games and one-goal games. According to Sam Ventura’s <a href="http://statsportsconsulting.com/main/wp-content/uploads/VENTURA_OTTANALYTICS.pdf">presentation slides</a> at Ottawa Hockey Analytics conference, “a teams’ or players’ expected goals for is equal to the sum of the goal-probabilities of all their on-ice shot-attempts”. These goal-probabilities are explained using location, distance from goal, shot type, shot feature, and transformations / interactions of these variables.</p>
+<p>The Expected Goal rate shows an increasing trend from the first period to the second period in both tied games and one-goal games. On the other hand, the hazard ratio for goals indicates a decrease in the rate of goals in the second period. <strong>This means that we “expect” more goals in the second period based on Ventura’s model, but survival analysis tells us that the rate of goals decreases.</strong></p>
+<p><br></p>
+</div>
+<div id="hazard-ratio-period-2-vs-period-3" class="section level2">
+<h2>Hazard Ratio: Period 2 vs Period 3</h2>
+<p><img src="/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/p2-vs-p3.png" width="600" height="400" /></p>
+<p>Now let’s compare the second period to the third. Again we see meaningful changes across the board. Notably, the rate of hits decrease by more than 10% and the rates of goals and shots all show a statistically significant decrease. One explanation is the change of motivation in the latter part of the game. Realistically, teams consider the longevity of the regular season. It is 82 games of grueling hockey from October to April, and then possibly another two more months of playoff hockey. As a result, teams may change the intensity of play in the third period to preserve their energy level for the next game, week, month, and hopefully, the playoffs.</p>
+<p>This view is supported in the FiveThirtyEight article. Francois Beauchemin reveals that his team, the Ducks, won’t take as many risks late in the third period in order to go to overtime and earn at least one point. Todd Reirden, then an assistant coach with the Capitals, agreed: “Sit back, play defense, make sure we get a point…” His late in-game tactics are to shorten the bench and play guys “he knows will stay home and limit the opposition’s attacking chances, even if that means sacrificing a shot at getting a goal”. <strong>This stay-at-home mentality in both players and coaches contribute to such statistical results.</strong></p>
+<p><br></p>
+</div>
+<div id="hazard-ratio-by-period" class="section level2">
+<h2>Hazard Ratio by Period</h2>
+<p>My original piece found differences between play in the regular season and the playoffs. Do these results change if we split them up by period?</p>
+<p>In the first period, the hazard ratio for goals is 1.007, meaning as we move from regular season to the playoffs, goals increase by approximately 0.7%. In the second period, the rate of goals decreases by 2.4%, and in the third period, decreases by 2%. These results are not statistically significant. <strong>Significantly, the rate of goals increases in the first period from the regular season to the playoffs, but decreases by roughly the same amount in the rest of the game.</strong></p>
+<p>The rate of hits increase in the playoffs independent of period: approximately 45% in the first period, 30% in the second period, and 25% in the third period. <strong>Notably, hits swing the most from the regular season to the playoffs as its corresponding point is farthest from the vertical line representing a hazard ratio of 1.0.</strong></p>
+<p>With hazard ratios of 1.087 (first period), 1.062 (second period), and 1.081 (third period), the rate of stoppages in play increase in the playoffs in all three periods. I suspect these rates help explain the consistent increase in the rate of faceoffs throughout the game; once the play is blown down, the referee needs to resume play with a faceoff. <strong>More faceoffs mean more opportunities for faceoffs set plays in the playoffs.</strong></p>
+<p><br></p>
+</div>
+<div id="hazard-ratio-1718-playoff-teams-only" class="section level2">
+<h2>Hazard Ratio: 17/18 Playoff Teams Only</h2>
+<p>In my previous piece, I looked at data for all teams, regardless of whether they made the playoffs or not. As a result, non-playoff teams were not accounted for in my analysis looking at the difference between the regular season and playoffs. One astute reader pointed that out and suggested I run the analysis on the teams who ended up in the playoffs. This ensures that I have evenly distributed data from the regular season and the playoffs.</p>
+<p><img src="/post/2019-01-28-the-epilogue-to-quantifying-differences-between-the-regular-season-and-the-playoffs_files/1718-playoff.png" width="600" height="400" /></p>
+<p>The average percentage of change (hazard ratio - 1.00) on 5-on-5 situations for all events is 45% while on the power play is 37%, revealing <strong>bigger discrepancy in 5-on-5 situations from the regular season to the playoffs.</strong></p>
+<p>The reason, I’d argue, is that the power play is a more structured game within the game where teams typically play in one end of the rink. Attacking teams have a set formation once they gain control of the puck, and the penalized teams have their own style. This rigidity lends itself to less change from the regular season to the playoffs since a power play situation in the playoffs can be similar to that in the regular season. On the other hand, 5-on-5 play changes more dramatically from the regular season to the playoffs as the play is more fluid, with teams exchanging chances at both ends of the rink.</p>
+<p><br></p>
+</div>
+<div id="key-takeaways" class="section level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li>From Period 1 to Period 2, the rate of all events go down: Long changes in Period 2 may contribute to fatigue as teams have to skate farther to their benches for changes</li>
+<li>We “expect” more goals in Period 2, according to Ventura’s model with location, distance from goal, shot type, and shot feature, but our survival analysis indicates this rate decreases.</li>
+<li>Taking into account the longevity of the regular season, teams dial down their intensity of play in the third period to preserve their energy level.</li>
+<li>Rate of hits differ the most from regular season to playoffs.</li>
+<li>On average, there is a larger discrepancy from regular season to playoffs in 5-on-5 situations since 5-on-5 play is more fluid.</li>
+</ul>
+<p>Code is available <a href="INSERT%20LINK">here</a></p>
+<p>The author would like to thank Alex Novet and Sam Ventura for their contributions to this article.</p>
+</div>
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/hockey-analytics/">Hockey Analytics</a>
+  
+</div>
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hue480e6d301f2880eae61a41b2d28ab90_3471257_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/">Howard Baik</a></h5>
+      <h6 class="card-subtitle">Undergraduate</h6>
+      <p class="card-text" itemprop="description">Statistics Undergrad at the University of Washington who works on data analytics projects using R</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="/#contact" >
+              <i class="fas fa-envelope"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/howard_baik" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/howardbaik" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+      <div class="article-widget">
+        <div class="hr-light"></div>
+        <h3>Related</h3>
+        <ul>
+          
+          <li><a href="/post/quantifying-differences-between-the-regular-season-and-playoffs-using-survival-analysis/">Quantifying Differences between the Regular Season and Playoffs using Survival Analysis</a></li>
+          
+          <li><a href="/post/are-teams-getting-lucky-on-rushes/">Are Teams getting Lucky on Rushes?</a></li>
+          
+        </ul>
+      </div>
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.f1a21f988a77cdbdeeb2f60c710009d1.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    <a href="/privacy/">Privacy Policy</a>
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

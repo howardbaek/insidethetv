@@ -4,7 +4,7 @@ external_link: https://howiebaik.shinyapps.io/medium-claps-predictor/
 image:
   caption: Medium Claps
   focal_point: Smart
-summary: A Shiny app
+summary: Predict Medium Claps
 tags:
 - Shiny app
 title: Medium Clap Predictor App

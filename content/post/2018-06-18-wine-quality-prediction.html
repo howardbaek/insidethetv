@@ -1,0 +1,274 @@
+---
+title: 2018 REU Wine Quality Prediction with caret
+author: Howard Baik
+date: '2018-06-18'
+slug: wine-quality-prediction
+categories:
+  - R
+tags:
+  - Academic
+subtitle: ''
+summary: 'On June 14th, 2018, I participated in a Data Hackathon as part of the REU program at George Mason University.'
+authors: []
+lastmod: '2019-08-17T10:23:29+09:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>On June 14th, 2018, I participated in a Data Hackathon as part of the REU program at George Mason University. It was my first ever hackathon and I was excited to finally participate in one. It lasted approximately 4 hours, from 10am to 2pm. Our team, consisting of three undergraduate students, worked with the famous Wine Quality dataset, which is hosted by <a href="https://archive.ics.uci.edu/ml/index.php">University of California Irvine’s Center for Machine Learning and Intelligent Systems</a>. The goal of the hackathon was to accurately predict the Quality variable (“Good”= 1 or “Bad” = 0)</p>
+<p><br></p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>I first import the data and observe it.</p>
+<pre class="r"><code># Load tidyverse and caret package
+library(tidyverse)
+library(caret)
+
+# Import training / test data
+wine_train &lt;- read_csv(&quot;wine_train.csv&quot;)
+wine_test &lt;- read_csv(&quot;wine_test.csv&quot;)</code></pre>
+<pre class="r"><code>glimpse(wine_train)</code></pre>
+<pre><code>## Observations: 799
+## Variables: 12
+## $ `fixed acidity`        &lt;dbl&gt; 7.4, 7.8, 7.8, 11.2, 7.4, 7.4, 7.9, 7.3, …
+## $ `volatile acidity`     &lt;dbl&gt; 0.700, 0.880, 0.760, 0.280, 0.700, 0.660,…
+## $ `citric acid`          &lt;dbl&gt; 0.00, 0.00, 0.04, 0.56, 0.00, 0.00, 0.06,…
+## $ `residual sugar`       &lt;dbl&gt; 1.9, 2.6, 2.3, 1.9, 1.9, 1.8, 1.6, 1.2, 2…
+## $ chlorides              &lt;dbl&gt; 0.076, 0.098, 0.092, 0.075, 0.076, 0.075,…
+## $ `free sulfur dioxide`  &lt;dbl&gt; 11, 25, 15, 17, 11, 13, 15, 15, 9, 17, 15…
+## $ `total sulfur dioxide` &lt;dbl&gt; 34, 67, 54, 60, 34, 40, 59, 21, 18, 102, …
+## $ density                &lt;dbl&gt; 0.9978, 0.9968, 0.9970, 0.9980, 0.9978, 0…
+## $ pH                     &lt;dbl&gt; 3.51, 3.20, 3.26, 3.16, 3.51, 3.51, 3.30,…
+## $ sulphates              &lt;dbl&gt; 0.56, 0.68, 0.65, 0.58, 0.56, 0.56, 0.46,…
+## $ alcohol                &lt;dbl&gt; 9.4, 9.8, 9.8, 9.8, 9.4, 9.4, 9.4, 10.0, …
+## $ Quality                &lt;chr&gt; &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;G&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;G&quot;, &quot;…</code></pre>
+<pre class="r"><code>glimpse(wine_test)</code></pre>
+<pre><code>## Observations: 800
+## Variables: 11
+## $ `fixed acidity`        &lt;dbl&gt; 9.4, 7.2, 8.6, 5.1, 7.7, 8.4, 8.2, 8.4, 8…
+## $ `volatile acidity`     &lt;dbl&gt; 0.500, 0.610, 0.550, 0.585, 0.560, 0.520,…
+## $ `citric acid`          &lt;dbl&gt; 0.34, 0.08, 0.09, 0.00, 0.08, 0.22, 0.40,…
+## $ `residual sugar`       &lt;dbl&gt; 3.60, 4.00, 3.30, 1.70, 2.50, 2.70, 2.40,…
+## $ chlorides              &lt;dbl&gt; 0.082, 0.082, 0.068, 0.044, 0.114, 0.084,…
+## $ `free sulfur dioxide`  &lt;dbl&gt; 5, 26, 8, 14, 14, 4, 4, 4, 4, 4, 4, 4, 7,…
+## $ `total sulfur dioxide` &lt;dbl&gt; 14, 108, 17, 86, 46, 18, 10, 10, 10, 12, …
+## $ density                &lt;dbl&gt; 0.99870, 0.99641, 0.99735, 0.99264, 0.997…
+## $ pH                     &lt;dbl&gt; 3.29, 3.25, 3.23, 3.56, 3.24, 3.26, 3.33,…
+## $ sulphates              &lt;dbl&gt; 0.52, 0.51, 0.44, 0.94, 0.66, 0.57, 0.70,…
+## $ alcohol                &lt;dbl&gt; 10.7, 9.4, 10.0, 12.9, 9.6, 9.9, 12.8, 12…</code></pre>
+<p>Training data has 799 observations and 12 variables, including the target variable, Quality, while the testing data has 800 observations and exactly the same attributes except Quality.</p>
+<p><br></p>
+</div>
+<div id="data-manipulation" class="section level1">
+<h1>Data Manipulation</h1>
+<pre class="r"><code># Change columns names- Take out single quotations and underscores from names 
+names(wine_train) &lt;- gsub(&quot;&#39;&quot;, &#39;&#39;, names(wine_train))
+names(wine_train) &lt;- gsub(&quot; &quot;, &quot;_&quot;, names(wine_train))
+names(wine_train)</code></pre>
+<pre><code>##  [1] &quot;fixed_acidity&quot;        &quot;volatile_acidity&quot;     &quot;citric_acid&quot;         
+##  [4] &quot;residual_sugar&quot;       &quot;chlorides&quot;            &quot;free_sulfur_dioxide&quot; 
+##  [7] &quot;total_sulfur_dioxide&quot; &quot;density&quot;              &quot;pH&quot;                  
+## [10] &quot;sulphates&quot;            &quot;alcohol&quot;              &quot;Quality&quot;</code></pre>
+<pre class="r"><code>names(wine_test) &lt;- gsub(&quot;&#39;&quot;, &#39;&#39;, names(wine_test))
+names(wine_test) &lt;- gsub(&quot; &quot;, &quot;_&quot;, names(wine_test))
+names(wine_test)</code></pre>
+<pre><code>##  [1] &quot;fixed_acidity&quot;        &quot;volatile_acidity&quot;     &quot;citric_acid&quot;         
+##  [4] &quot;residual_sugar&quot;       &quot;chlorides&quot;            &quot;free_sulfur_dioxide&quot; 
+##  [7] &quot;total_sulfur_dioxide&quot; &quot;density&quot;              &quot;pH&quot;                  
+## [10] &quot;sulphates&quot;            &quot;alcohol&quot;</code></pre>
+<pre class="r"><code># Change values in Quality column: &quot;B&quot; = 0 &amp; &quot;G&quot; = 1
+wine_train &lt;- wine_train %&gt;% 
+  mutate(Quality = ifelse(Quality == &quot;B&quot;, 0, 1))
+
+# Observe number of 0s and 1s
+table(wine_train$Quality)</code></pre>
+<pre><code>## 
+##   0   1 
+## 425 374</code></pre>
+<p><br></p>
+</div>
+<div id="feature-selection" class="section level1">
+<h1>Feature Selection</h1>
+<p>I first wanted to select the relevant and useful features by means of feature selection in the <a href="https://topepo.github.io/caret/index.html">caret package</a>, a popular R package for statistical machine learning. This tutorial got me started: <a href="https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/" class="uri">https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/</a></p>
+<pre class="r"><code># Feature Selection #1
+set.seed(7) # Bring me luck
+train_cor &lt;- cor(wine_train[, -length(names(wine_train))])
+
+# summarize the correlation matrix
+print(train_cor)</code></pre>
+<pre><code>##                      fixed_acidity volatile_acidity citric_acid
+## fixed_acidity         1.0000000000      -0.30241919  0.69369727
+## volatile_acidity     -0.3024191923       1.00000000 -0.54708405
+## citric_acid           0.6936972747      -0.54708405  1.00000000
+## residual_sugar        0.1732066025      -0.03046016  0.13322604
+## chlorides            -0.0003612805      -0.01426396  0.19704211
+## free_sulfur_dioxide  -0.1562296716       0.03287532 -0.04284979
+## total_sulfur_dioxide -0.2105196234       0.08831363 -0.01356392
+## density               0.7293551024      -0.13418708  0.44405907
+## pH                   -0.6865541686       0.26154512 -0.56343133
+## sulphates             0.1618399522      -0.26807580  0.28944979
+## alcohol               0.1261203673      -0.08160458  0.18895405
+##                      residual_sugar     chlorides free_sulfur_dioxide
+## fixed_acidity            0.17320660 -0.0003612805        -0.156229672
+## volatile_acidity        -0.03046016 -0.0142639627         0.032875319
+## citric_acid              0.13322604  0.1970421057        -0.042849793
+## residual_sugar           1.00000000 -0.0293970980         0.171178339
+## chlorides               -0.02939710  1.0000000000         0.001938843
+## free_sulfur_dioxide      0.17117834  0.0019388434         1.000000000
+## total_sulfur_dioxide     0.14129767  0.0228490477         0.730655240
+## density                  0.39166663  0.0754952020        -0.033797520
+## pH                      -0.05858156 -0.2466119148         0.086088169
+## sulphates                0.02657419  0.4123789331         0.050006477
+## alcohol                  0.19244357 -0.1500365030        -0.019738532
+##                      total_sulfur_dioxide     density           pH
+## fixed_acidity                -0.210519623  0.72935510 -0.686554169
+## volatile_acidity              0.088313629 -0.13418708  0.261545116
+## citric_acid                  -0.013563916  0.44405907 -0.563431327
+## residual_sugar                0.141297672  0.39166663 -0.058581563
+## chlorides                     0.022849048  0.07549520 -0.246611915
+## free_sulfur_dioxide           0.730655240 -0.03379752  0.086088169
+## total_sulfur_dioxide          1.000000000 -0.08564002  0.009654689
+## density                      -0.085640019  1.00000000 -0.379103361
+## pH                            0.009654689 -0.37910336  1.000000000
+## sulphates                     0.054326009  0.13497642 -0.284837597
+## alcohol                      -0.112954461 -0.18361374  0.124704335
+##                        sulphates     alcohol
+## fixed_acidity         0.16183995  0.12612037
+## volatile_acidity     -0.26807580 -0.08160458
+## citric_acid           0.28944979  0.18895405
+## residual_sugar        0.02657419  0.19244357
+## chlorides             0.41237893 -0.15003650
+## free_sulfur_dioxide   0.05000648 -0.01973853
+## total_sulfur_dioxide  0.05432601 -0.11295446
+## density               0.13497642 -0.18361374
+## pH                   -0.28483760  0.12470433
+## sulphates             1.00000000  0.09629489
+## alcohol               0.09629489  1.00000000</code></pre>
+<pre class="r"><code># find attributes that are highly corrected (ideally &gt;0.75)
+high_cor &lt;- findCorrelation(train_cor, cutoff=0.5)
+
+# print indexes of highly correlated attributes
+print(high_cor)</code></pre>
+<pre><code>## [1] 1 3 7</code></pre>
+<ul>
+<li>Index 1 = <code>fixed_acidity</code></li>
+<li>Index 2 = <code>citric_acid</code></li>
+<li>Index 3 = <code>total_sulfur_dioxide</code></li>
+</ul>
+<p><br></p>
+</div>
+<div id="model-fitting" class="section level1">
+<h1>Model Fitting</h1>
+<p>Since <code>fixed_acidity</code>, <code>citric_acid</code> and <code>total_sulfur_dioxide</code> are highly correlated (redundant), I only used one of these features (<code>total_sulfur_dioxide</code>) and disposed of the two redundant ones (<code>fixed_acidity</code>, <code>citric_acid</code>). At this point, I formulated a hypothesis: a model without redundant features performs better than a model with redundant features. Let’s find out if this is true.</p>
+<p><em>Since the target variable is binary, I fit a logistic regression.</em></p>
+<pre class="r"><code># Logistic Regression
+wine_train$Quality &lt;- factor(wine_train$Quality, levels = c(0, 1))
+train_log &lt;- createDataPartition(wine_train$Quality, p=0.6, list=FALSE)
+training &lt;- wine_train[train_log, ]
+testing &lt;- wine_train[ -train_log, ]
+
+# Hypothesis: Try logistic regression with all the predictor variables
+mod_log &lt;- train(Quality ~ .,  data=training, method=&quot;glm&quot;, family=&quot;binomial&quot;)
+
+exp(coef(mod_log$finalModel))</code></pre>
+<pre><code>##          (Intercept)        fixed_acidity     volatile_acidity 
+##         1.864623e+09         1.156801e+00         2.673347e-02 
+##          citric_acid       residual_sugar            chlorides 
+##         2.471207e-01         8.966535e-01         5.374189e-02 
+##  free_sulfur_dioxide total_sulfur_dioxide              density 
+##         1.043678e+00         9.709662e-01         3.506618e-14 
+##                   pH            sulphates              alcohol 
+##         1.598339e+00         1.750577e+01         2.315406e+00</code></pre>
+<pre class="r"><code>pred &lt;- predict(mod_log, newdata=testing)
+accuracy &lt;- table(pred, testing$Quality)
+sum(diag(accuracy))/sum(accuracy)</code></pre>
+<pre><code>## [1] 0.7021944</code></pre>
+<pre class="r"><code># Hypothesis: Try logistic regression without the redundant variables
+# Try logistic regression without highly correlated variables
+mod_log_2 &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide + total_sulfur_dioxide + density + pH + sulphates + alcohol,  data=training, method=&quot;glm&quot;, family=&quot;binomial&quot;)
+
+pred_2 &lt;- predict(mod_log_2, newdata = testing)
+accuracy_2 &lt;- table(pred_2, testing$Quality)
+sum(diag(accuracy_2))/sum(accuracy_2)</code></pre>
+<pre><code>## [1] 0.6959248</code></pre>
+<p>The first hypothesis yields an accuracy rate of 71.5%! while the first hypothesis yields 70.8%!
+Apparently, including all the variables yields higher accuracy.</p>
+<p><br></p>
+</div>
+<div id="cross-validation" class="section level1">
+<h1>Cross Validation</h1>
+<p>At this point, I looked on the tutorial page for the caret package to learn how to cross validate. I learned about <code>trainControl</code>, a function “used to specify the type of resampling”. The parameter, <code>method</code>, specifies <code>repeatedcv</code>, which stands for repeated cross validation.</p>
+<pre class="r"><code># Cross validation on the second model where I took out the redundant variables
+ctrl &lt;- trainControl(method = &quot;repeatedcv&quot;, repeats = 10)
+
+# Train logistic regression model
+mod_log_2_ctrl &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                     total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                     trControl = ctrl, method=&quot;glm&quot;, family=&quot;binomial&quot;)
+pred_2_ctrl &lt;- predict(mod_log_2, newdata = testing)
+accuracy_2_ctrl &lt;- table(pred_2, testing$Quality)
+sum(diag(accuracy_2_ctrl))/sum(accuracy_2_ctrl)</code></pre>
+<pre><code>## [1] 0.6959248</code></pre>
+<p>I got the same accuracy, which means that I didn’t use cross validation properly…I’ll have to learn more.</p>
+<p><br></p>
+</div>
+<div id="advanced-models" class="section level1">
+<h1>Advanced Models</h1>
+<p>In an effort to achieve a higher accuracy score, I looked for more accurate and powerful models, such as XgBoost, Random Forests, etc.</p>
+<pre class="r"><code># XgBoost -----------------------------------------------------------------
+mod_xgboost &lt;- train(Quality ~ ., data=training, 
+      trControl = ctrl, method=&quot;xgbTree&quot;, family=&quot;binomial&quot;)
+pred_xgboost &lt;- predict(mod_xgboost, newdata = testing)
+acc_xgboost &lt;- table(pred_xgboost, testing$Quality)
+sum(diag(acc_xgboost))/sum(acc_xgboost)
+# 70.8%
+
+# Random Forest-----------------------------------------------------------------
+mod_rf &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                  total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                trControl = ctrl, method=&quot;rf&quot;, family=&quot;binomial&quot;)
+pred_rf &lt;- predict(mod_rf, newdata = testing)
+acc_rf &lt;- table(pred_rf, testing$Quality)
+sum(diag(acc_rf)) / sum(acc_rf)
+# 80.6% is an improvement!
+
+# Logit Boost-----------------------------------------------------------------
+mod_logit &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                  total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                trControl = ctrl, method=&quot;LogitBoost&quot;)
+pred_logit &lt;- predict(mod_logit, newdata = testing)
+acc_logit &lt;- table(pred_logit, testing$Quality)
+sum(diag(acc_logit)) / sum(acc_logit)
+# 72.1%
+
+# svmRadial-----------------------------------------------------------------
+mod_svm &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                     total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                   trControl = ctrl, method=&quot;svmRadial&quot;)
+pred_svm &lt;- predict(mod_svm, newdata = testing)
+acc_svm &lt;- table(pred_svm, testing$Quality)
+sum(diag(acc_svm)) / sum(acc_svm)
+# 75.2%
+
+# LMT-----------------------------------------------------------------
+mod_svm_linear &lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                   total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                 trControl = ctrl, method=&quot;svmLinearWeights2&quot;)
+pred_svm_linear &lt;- predict(mod_svm_linear, newdata = testing)
+acc_svm_linear &lt;- table(pred_svm_linear, testing$Quality)
+sum(diag(acc_svm_linear)) / sum(acc_svm_linear)</code></pre>
+<p><br></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>I learned about a totally new field in machine learning. Importantly, is very interesting and motivating since coming up with machine learning models feels like creating and refining a crystal ball that shows the future. In the future, I plan on reading through <a href="https://topepo.github.io/caret/index.html">this comprehensive tutorial of the caret package</a>, take machine learning courses on <a href="www.datacamp.com">DataCamp</a>, and hope to learn from the mistakes I made during this hackathon.</p>
+</div>

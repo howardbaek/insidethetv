@@ -252,7 +252,8 @@ top_word_cors %&amp;gt;%
 &lt;li&gt;Trick to plot the highest &lt;code&gt;pr&lt;/code&gt; points last (similar to the one introduced in previous dataset): &lt;code&gt;arrange(pr)&lt;/code&gt; the &lt;code&gt;pr&lt;/code&gt; values in increasing order so that you can move all the highest &lt;code&gt;pr&lt;/code&gt; values to the bottom and thus, plot em last.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
-&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;thanksgiving&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Thanksgiving&lt;/h1&gt;
@@ -371,7 +372,8 @@ food_cors %&amp;gt;%
 &lt;li&gt;&lt;code&gt;repel = TRUE&lt;/code&gt; inside &lt;code&gt;geom_node_text&lt;/code&gt; prevents overlapping texts&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
-&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;maryland-bridges&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Maryland Bridges&lt;/h1&gt;
@@ -654,7 +656,8 @@ augment(simple_model, bridges, type.predict = &amp;quot;response&amp;quot;) %&am
 &lt;li&gt;At least a few major categories have negative correlations in terms of share of women and typical salaries.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
-&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;movie-profits-screencast&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Movie Profits Screencast&lt;/h1&gt;
@@ -830,7 +833,8 @@ ggplotly(g)&lt;/code&gt;&lt;/pre&gt;
 &lt;li&gt;Warning: &lt;code&gt;plotly&lt;/code&gt; does not support &lt;code&gt;check_overlap = TRUE&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
-&lt;p&gt;&lt;br&gt; &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;r-downloads-screencast&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;R Downloads Screencast&lt;/h1&gt;
@@ -938,6 +942,1369 @@ package_downloads %&amp;gt;%
 &lt;li&gt;&lt;code&gt;arrange(ratio)&lt;/code&gt; looks at packages installed the most in India&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2018 REU Final Research Report</title>
+      <link>/post/2018-reu-final-research-report/</link>
+      <pubDate>Mon, 13 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-reu-final-research-report/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;MOOCs (Massive Open Online Courses) are educational resources that teach anyone with an internet connection a wide variety of topics, from Statistics to Modern Poetry. In 2013, the Presidents Council of Advisors on Science and Technology stated that although many questions and challenges remain about MOOCs, this innovation has the potential to increase access to high-quality higher education at low cost. Evidently, MOOC is a transformative technology that allows better access to education than ever before.&lt;/p&gt;
+&lt;p&gt;However, a big problem in MOOC literature is the extremely high dropout rate from these courses. A widely known rate is 90% and this rate ranges from 65% to 97%. In this research project, I will be looking at factors leading to dropouts by using K-Means clustering to group the students into dropouts and non-dropouts.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(kableExtra)
+library(plotly)
+library(freqparcoord)
+library(cluster)
+library(magrittr)
+library(viridis)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Screen values of administrators-Fiter out!
+
+admin &amp;lt;- c(&amp;quot;55e906bd8d133cef1975080aa2bf8ff142bb1d6a&amp;quot;,
+           &amp;quot;13641bfecade7ce327bbd9f3741cc7d89a23f535&amp;quot;,
+           &amp;quot;6477a9db4f10c1f2cd6c6ed915994fecab250301&amp;quot;,
+           &amp;quot;e293ce9071b68d76b4df45f9cbfa201bf6f9578b&amp;quot;,
+           &amp;quot;0014ffdbb6ad31b4dea168e85f7ebe38073b251c&amp;quot;,
+           &amp;quot;b59ba5bcb53076fe0a9df9fa53412c45d24ad542&amp;quot;,
+           &amp;quot;6fb2fed5ac1550f8eaf96deb87c7fe043fc94f35&amp;quot;,
+           &amp;quot;d6572beed87a35946d1422d63792b08490222099&amp;quot;,
+           &amp;quot;0e055693fa64c3587a503f68bf5a548bba205946&amp;quot;,
+           &amp;quot;97cf40a403101ea3e86b72e33b4f43571a97e0ae&amp;quot;,
+           &amp;quot;45716e1930e059719bc2a399ad02f7a98fa9b8e1&amp;quot;,
+           &amp;quot;79fe2526bb9262f9ae1c9a30f1b4add61a480a31&amp;quot;,
+           &amp;quot;201ae316509e99033e8ff009f8403e76f9bfd0d6&amp;quot;,
+           &amp;quot;4c1b55bcc15f2260ce268b55e8bed45de033f58d&amp;quot;,
+           &amp;quot;3dafa1552229acc110728c8f34c91bde1f3f2c6f&amp;quot;,
+           &amp;quot;435d02b1f642f3f8900635560262ea9266670619&amp;quot;,
+           &amp;quot;a622ba478862c19d4fe51a3b955069b940ad7cc5&amp;quot;,
+           &amp;quot;cee4b1927f4291ca07dd7ca7fd2766a280a421bd&amp;quot;,
+           &amp;quot;02a70c2052bd6360919bea5a4c0d2af18a81e249&amp;quot;,
+           &amp;quot;44d76cf80e5fe541a5692f8ea671e0a2d9e92b6e&amp;quot;)
+
+
+# Read, observe, and manipulate engagement_Medicine_MedStats_Summer2014_weeklyEffort.csv
+weekly_effort &amp;lt;- read_csv(&amp;quot;engagement_Medicine_MedStats_Summer2014_weeklyEffort.csv&amp;quot;)
+
+## Notes: Platform column / Course column has identical, single values (OpenEdX and weekly_efforticine...)
+names(weekly_effort) &amp;lt;- tolower(names(weekly_effort))
+weekly_effort &amp;lt;- weekly_effort %&amp;gt;% 
+  rename(effort_sec = `effort (sec)`)
+weekly_effort &amp;lt;- weekly_effort %&amp;gt;% 
+  filter(!(anon_screen_name %in% admin))
+
+
+# Read and manipulate dataset
+event_xtract &amp;lt;- read_csv(&amp;quot;Medicine_MedStats_Summer2014_EventXtract.csv&amp;quot;) 
+
+names(event_xtract) &amp;lt;- gsub(&amp;quot;&amp;#39;&amp;quot;, &amp;#39;&amp;#39;, names(event_xtract))
+event_xtract &amp;lt;- event_xtract %&amp;gt;% 
+  filter(!(anon_screen_name %in% admin))
+
+event_xtract_shiny &amp;lt;- event_xtract %&amp;gt;% 
+  select(-starts_with(&amp;quot;video_&amp;quot;), 
+         -starts_with(&amp;quot;goto&amp;quot;)) 
+
+# Read and manipulate dataset StanfordEdX/Medicine_MedStats_Summer2014_ActivityGrade.csv
+activity_grade &amp;lt;- read_csv(&amp;quot;Medicine_MedStats_Summer2014_ActivityGrade.csv&amp;quot;)
+
+names(activity_grade) &amp;lt;- gsub(&amp;quot;&amp;#39;&amp;quot;, &amp;#39;&amp;#39;, names(activity_grade))
+activity_grade &amp;lt;- activity_grade %&amp;gt;% 
+  filter(!(anon_screen_name %in% admin))
+
+
+# Make Video Interaction Dataset  ----------------------------------------------
+video_int &amp;lt;- read_csv(&amp;quot;Medicine_MedStats_Summer2014_VideoInteraction.csv&amp;quot;)
+
+names(video_int) &amp;lt;- gsub(&amp;quot;&amp;#39;&amp;quot;, &amp;#39;&amp;#39;, names(video_int))
+
+# Take out edx.forum.searched in column event_type because that is unnecessary
+video_int &amp;lt;- video_int %&amp;gt;% 
+  filter(event_type != &amp;quot;edx.forum.searched&amp;quot;)
+
+# William&amp;#39;s Final Grades
+final_grade &amp;lt;- read_csv(&amp;quot;final_grades.csv&amp;quot;)
+
+# Dropouts:
+# Filter out for Solutions and get number of unique video ids for each student
+condition_2 &amp;lt;- video_int %&amp;gt;% 
+  filter(!(str_detect(resource_display_name, &amp;quot;Solutions&amp;quot;))) %&amp;gt;% 
+  group_by(anon_screen_name) %&amp;gt;% 
+  summarise(num_videos = length(unique(video_id))) %&amp;gt;% 
+  mutate(prop_videos = num_videos / max(num_videos)) %&amp;gt;% 
+  filter(prop_videos &amp;lt; 0.5000)
+
+### RESULT: 4996 (approx 5000) students watched less than 50% of the videos
+
+total_dropout &amp;lt;- condition_2 %&amp;gt;% 
+  select(anon_screen_name) %&amp;gt;% 
+  pull()
+
+# All the student ID&amp;#39;s with data in all three datasets:
+student_id &amp;lt;- reduce(list(event_xtract$anon_screen_name,
+            activity_grade$anon_screen_name,
+            weekly_effort$anon_screen_name), intersect)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;exploratory-data-analysis&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Exploratory Data Analysis&lt;/h1&gt;
+&lt;div id=&#34;how-many-unique-students-are-there-in-the-course&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;How many unique students are there in the course?&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;paste(length(reduce(list(event_xtract$anon_screen_name,
+             activity_grade$anon_screen_name,
+             weekly_effort$anon_screen_name), intersect)), &amp;quot;Students&amp;quot;)
+
+# Save total_students for later usage:
+students &amp;lt;- reduce(list(event_xtract$anon_screen_name,
+             activity_grade$anon_screen_name,
+             weekly_effort$anon_screen_name), intersect)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;We found the number of students who are common in all four datasets: 7659&lt;/li&gt;
+&lt;li&gt;This ensures maximum number of features to use for clustering.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-are-the-total-number-of-students-who-dropped-the-course&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;What are the total number of students who dropped the course?&lt;/h3&gt;
+&lt;div id=&#34;definition-of-dropout-student&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;Definition of dropout student&lt;/h5&gt;
+&lt;p&gt;(Borrowed from Halawa et al “Dropout prediction in MOOCs using learner activity features”)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Absent from the course for a period exceeding more than one month&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OR&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Viewed fewer than 50 percent of the videos in the course&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In our dataset, no student was absent from the course for more than one month. Therefore, we only look at the second condition to find dropout students.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Filter out for Solutions and get number of unique video ids for each student
+condition_2 &amp;lt;- video_int %&amp;gt;% 
+  filter(!(str_detect(resource_display_name, &amp;quot;Solutions&amp;quot;))) %&amp;gt;% 
+  group_by(anon_screen_name) %&amp;gt;% 
+  summarise(num_videos = length(unique(video_id))) %&amp;gt;% 
+  mutate(prop_videos = num_videos / max(num_videos)) %&amp;gt;% 
+  filter(prop_videos &amp;lt; 0.5000)
+
+total_dropout &amp;lt;- condition_2 %&amp;gt;% 
+  select(anon_screen_name) %&amp;gt;% 
+  pull()
+
+paste(length(total_dropout), &amp;quot;Dropout Students&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;4998 Dropout Students&lt;/li&gt;
+&lt;li&gt;Dropout Rate: 65%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;at-what-number-of-days-did-the-dropouts-fall-off-the-curve&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;At what number of days did the dropouts fall off the curve?&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Clustering of fall_off_ts (dropout students)
+fall_off_ts &amp;lt;- event_xtract %&amp;gt;% 
+  filter(anon_screen_name %in% total_dropout) %&amp;gt;% 
+  select(anon_screen_name) %&amp;gt;% 
+  inner_join(weekly_effort, by = &amp;quot;anon_screen_name&amp;quot;) %&amp;gt;%
+  select(anon_screen_name, week, effort_sec) %&amp;gt;% 
+  dplyr::distinct() 
+
+fall_off_ts_clust &amp;lt;- fall_off_ts %&amp;gt;% 
+ spread(key = week, value = effort_sec) %&amp;gt;% 
+  replace_na(list(&amp;quot;1&amp;quot; = 0,
+                  &amp;quot;2&amp;quot; = 0,
+                  &amp;quot;3&amp;quot; = 0,
+                  &amp;quot;4&amp;quot; = 0,
+                  &amp;quot;5&amp;quot; = 0,
+                  &amp;quot;6&amp;quot; = 0,
+                  &amp;quot;7&amp;quot; = 0,
+                  &amp;quot;8&amp;quot; = 0,
+                  &amp;quot;9&amp;quot; = 0,
+                  &amp;quot;10&amp;quot; = 0)) %&amp;gt;% as.data.frame()
+
+rownames(fall_off_ts_clust) &amp;lt;- fall_off_ts_clust$anon_screen_name
+fall_off_ts_clust &amp;lt;- fall_off_ts_clust %&amp;gt;% select(-anon_screen_name, -&amp;quot;11&amp;quot;)
+
+
+fall_off_ts_tot_withinss &amp;lt;- map_dbl(1:10,  function(k){
+  model &amp;lt;- kmeans(x = fall_off_ts_clust, centers = k)
+  model$tot.withinss
+})
+
+fall_off_ts_elbow_df &amp;lt;- data.frame(
+  k = 1:10 ,
+  tot_withinss = fall_off_ts_tot_withinss
+)
+
+# Plot of Elbow Method
+ggplot(fall_off_ts_elbow_df, aes(x = k, y = tot_withinss)) +
+  geom_line() +
+  scale_x_continuous(breaks = 1:10) +
+  labs(x = &amp;quot;k&amp;quot;,
+       y = &amp;quot;Total within-cluster sum of squares&amp;quot;,
+       title = &amp;quot;Elbow Method of Clustering on Dropouts&amp;quot;,
+       subtitle = &amp;quot;No clear Elbow. Try Silhouette Analysis&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/elbow_1.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sil_width &amp;lt;- map_dbl(2:10,  function(k){
+  model &amp;lt;- pam(x = fall_off_ts_clust, k = k)
+  model$silinfo$avg.width
+})
+
+sil_df &amp;lt;- data.frame(
+  k = 2:10,
+  sil_width = sil_width
+)
+
+ggplot(sil_df, aes(x = k, y = sil_width)) +
+  geom_line() +
+  scale_x_continuous(breaks = 2:10) +
+  labs(x = &amp;quot;K&amp;quot;,
+       y = &amp;quot;Average Silhouette Widths&amp;quot;) +
+  ggtitle(&amp;quot;Average Silhouette Widths over K=2:10&amp;quot;,
+          subtitle = &amp;quot;Average Silhoutte Width plot shows us that k = 2 is the best. Let&amp;#39;s proceed to run k-means on k=2&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/silhouette.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(42)
+fall_off_ts_clust_cluster &amp;lt;- kmeans(scale(fall_off_ts_clust), centers = 2)$cluster
+
+fall_off_clust_final &amp;lt;- fall_off_ts_clust %&amp;gt;% 
+  mutate(cluster = fall_off_ts_clust_cluster,
+         anon_screen_name = rownames(fall_off_ts_clust))
+
+# Cluster1 of anon_screen_names of dropouts
+anon_screen_name_cluster_1 &amp;lt;- fall_off_clust_final %&amp;gt;% 
+  filter(cluster == 1) %&amp;gt;% 
+  pull(anon_screen_name)
+
+# Cluster2 of anon_screen_names of dropouts
+anon_screen_name_cluster_2 &amp;lt;- fall_off_clust_final %&amp;gt;% 
+  filter(cluster == 2) %&amp;gt;% 
+  pull(anon_screen_name)
+
+final_grade_1 &amp;lt;- final_grade %&amp;gt;% 
+  filter(anon_id %in% anon_screen_name_cluster_1) %&amp;gt;% 
+  summarise(final_grade_avg = mean(final_grade),
+            final_grade_sd = sd(final_grade))
+
+final_grade_2 &amp;lt;- final_grade %&amp;gt;% 
+  filter(anon_id %in% anon_screen_name_cluster_2) %&amp;gt;% 
+  summarise(final_grade_avg = mean(final_grade),
+            final_grade_sd = sd(final_grade))
+
+effort_hrs_1 &amp;lt;- weekly_effort %&amp;gt;% 
+  filter(anon_screen_name %in% anon_screen_name_cluster_1) %&amp;gt;% 
+  summarise(effort_hrs_avg = mean(effort_sec) / 3600,
+            effort_hrs_sd = sd(effort_sec) / 3600)
+
+effort_hrs_2 &amp;lt;- weekly_effort %&amp;gt;% 
+  filter(anon_screen_name %in% anon_screen_name_cluster_2) %&amp;gt;% 
+  summarise(effort_hrs_avg = mean(effort_sec) / 3600,
+            effort_hrs_sd = sd(effort_sec) / 3600)
+
+final_grade &amp;lt;- final_grade_1 %&amp;gt;% 
+  rbind(final_grade_2)
+
+effort_hrs &amp;lt;- effort_hrs_1 %&amp;gt;% 
+  rbind(effort_hrs_2)
+
+table_total &amp;lt;- final_grade %&amp;gt;% cbind(effort_hrs)
+rownames(table_total) &amp;lt;- c(&amp;quot;Cluster1&amp;quot;, &amp;quot;Cluster2&amp;quot;)
+
+table_total %&amp;gt;%
+  round(2) %&amp;gt;% 
+  kableExtra::kable(col.names = c(&amp;quot;Average of Final Grade&amp;quot;,
+                                  &amp;quot;Standard Deviation of Final Grade&amp;quot;,
+                                  &amp;quot;Average of Effort in Hours&amp;quot;,
+                                  &amp;quot;Standard Deviation of Effort in Hours&amp;quot;)) %&amp;gt;% 
+    kable_styling(bootstrap_options = c(&amp;quot;striped&amp;quot;, &amp;quot;hover&amp;quot;, &amp;quot;responsive&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fall_off_clust_final %&amp;gt;% 
+  gather(&amp;quot;1&amp;quot;:&amp;quot;10&amp;quot;, key = week, value = effort_level) %&amp;gt;% 
+  mutate(effort_level = effort_level / 3600,
+         week = as.integer(week)) %&amp;gt;% 
+  ggplot(aes(x = week, y = effort_level)) +
+  geom_line(aes(group = anon_screen_name), alpha = 0.1) +
+  theme_bw() +
+  scale_x_continuous(breaks = 1:10) +
+  geom_smooth(color = &amp;quot;red&amp;quot;) +
+  facet_wrap(~cluster) +
+  labs(x = &amp;quot;Weeks&amp;quot;, y = &amp;quot;Effort Levels in Hours&amp;quot;,
+       caption = &amp;quot;Jason Baik&amp;quot;) +
+  ggtitle(&amp;quot;Effort Level over Weeks Facetted by Clusters&amp;quot;, subtitle = &amp;quot;Trend: Effort Level of Cluster 2 is consistently lower than Effort Level of Cluster 1&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/clustering_final.png&#34; width=&#34;550&#34; height=&#34;450&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;K-Means Clustering&lt;/li&gt;
+&lt;li&gt;We set the optimal number of k=2 (supported by Silhouette Analysis)&lt;/li&gt;
+&lt;li&gt;682 students in Cluster 1&lt;/li&gt;
+&lt;li&gt;4314 students in Cluster 2&lt;/li&gt;
+&lt;li&gt;Effort level of Cluster 1 Students falls off after approximately 2 weeks.&lt;/li&gt;
+&lt;li&gt;Effort level of Cluster 2 Students is consistently low.&lt;/li&gt;
+&lt;li&gt;Table of Avg / Std of Final Grades and Effort show that more effort correlates with higher final grades.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-are-the-types-of-modules-that-the-users-are-interacting-with&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;What are the types of modules that the users are interacting with?&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;course &amp;lt;- activity_grade %&amp;gt;% 
+  filter(str_detect(module_id, &amp;quot;course&amp;quot;)) %&amp;gt;% 
+  add_count(module_id) %&amp;gt;% 
+  summarise(norm_module = (sum(unique(n)) / length(unique(module_id))) / (length(unique(anon_screen_name)))) %&amp;gt;% mutate(module_type = &amp;quot;course&amp;quot;)
+
+seq &amp;lt;- activity_grade %&amp;gt;% 
+  filter(str_detect(module_id, &amp;quot;sequential&amp;quot;)) %&amp;gt;% 
+  add_count(module_id) %&amp;gt;% 
+  summarise(norm_module = (sum(unique(n)) / length(unique(module_id))) / (length(unique(anon_screen_name)))) %&amp;gt;% mutate(module_type = &amp;quot;sequential&amp;quot;)
+
+prob &amp;lt;- activity_grade %&amp;gt;% 
+  filter(str_detect(module_id, &amp;quot;problem&amp;quot;)) %&amp;gt;% 
+  add_count(module_id) %&amp;gt;% 
+  summarise(norm_module = (sum(unique(n)) / length(unique(module_id))) / (length(unique(anon_screen_name)))) %&amp;gt;% mutate(module_type = &amp;quot;problem&amp;quot;)
+
+vid &amp;lt;- activity_grade %&amp;gt;% 
+  filter(str_detect(module_id, &amp;quot;video&amp;quot;)) %&amp;gt;% 
+  add_count(module_id) %&amp;gt;% 
+  summarise(norm_module = (sum(unique(n)) / length(unique(module_id))) / (length(unique(anon_screen_name)))) %&amp;gt;% mutate(module_type = &amp;quot;video&amp;quot;)
+
+chapter &amp;lt;- activity_grade %&amp;gt;% 
+  filter(str_detect(module_id, &amp;quot;chapter&amp;quot;)) %&amp;gt;% 
+  add_count(module_id) %&amp;gt;% 
+  summarise(norm_module = (sum(unique(n)) / length(unique(module_id))) / (length(unique(anon_screen_name)))) %&amp;gt;% mutate(module_type = &amp;quot;chapter&amp;quot;)
+
+final_module &amp;lt;- rbind(course, seq, prob, vid, chapter)
+
+final_module %&amp;gt;% 
+  filter(module_type != &amp;quot;course&amp;quot;) %&amp;gt;% 
+  ggplot(aes(x = module_type, y = norm_module)) +
+  geom_col() +
+  theme_bw() +
+  theme(text = element_text(size = 13)) +
+  labs(x = &amp;quot;Module Types&amp;quot;,
+       y = &amp;quot;Normalized Counts of Modules per Student&amp;quot;,
+       title = &amp;quot;Distribution of Normalized Usage of Module Types per Student&amp;quot;) +
+  scale_x_discrete(limits = c(&amp;quot;problem&amp;quot;, &amp;quot;chapter&amp;quot;, &amp;quot;sequential&amp;quot;, &amp;quot;video&amp;quot;),
+                  labels = c(&amp;quot;Problem&amp;quot;, &amp;quot;Chapter&amp;quot;, &amp;quot;Sequential&amp;quot;, &amp;quot;Video&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/module_normalized_final.png&#34; width=&#34;550&#34; height=&#34;550&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We removed course module since its count is 1.0, meaning that every other module falls under the umbrella of a course module.&lt;/li&gt;
+&lt;li&gt;Problem module is the most popular- many students focused on solving questions.&lt;/li&gt;
+&lt;li&gt;Video was the least popular- Perhaps, this means students already knew material and didn’t need to learn from video lecture.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;is-there-a-discrepancy-in-mean-effort-per-week-for-dropouts-vs-non-dropouts&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Is there a discrepancy in Mean effort per Week for Dropouts vs Non-Dropouts?&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;event_xtract %&amp;gt;%
+  mutate(course_complete = ifelse(anon_screen_name %in% total_dropout, &amp;quot;no&amp;quot;,
+                                  &amp;quot;yes&amp;quot;)) %&amp;gt;%
+  select(anon_screen_name, course_complete) %&amp;gt;%
+  inner_join(weekly_effort, by = &amp;quot;anon_screen_name&amp;quot;) %&amp;gt;%
+  group_by(week, course_complete, anon_screen_name) %&amp;gt;%
+  summarise(mean_effort_hrs = mean(effort_sec) / 3600) %&amp;gt;%
+  filter(week &amp;lt; 10) %&amp;gt;% 
+  ggplot(aes(x = as.factor(week), y = mean_effort_hrs, fill = course_complete)) +
+  geom_boxplot(outlier.alpha = 0.35) +
+  theme_bw() +
+  theme(text = element_text(size = 13)) +
+  scale_fill_hue(labels = c(&amp;quot;Not Completed&amp;quot;, &amp;quot;Completed&amp;quot;)) +
+  labs(x = &amp;quot;Week&amp;quot;,
+       y = &amp;quot;Average Effort in Hours&amp;quot;,
+       fill = &amp;quot;Completion of Course&amp;quot;
+       ) +
+  ggtitle(&amp;quot;Distribution of Average Effort in Hours Per Week\nBy Completion of Course&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;As expected, non-dropout students put in significantly higher average effort than dropout students.&lt;/li&gt;
+&lt;li&gt;There are many outliers in this dataset, suggesting high variability in weekly effort level.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;proporational-barchart-of-different-effort-levels-per-week&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Proporational Barchart of different effort levels per week&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Get min, q1, median, q3, and maximum value for effort_level
+summary_effort &amp;lt;- summary(weekly_effort$effort_sec)
+
+# Plot
+weekly_effort %&amp;gt;% 
+  mutate(effort_level = ifelse(effort_sec &amp;lt; summary_effort[2] &amp;amp; effort_sec &amp;gt;= summary_effort[1], &amp;quot;low&amp;quot;, ifelse(effort_sec &amp;lt;= summary_effort[5] &amp;amp; 
+                                        effort_sec &amp;gt;= summary_effort[2], &amp;quot;med&amp;quot;,
+                                        ifelse(effort_sec &amp;gt; summary_effort[5] &amp;amp; effort_sec &amp;lt;= summary_effort[6], &amp;quot;high&amp;quot;, &amp;quot;na&amp;quot;)))) %&amp;gt;%
+  mutate(course_complete = ifelse(anon_screen_name %in% total_dropout, &amp;quot;Dropouts&amp;quot;,
+                                  &amp;quot;Non-Dropouts&amp;quot;)) %&amp;gt;% 
+  filter(week != 11) %&amp;gt;% 
+  count(week, course_complete, effort_level) %&amp;gt;%
+  group_by(week, course_complete) %&amp;gt;% 
+  mutate(n_percentage = round(n / sum(n), 2)) %&amp;gt;%
+  ggplot(aes(x = as.factor(week), y = n_percentage, fill = factor(effort_level, levels = c(&amp;quot;high&amp;quot;, &amp;quot;med&amp;quot;, &amp;quot;low&amp;quot;)))) +
+  geom_col(position = &amp;quot;fill&amp;quot;) +
+  facet_wrap(~course_complete) +
+  theme_classic() +
+  theme(text = element_text(size = 13)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_hue(labels = c(&amp;quot;High&amp;quot;, &amp;quot;Medium&amp;quot;, &amp;quot;Low&amp;quot;)) +
+  labs(x = &amp;quot;Week&amp;quot;,
+       y = &amp;quot;Percentage&amp;quot;,
+       fill = &amp;quot;Effort Level&amp;quot;) +
+  ggtitle(&amp;quot;Distribution of Effort Level per Week&amp;quot;,
+          subtitle = &amp;quot;Proportion of High Effort Level increases along with Week&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/effort_level_final_version.png&#34; width=&#34;550&#34; height=&#34;550&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Categorized effort level into High, Medium, and Low Effort using Five-Number Summary:&lt;/li&gt;
+&lt;li&gt;3rd Quartile &amp;lt; High Effort &amp;lt;= Maximum&lt;/li&gt;
+&lt;li&gt;1st Quartile &amp;lt;= Medium Effort &amp;lt;= 3rd Quartile&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Minimum &amp;lt;= Low Effort &amp;lt; 1st Quartile&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Plot aligns with our expectations: dropout students put in less “High Effort” and more “Low Efort” levels.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;clustering-in-stages&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Clustering in Stages&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Make new dataframe for clustering
+weekly_effort_new &amp;lt;- event_xtract %&amp;gt;% 
+  select(anon_screen_name) %&amp;gt;% 
+  inner_join(weekly_effort, by = &amp;quot;anon_screen_name&amp;quot;) %&amp;gt;%
+  select(anon_screen_name, week, effort_sec) %&amp;gt;% 
+  dplyr::distinct() %&amp;gt;% 
+  filter(week != 11) %&amp;gt;%  # Only look at 10 weeks-filter out week11 because only 14 students have data for week11
+  as.data.frame()
+
+week_seq &amp;lt;- seq(from = as.Date(&amp;quot;2014/06/24&amp;quot;), to = as.Date(&amp;quot;2014/09/08&amp;quot;), by = &amp;quot;week&amp;quot;)
+
+# Make new dataframe out of video dataset (Number of times students pressed &amp;quot;Play&amp;quot;)
+video_int_clus &amp;lt;- video_int %&amp;gt;% 
+  mutate(time = as.Date(time),
+         video_week = case_when(
+           time &amp;lt;= week_seq[2] &amp;amp; time &amp;gt;= week_seq[1] ~ 1,
+           time &amp;lt;= week_seq[3] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-07-02&amp;quot;) ~ 2,
+           time &amp;lt;= week_seq[4] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-07-09&amp;quot;) ~ 3,
+           time &amp;lt;= week_seq[5] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-07-16&amp;quot;) ~ 4,
+           time &amp;lt;= week_seq[6] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-07-23&amp;quot;) ~ 5,
+           time &amp;lt;= week_seq[7] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-07-30&amp;quot;) ~ 6,
+           time &amp;lt;= week_seq[8] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-08-06&amp;quot;) ~ 7,
+           time &amp;lt;= week_seq[9] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-08-13&amp;quot;) ~ 8,
+           time &amp;lt;= week_seq[10] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-08-20&amp;quot;) ~ 9,
+           time &amp;lt;= week_seq[11] &amp;amp; time &amp;gt;= as.Date(&amp;quot;2014-08-27&amp;quot;) ~ 10,
+           TRUE ~ 0)) %&amp;gt;% 
+  filter(video_week != 0) %&amp;gt;%
+  select(anon_screen_name, video_week, event_type) %&amp;gt;% 
+  filter(event_type == &amp;quot;play_video&amp;quot;) %&amp;gt;% 
+  group_by(anon_screen_name, video_week) %&amp;gt;% 
+  summarise(play_video_num = n()) %&amp;gt;% 
+  spread(key = video_week, value = play_video_num) %&amp;gt;% 
+  replace_na(list(&amp;quot;1&amp;quot; = 0,
+                  &amp;quot;2&amp;quot; = 0,
+                  &amp;quot;3&amp;quot; = 0,
+                  &amp;quot;4&amp;quot; = 0,
+                  &amp;quot;5&amp;quot; = 0,
+                  &amp;quot;6&amp;quot; = 0,
+                  &amp;quot;7&amp;quot; = 0,
+                  &amp;quot;8&amp;quot; = 0,
+                  &amp;quot;9&amp;quot; = 0,
+                  &amp;quot;10&amp;quot; = 0)) %&amp;gt;% 
+  as.data.frame()
+
+# Manipulate weekly_effort
+weekly_effort_new %&amp;lt;&amp;gt;% 
+  spread(key = week, value = effort_sec) %&amp;gt;% 
+  replace_na(list(&amp;quot;1&amp;quot; = 0,
+                  &amp;quot;2&amp;quot; = 0,
+                  &amp;quot;3&amp;quot; = 0,
+                  &amp;quot;4&amp;quot; = 0,
+                  &amp;quot;5&amp;quot; = 0,
+                  &amp;quot;6&amp;quot; = 0,
+                  &amp;quot;7&amp;quot; = 0,
+                  &amp;quot;8&amp;quot; = 0,
+                  &amp;quot;9&amp;quot; = 0,
+                  &amp;quot;10&amp;quot; = 0)) 
+
+video_int_clus %&amp;lt;&amp;gt;% column_to_rownames(var = &amp;quot;anon_screen_name&amp;quot;)
+weekly_effort_new %&amp;lt;&amp;gt;% column_to_rownames(var = &amp;quot;anon_screen_name&amp;quot;)
+
+names(video_int_clus) &amp;lt;- paste(&amp;quot;week&amp;quot;, names(video_int_clus), &amp;quot;video&amp;quot;, sep = &amp;quot;_&amp;quot;)
+names(weekly_effort_new) &amp;lt;- paste(&amp;quot;week&amp;quot;, names(weekly_effort_new), &amp;quot;effort&amp;quot;, sep = &amp;quot;_&amp;quot;)
+
+video_int_clus %&amp;lt;&amp;gt;% rownames_to_column(var = &amp;quot;anon_screen_name&amp;quot;)
+weekly_effort_new %&amp;lt;&amp;gt;% rownames_to_column(var = &amp;quot;anon_screen_name&amp;quot;)
+
+
+new_clus &amp;lt;- weekly_effort_new %&amp;gt;% 
+  inner_join(video_int_clus, by = &amp;quot;anon_screen_name&amp;quot;)
+
+# First Stage
+new_clust_first &amp;lt;- new_clus %&amp;gt;% 
+  select(anon_screen_name, week_1_effort, week_1_video,
+         week_2_effort, week_2_video,
+         week_3_effort, week_3_video) %&amp;gt;% 
+  column_to_rownames(var = &amp;quot;anon_screen_name&amp;quot;)
+
+# Second Stage
+new_clust_second &amp;lt;- new_clus %&amp;gt;% 
+  select(anon_screen_name, week_1_effort, week_1_video,
+         week_2_effort, week_2_video,
+         week_3_effort, week_3_video, week_4_effort, week_4_video,
+         week_5_effort, week_5_video,
+         week_6_effort, week_6_video) %&amp;gt;% 
+  column_to_rownames(var = &amp;quot;anon_screen_name&amp;quot;)
+
+# Third Stage
+new_clust_third &amp;lt;- new_clus %&amp;gt;% 
+  select(anon_screen_name, week_1_effort, week_1_video,
+         week_2_effort, week_2_video,
+         week_3_effort, week_3_video, week_4_effort, week_4_video,
+         week_5_effort, week_5_video,
+         week_6_effort, week_6_video, week_7_effort, week_7_video,
+         week_8_effort, week_8_video,
+         week_9_effort, week_9_video,
+         week_10_effort, week_10_video) %&amp;gt;% 
+  column_to_rownames(var = &amp;quot;anon_screen_name&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Looked at two weekly features, effort level and number of times student played video.&lt;/li&gt;
+&lt;li&gt;These features are allocated in three different “stages”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;First stage: Two features measured during Weeks 1~3&lt;/li&gt;
+&lt;li&gt;Second Stage: Two features measured during Weeks 1~6&lt;/li&gt;
+&lt;li&gt;Third Stage: Two features measured during Weeks 1~10 (all of available data)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/sim_first_second.png&#34; width=&#34;550&#34; height=&#34;450&#34; /&gt;
+&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/sim_first_third.png&#34; width=&#34;550&#34; height=&#34;450&#34; /&gt;
+&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/sim_second_third.png&#34; width=&#34;550&#34; height=&#34;450&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Set seed
+set.seed(42)
+
+# K-Means on First Stage
+new_clust_first_kmeans &amp;lt;- kmeans(scale(new_clust_first), centers = 6)
+
+# K-Means on Second Stage
+new_clust_second_kmeans &amp;lt;- kmeans(scale(new_clust_second), centers = 6)
+
+# K-Means on Third Stage
+new_clust_third_kmeans &amp;lt;- kmeans(scale(new_clust_third), centers = 6)
+
+# Clean Up First Stage using broom::augment
+new_clust_first_kmeans &amp;lt;- broom::augment(new_clust_first_kmeans, new_clust_first)
+
+new_clust_first_kmeans &amp;lt;- new_clust_first_kmeans %&amp;gt;% 
+  rename(anon_screen_name = .rownames,
+         cluster = .cluster)
+
+new_clust_first_kmeans %&amp;lt;&amp;gt;% remove_rownames()
+
+# Clean Up Second Stage using broom::augment
+new_clust_second_kmeans &amp;lt;- broom::augment(new_clust_second_kmeans, new_clust_second)
+
+new_clust_second_kmeans &amp;lt;- new_clust_second_kmeans %&amp;gt;% 
+  rename(anon_screen_name = .rownames,
+         cluster = .cluster)
+
+new_clust_second_kmeans %&amp;lt;&amp;gt;% remove_rownames()
+
+# Clean Up Third Stage using broom::augment
+new_clust_third_kmeans &amp;lt;- broom::augment(new_clust_third_kmeans, new_clust_third)
+
+new_clust_third_kmeans &amp;lt;- new_clust_third_kmeans %&amp;gt;% 
+  rename(anon_screen_name = .rownames,
+         cluster = .cluster)
+
+new_clust_third_kmeans %&amp;lt;&amp;gt;% remove_rownames()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Function to create &amp;quot;similarity matrix&amp;quot;
+student_id_match &amp;lt;- function(x, y) {
+  
+  # Define similarity matrix
+  similarity_mat &amp;lt;- matrix(nrow = 6, ncol = 6)
+  
+  
+  # For loops...sorry!
+  # ii = rows and jj = columns
+  for (ii in c(1:6)) {
+  
+    
+    
+    for (jj in c(1:6)) {
+      
+      first_group &amp;lt;- x %&amp;gt;%
+        filter(cluster == ii) %&amp;gt;% 
+        select(anon_screen_name) %&amp;gt;% 
+        pull()
+      
+      second_group &amp;lt;- y %&amp;gt;% 
+        filter(cluster == jj) %&amp;gt;% 
+        select(anon_screen_name) %&amp;gt;% 
+        pull()
+      
+      similarity_mat[ii, jj] &amp;lt;- mean(first_group %in% second_group)
+      
+      
+    }
+}
+ return(similarity_mat)
+}
+
+# Create similarity matrix
+first_second_sim &amp;lt;- student_id_match(x = new_clust_first_kmeans, 
+                 y = new_clust_second_kmeans)
+first_third_sim &amp;lt;- student_id_match(x = new_clust_first_kmeans, 
+                 y = new_clust_third_kmeans)
+second_third_sim &amp;lt;- student_id_match(x = new_clust_second_kmeans, 
+                 y = new_clust_third_kmeans)
+
+# First, set the dimension names first
+dimnames(first_second_sim) &amp;lt;- list(paste(&amp;quot;first_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep =&amp;quot;&amp;quot;),
+                                   paste(&amp;quot;second_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep = &amp;quot;&amp;quot;))
+dimnames(first_third_sim) &amp;lt;- list(paste(&amp;quot;first_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep =&amp;quot;&amp;quot;),
+                                   paste(&amp;quot;third_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep = &amp;quot;&amp;quot;))
+dimnames(second_third_sim) &amp;lt;- list(paste(&amp;quot;second_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep =&amp;quot;&amp;quot;),
+                                   paste(&amp;quot;third_group&amp;quot;, &amp;quot;_cluster_&amp;quot;, 1:6, sep = &amp;quot;&amp;quot;))
+
+# Reshape melt
+first_second_sim &amp;lt;- reshape2::melt(first_second_sim)
+first_third_sim &amp;lt;- reshape2::melt(first_third_sim)
+second_third_sim &amp;lt;- reshape2::melt(second_third_sim)
+
+# Round values to two decimal places
+first_second_sim &amp;lt;- first_second_sim %&amp;gt;% 
+  mutate(value = round(value, digits = 2))
+
+first_third_sim &amp;lt;- first_third_sim %&amp;gt;% 
+  mutate(value = round(value, digits = 2))
+
+second_third_sim &amp;lt;- second_third_sim %&amp;gt;% 
+  mutate(value = round(value, digits = 2))
+
+# Plot Heatmaps
+ggplot(data = first_second_sim, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile() +
+  geom_text(aes(Var1, Var2, label = value), color = &amp;quot;black&amp;quot;, size = 2.75) +
+  scale_fill_viridis(name = &amp;quot;Value&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = NULL,
+       y = NULL) +
+  scale_y_discrete(labels= c(&amp;quot;Second Group (Cluster1)&amp;quot;, 
+                             &amp;quot;Second Group (Cluster2)&amp;quot;,
+                             &amp;quot;Second Group (Cluster3)&amp;quot;,
+                             &amp;quot;Second Group (Cluster4)&amp;quot;,
+                             &amp;quot;Second Group (Cluster5)&amp;quot;,
+                             &amp;quot;Second Group (Cluster6)&amp;quot;)) +
+  scale_x_discrete(labels = c(&amp;quot;First Group (Cluster1)&amp;quot;,
+                              &amp;quot;First Group (Cluster2)&amp;quot;,
+                              &amp;quot;First Group (Cluster3)&amp;quot;,
+                              &amp;quot;First Group (Cluster4)&amp;quot;,
+                              &amp;quot;First Group (Cluster5)&amp;quot;,
+                              &amp;quot;First Group (Cluster6)&amp;quot;)) +
+  ggtitle(&amp;quot;Similarity between First Group (Data from Weeks 1~3)\nand Second Group (Data from Weeks 1~6&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = first_third_sim, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile() +
+  geom_text(aes(Var1, Var2, label = value), color = &amp;quot;black&amp;quot;, size = 2.75) +
+  scale_fill_viridis(name = &amp;quot;Value&amp;quot;) +
+  scale_x_discrete(labels= c(&amp;quot;First 
+                             Group (Cluster1)&amp;quot;, 
+                             &amp;quot;First Group (Cluster2)&amp;quot;,
+                             &amp;quot;First Group (Cluster3)&amp;quot;,
+                             &amp;quot;First Group (Cluster4)&amp;quot;,
+                             &amp;quot;First Group (Cluster5)&amp;quot;,
+                             &amp;quot;First Group (Cluster6)&amp;quot;)) +
+  scale_y_discrete(labels = c(&amp;quot;Third Group (Cluster1)&amp;quot;,
+                              &amp;quot;Third Group (Cluster2)&amp;quot;,
+                              &amp;quot;Third Group (Cluster3)&amp;quot;,
+                              &amp;quot;Third Group (Cluster4)&amp;quot;,
+                              &amp;quot;Third Group (Cluster5)&amp;quot;,
+                              &amp;quot;Third Group (Cluster6)&amp;quot;)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = NULL,
+       y = NULL) +
+  ggtitle(&amp;quot;Similarity between First Group (Data from Weeks 1~3)\nand Third Group (Data from Weeks 1~10&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = second_third_sim, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile() +
+  geom_text(aes(Var1, Var2, label = value), color = &amp;quot;black&amp;quot;, size = 2.75) +
+  scale_fill_viridis(name = &amp;quot;Value&amp;quot;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = NULL,
+       y = NULL) +
+  scale_x_discrete(labels= c(&amp;quot;Second Group (Cluster1)&amp;quot;, 
+                             &amp;quot;Second Group (Cluster2)&amp;quot;,
+                             &amp;quot;Second Group (Cluster3)&amp;quot;,
+                             &amp;quot;Second Group (Cluster4)&amp;quot;,
+                             &amp;quot;Second Group (Cluster5)&amp;quot;,
+                             &amp;quot;Second Group (Cluster6)&amp;quot;)) +
+  scale_y_discrete(labels = c(&amp;quot;Third Group (Cluster1)&amp;quot;,
+                              &amp;quot;Third Group (Cluster2)&amp;quot;,
+                              &amp;quot;Third Group (Cluster3)&amp;quot;,
+                              &amp;quot;Third Group (Cluster4)&amp;quot;,
+                              &amp;quot;Third Group (Cluster5)&amp;quot;,
+                              &amp;quot;Third Group (Cluster6)&amp;quot;)) +
+  ggtitle(&amp;quot;Similarity between Second Group (Data from Weeks 1~6)\nand Third Group (Data from Weeks 1~10&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Function of Similarity matrix: Find proportion of overlapping students among three different groups, or stages (each group has six clusters of students)&lt;/li&gt;
+&lt;li&gt;Results: We found very high overlap between First Group (Cluster 6), Second Group (Cluster 3), and Third Group (Cluster 4)&lt;/li&gt;
+&lt;li&gt;Now we move on to comparing the students in these 18 clusters to our ground truth of dropout and non-dropout students.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;barchart-of-dropouts-among-different-clusters&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Barchart of Dropouts among different clusters&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# First Group
+bar_first &amp;lt;- new_clust_first_kmeans %&amp;gt;% 
+  mutate(cluster = as.character(cluster)) %&amp;gt;% 
+  group_by(cluster) %&amp;gt;% 
+  summarise(dropout_prop = mean(anon_screen_name %in% total_dropout)) %&amp;gt;% 
+  mutate(group = &amp;quot;first&amp;quot;)
+
+# Second Group
+bar_second &amp;lt;- new_clust_second_kmeans %&amp;gt;% 
+  mutate(cluster = as.character(cluster)) %&amp;gt;% 
+  group_by(cluster) %&amp;gt;% 
+  summarise(dropout_prop = mean(anon_screen_name %in% total_dropout)) %&amp;gt;% 
+  mutate(group = &amp;quot;second&amp;quot;)
+
+# Third Group
+bar_third &amp;lt;- new_clust_third_kmeans %&amp;gt;% 
+  mutate(cluster = as.character(cluster)) %&amp;gt;% 
+  group_by(cluster) %&amp;gt;% 
+  summarise(dropout_prop = mean(anon_screen_name %in% total_dropout)) %&amp;gt;% 
+  mutate(group = &amp;quot;third&amp;quot;)
+
+# Combine three groups
+bar_total &amp;lt;- rbind(bar_first, bar_second, bar_third)
+
+# Facet labeller
+three_group &amp;lt;- list(
+  &amp;quot;first&amp;quot; = &amp;quot;Weeks 1~3&amp;quot;,
+  &amp;quot;second&amp;quot; = &amp;quot;Weeks 1~6&amp;quot;,
+  &amp;quot;third&amp;quot; = &amp;quot;Weeks 1~10&amp;quot;
+)
+
+three_group_labeller &amp;lt;- function(variable,value){
+  return(three_group[value])
+}
+
+# Draw Barchart
+bar_total %&amp;gt;%
+  mutate(dropout_prop = round(dropout_prop, 2)) %&amp;gt;% 
+  ggplot(aes(x = cluster, y = dropout_prop)) +
+  geom_col(aes(fill = cluster)) +
+  geom_text(aes(label = dropout_prop), position = position_stack(vjust = 0.5),
+            color = &amp;quot;black&amp;quot;, size = 2.4) +
+  theme_minimal() +
+  facet_wrap(~group, labeller = three_group_labeller) +
+  #scale_fill_viridis(name = &amp;quot;Value&amp;quot;) +
+  labs(x = &amp;quot;Clusters&amp;quot;,
+       y = &amp;quot;Dropout Proportions&amp;quot;,
+       fill = &amp;quot;Clusters&amp;quot;) +
+  ggtitle(&amp;quot;Dropouts Proportions for Each Cluster Facetted by Groups&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Overall outcome of Clustering in Stages: The K-Means clustering algorithm found the one cluster in each group that had an extremely high proportion of dropout students.&lt;/li&gt;
+&lt;li&gt;We assume that the algorithm clustered the dropout students into one cluster (Cluster 6 in Group 1, Cluster 3 in Group 2, and Cluster 4 in Group 3).&lt;/li&gt;
+&lt;li&gt;Future Work: Further analyze characteristics in the above mentioned clusters to discover characteristics of dropouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;clustering-of-different-averages&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Clustering of Different Averages&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;final_metric &amp;lt;- data.frame(accuracy = c(accuracy_full, accuracy_half, accuracy_quarterly), precision = c(precision_full, precision_half, precision_quarterly), recall = c(recall_metric_full, recall_metric_half, recall_metric_quarterly), f_score = c(f_full, f_half, f_quarterly), row.names = c(&amp;quot;Full&amp;quot;, &amp;quot;Halves&amp;quot;, &amp;quot;Quarterly&amp;quot;))                                                   
+colnames(final_metric) &amp;lt;- c(&amp;quot;Accuracy&amp;quot;, &amp;quot;Precision&amp;quot;, &amp;quot;Recall&amp;quot;, &amp;quot;F1 Score&amp;quot;)
+
+final_metric %&amp;gt;% 
+  kableExtra::kable(col.names = c(&amp;quot;Accuracy&amp;quot;,
+                                  &amp;quot;Precision&amp;quot;,
+                                  &amp;quot;Recall&amp;quot;,
+                                  &amp;quot;F1 Score&amp;quot;), digits = 2
+                    ) %&amp;gt;% 
+    kable_styling(bootstrap_options = c(&amp;quot;striped&amp;quot;, &amp;quot;hover&amp;quot;, &amp;quot;responsive&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Performed K-means clustering (K = 2) with two distinct features- effort level &amp;amp; number of times student played video.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;First Step (“Full”): Get two features (10 week average of effort level + 10 week average of number of times student played video)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Second Step (“Halves”): Get four features (Two 5 week averages of effort level + Two 5 week averages of number of times student played video)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Third Step (“Quarterly”): Get eight features (Four 2.5 week averages of effort level + Four 2.5 week averages of number of times student played video)&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Key Takeaway: Negligible difference between Quarterly (8 features) and Halves (4 features), so we don’t necessarily need to divide time period into quarters.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;instructor-dashboard&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Instructor Dashboard&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Introduces the user to the app.&lt;/li&gt;
+&lt;li&gt;Gives details on each tab so that user knows what to expect from each tab&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/overview_class.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Shows number of students in the class and number of dropout students&lt;/li&gt;
+&lt;li&gt;Displays final grades table, final grades distribution, and normalized module usage chart&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/student_selector.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Allows user to select dataset and apply filters corresponding to each dataset.&lt;/li&gt;
+&lt;li&gt;Purpose is to customize search query for user.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-08-13-2018-reu-final-research-report_files/effort_level.png&#34; width=&#34;600&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Displays plots related to effort level&lt;/li&gt;
+&lt;li&gt;Interactive plot allows for highlighting in red of each student’s effort level (each line represents one student)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;All in all, I have performed exploratory data analysis that confirms my expectations (dropout students put in less effort than non-dropout students), conducted K-Means Clustering, and built an interactive web application in R that shows all my summer work. My future work includes investigating the results of the clustering method and incorporating them into my interactive web application. I hope to write a paper on this entire process by the end of the year! Thank you for a great summer.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2018 REU Tricks in R</title>
+      <link>/post/2018-reu-tricks-in-r/</link>
+      <pubDate>Thu, 19 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-reu-tricks-in-r/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction-seven-weeks-of-r&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction: Seven Weeks of R&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/data-science.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;It has been seven weeks since I started my summer research in Educational Data Mining. That means seven weeks of using R to import, tidy, transform, and visualize data (Grolemund and Wickham, R for Data Science). While I really wanted to work in R, I ran into many obstacles, major and minor. There were many data manipulation and visualization issues that I had to deal with in order to extract insights from the data. My intent in this blog post is to share some of the tricks I learned in R to manipulate and visualize data &lt;strong&gt;inside the tidyverse&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-manipulation-and-visualization-tricks&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data Manipulation and Visualization Tricks&lt;/h1&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Throughout the summer, the most important skill I gained is &lt;strong&gt;validation of my code.&lt;/strong&gt; For example, I checked whether &lt;code&gt;group_by&lt;/code&gt; and &lt;code&gt;summarise&lt;/code&gt; did what I intended it to do, as in this code chunk:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div id=&#34;test-code&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Test Code&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+test &amp;lt;- data.frame(anon_screen_name = c(&amp;quot;howard&amp;quot;, &amp;quot;baik&amp;quot;, &amp;quot;tomatoes&amp;quot;, &amp;quot;bannas&amp;quot;),
+                   cluster = c(1, 1, 2, 2))
+
+test_dropout &amp;lt;- c(&amp;quot;howard&amp;quot;, &amp;quot;tomatoes&amp;quot;)
+
+test %&amp;gt;% 
+     group_by(cluster) %&amp;gt;% 
+     summarise(dropout_prop = mean(anon_screen_name %in% test_dropout))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 2 x 2
+##   cluster dropout_prop
+##     &amp;lt;dbl&amp;gt;        &amp;lt;dbl&amp;gt;
+## 1       1          0.5
+## 2       2          0.5&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;I wanted to test whether my &lt;code&gt;dplyr&lt;/code&gt; code actually calculated the proportion of matches between values in a column inside my dataframe (&lt;code&gt;anon_screen_name&lt;/code&gt;) and a separate vector(&lt;code&gt;test_dropout&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;The test revealed it did!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;original-code&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Original Code&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bar_first &amp;lt;- new_clust_first_kmeans %&amp;gt;% 
+  mutate(cluster = as.character(cluster)) %&amp;gt;% 
+  group_by(cluster) %&amp;gt;% 
+  summarise(dropout_prop = mean(anon_screen_name %in% total_dropout))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;When in doubt of my code, I learned to test the same code on a dummy dataset and see if the output matches my expectations. That way, I can be confident that my code will bring me an accurate output on my original dataset&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;dplyr::distinct()&lt;/code&gt; is a super useful verb for selecting distinct / unique rows. According to the documentation, &lt;em&gt;&lt;code&gt;distinct&lt;/code&gt; retains only unique/distinct rows from an input tbl. This is similar to &lt;code&gt;unique.data.frame&lt;/code&gt;, but considerably faster.&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;table-with-duplicate-rows&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Table with Duplicate Rows&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/distinct.png&#34; width=&#34;600&#34; height=&#34;300&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cleaned-table&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Cleaned Table&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/distinct_solved.png&#34; width=&#34;600&#34; height=&#34;200&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;tidyr::replace_na()&lt;/code&gt; allows you to replace missing values. After I saw the below table, I immediately turned to &lt;code&gt;replace_na()&lt;/code&gt; to replace all the NA columns with 0.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;replace_na(list(&amp;quot;1&amp;quot; = 0,
+                  &amp;quot;2&amp;quot; = 0,
+                  &amp;quot;3&amp;quot; = 0,
+                  &amp;quot;4&amp;quot; = 0,
+                  &amp;quot;5&amp;quot; = 0,
+                  &amp;quot;6&amp;quot; = 0,
+                  &amp;quot;7&amp;quot; = 0,
+                  &amp;quot;8&amp;quot; = 0,
+                  &amp;quot;9&amp;quot; = 0,
+                  &amp;quot;10&amp;quot; = 0))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;messy-table&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Messy Table&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/replace_na.png&#34; width=&#34;800&#34; height=&#34;300&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cleaned-table-1&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Cleaned Table&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/replace_na_after.png&#34; width=&#34;800&#34; height=&#34;300&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;4&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The &lt;code&gt;col.names&lt;/code&gt; parameter in &lt;code&gt;kableExtra::kable&lt;/code&gt; allows you to change the column names.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;table-with-raw-column-names&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Table with Raw Column Names&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/kable_before_final.png&#34; width=&#34;650&#34; height=&#34;150&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;table-with-customized-column-names&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Table with Customized Column Names&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/kable_after_final.png&#34; width=&#34;650&#34; height=&#34;150&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;5&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The &lt;code&gt;scales::percent_format&lt;/code&gt; allows you to change the labels on your plots to percentages!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/percentages_final.png&#34; width=&#34;100&#34; height=&#34;300&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;6&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;When drawing boxplots, I found too many outliers and loved to somehow &lt;code&gt;jitter&lt;/code&gt; just these points. The &lt;code&gt;outlier.alpha&lt;/code&gt; parameter in &lt;code&gt;geom_boxplot&lt;/code&gt; changes the transparency of &lt;strong&gt;only the outliers&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/outliers_alpha_final.png&#34; width=&#34;800&#34; height=&#34;400&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;7&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;dplyr::case_when&lt;/code&gt; is a super useful function that replaces my old trick of nested &lt;code&gt;ifelse&lt;/code&gt; statements.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;an-incomprehensible-example-of-ifelse&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;An Incomprehensible Example of ifelse&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Code from another project:
+odd_man = ifelse(odd_man %in% c(&amp;quot;1-0&amp;quot;, &amp;quot;2-1&amp;quot;, &amp;quot;3-2&amp;quot;, &amp;quot;4-3&amp;quot;), &amp;quot;one_man&amp;quot;, 
+                                 ifelse(odd_man %in% c(&amp;quot;2-0&amp;quot;, &amp;quot;3-1&amp;quot;, &amp;quot;4-2&amp;quot;, &amp;quot;3-0&amp;quot;), &amp;quot;two_plus_man&amp;quot;,
+                                        &amp;quot;all_other_shots&amp;quot;))) &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;a-readable-example-of-case_when&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;A Readable Example of case_when&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;case_when(
+           between(first_submit, week_seq[1], week_seq[2]) ~ 1,
+           first_submit &amp;lt;= week_seq[3] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-07-02&amp;quot;) ~ 2,
+           first_submit &amp;lt;= week_seq[4] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-07-09&amp;quot;) ~ 3,
+           first_submit &amp;lt;= week_seq[5] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-07-16&amp;quot;) ~ 4,
+           first_submit &amp;lt;= week_seq[6] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-07-23&amp;quot;) ~ 5,
+           first_submit &amp;lt;= week_seq[7] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-07-30&amp;quot;) ~ 6,
+           first_submit &amp;lt;= week_seq[8] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-08-06&amp;quot;) ~ 7,
+           first_submit &amp;lt;= week_seq[9] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-08-13&amp;quot;) ~ 8,
+           first_submit &amp;lt;= week_seq[10] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-08-20&amp;quot;) ~ 9,
+           first_submit &amp;lt;= week_seq[11] &amp;amp; first_submit &amp;gt;= as.Date(&amp;quot;2014-08-27&amp;quot;) ~ 10,
+           TRUE ~ 0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;8&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;ggplot2::scale_fill_hue&lt;/code&gt; has a &lt;code&gt;labels&lt;/code&gt; parameter that allows you to change the labels of the legend.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/post/2019-08-17-2018-reu-tricks-in-r_files/scale_fill_hue.png&#34; alt=&#34;scale_fill_hue(labels = c(&amp;quot;High&amp;quot;, &amp;quot;Low&amp;quot;, &amp;quot;Medium&amp;quot;))&#34; width=&#34;100&#34; height=&#34;100&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;code&gt;scale_fill_hue(labels = c(&amp;quot;High&amp;quot;, &amp;quot;Low&amp;quot;, &amp;quot;Medium&amp;quot;))&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;9&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;broom::augment&lt;/code&gt; is a helpful function when tidying models. According to the documentation, &lt;em&gt;augment adds columns to a dataset, containing information such as fitted values, residuals or cluster assignments. All columns added to a dataset have . prefix to prevent existing columns from being overwritten.&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In my case, I used &lt;code&gt;augment&lt;/code&gt; in clustering by adding on a new column called &lt;code&gt;cluster&lt;/code&gt; with the number of cluster.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;ol start=&#34;10&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Last but not least, the compound assignment pipe operator, &lt;code&gt;%&amp;lt;&amp;gt;%&lt;/code&gt;, is very convenient as it saves you time and space. Less code means less errors.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;instead-of&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Instead of&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df &amp;lt;- df %&amp;gt;% mutate(time = c(a,b,c))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;you-can-do&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;You can do&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df %&amp;lt;&amp;gt;% mutate(time = c(a,b,c))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2018 REU Summary of a Data Mining Paper</title>
+      <link>/post/summary-of-a-data-mining-paper/</link>
+      <pubDate>Thu, 28 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/summary-of-a-data-mining-paper/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This is a summary of the paper, &lt;a href=&#34;https://infoscience.epfl.ch/record/232491&#34;&gt;Discovery and Temporal Analysis of Latent Study Patterns in MOOC Interaction Sequences&lt;/a&gt;, written by &lt;a href=&#34;https://www.linkedin.com/in/mina-shirvani-boroujeni-b0574885/&#34;&gt;Mina Shirvani Boroujeni&lt;/a&gt;, who at the time was a PhD Candidate at EPFL but has now become a Data Scientist at Expedia Group in Switzerland, and &lt;a href=&#34;https://www.linkedin.com/in/pierre-dillenbourg-060171/&#34;&gt;Pierre Dillenbourg&lt;/a&gt;, Professor of Learning Technologies at EPFL.&lt;/p&gt;
+&lt;p&gt;Previously, the authors have looked into &lt;a href=&#34;http://www.educationaldatamining.org/EDM2016/proceedings/paper_94.pdf&#34;&gt;learners’ online participation patterns across time&lt;/a&gt; (studied patterns in timing of study sessions and methods to quantify regularity) and &lt;a href=&#34;https://infoscience.epfl.ch/record/223718/files/LAK2017_Forum_Dynamics.pdf&#34;&gt;social dimensions&lt;/a&gt; (researched evolution of social interactions and changes in learners’ roles in MOOC discussion forums over time).&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;purpose-of-paper&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Purpose of paper&lt;/h2&gt;
+&lt;p&gt;According to the researchers, they “investigate MOOC study patterns and perform temporal analysis of learners’ longitudinal behaviors… we aim to identify learners’ study patterns during assessment periods, that is their learning sequences from the opening time of an assignment until the submission deadline”.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Research question: What are the different study patterns exhibited by learners during MOOCs assessment periods and how do learners’ study patterns evolve over time?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dataset&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Dataset&lt;/h2&gt;
+&lt;p&gt;The researchers used data of the interaction logs of students in &lt;em&gt;Functional Programming Principles in Scala&lt;/em&gt; which is an undergraduate engineering MOOC (Massive Open Online Course) produced by EPFL University, a university in Switzerland. The course contains seven video lectures and six assignments where “assessment periods (assignment release to hard deadline) varied between 11 to 18 days”. Also, “the dataset includes three categories of events, describing learners??? interaction with videolectures (play, pause, download, seek, change speed), assignments(submit) and discussion forums (read, write, or vote a message)”&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;data-preprocessing&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Data Preprocessing&lt;/h3&gt;
+&lt;p&gt;The researchers split the full time period of interaction logs into “subsequences corresponding to each assessment period”. They filtered out learners who were inactive (active in less than three assessment periods). AS a result, the study contains “interaction subsequences of 7527 learners”.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hypothesis-driven-method&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hypothesis-Driven Method&lt;/h2&gt;
+&lt;p&gt;This method involves the researchers labelling each students’ activity sequences and then performing clustering.&lt;/p&gt;
+&lt;p&gt;In order to identify patterns, the researchers categorized the sub-sequences according to two criteria:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Whether the learner starts off by watching a video or submitting an assignment&lt;/li&gt;
+&lt;li&gt;Whether the learner submits the assignment before the deadline.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These two criteria yielded the following study patterns:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;V_start: Learner watched the video(s) before submitting the assignment&lt;/li&gt;
+&lt;li&gt;A_start: Learner submitted the assignment without having watched the corresponding video(s)&lt;/li&gt;
+&lt;li&gt;Audit: Learner watched the video(s) but did not submit the assignment&lt;/li&gt;
+&lt;li&gt;Inactive: Learner did not watch the video(s) and did not submit the assignment.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then, the researchers went on to apply &lt;em&gt;hierarchial agglomerative clustering&lt;/em&gt; to extract different patterns of learner profiles. .&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;results&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Results:&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Study pattern distribution:&lt;/em&gt;
+* 69% = learners watch videos before submitting an assignment
+* 10% = learners skip video lectures and directly submit assignments.
+* 8% to 18% = Auditing students increase towards the end of the course
+* 4% to 20% = Proportion of Inactive students increases&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Learners who start by watching videos start their learning sequence earlier&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Interestingly, learners in A_start sessions are less likely to attempt an assignment multiple times and only 6% of A_start learners access lectures after submitting the assignment. Thus, this signifies that A_start learners are likely to know the assignment topic beforehand.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;fixed-study-pattern-comprises-53-of-learners-who-have-identical-study-patterns.&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Fixed Study Pattern: Comprises 53% of learners who have identical study patterns.&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Cluster 1: Comprises 44% of participants who rely on lectures for learning.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cluster 2: Comprises 2% of participants who do not watch the videos before submitting any assignments.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cluster 3: Comprises of &lt;em&gt;auditing&lt;/em&gt; students who do not submit any of the assignments, but follow most of the videos.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;changing-study-pattern-comprises-47-of-learners-who-change-their-approach-at-least-once-during-the-course.&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Changing Study Pattern: Comprises 47% of learners who change their approach at least once during the course.&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Cluster 4: Mainly Assignment_Start Approach, but in first and last assignments, they watch videos before submitting&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cluster 5: Main approach is V_start but skip videos in one or two assignments during course. Interesting point: Start time of learning sequences is closer to assignment deadline, which means proximity of deadline makes them change study approach&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cluster 6: Mainly watch videos first but in last two periods, they submit assignments without watching videos. Achieve nearly complete grades in the first four assignments so these learners are likely to receive a high final grade even without receiving the highest score in the reamining assignments. &lt;em&gt;However, more information about learners’ experience and conditions is required to precisely determine the factors triggering changes in learners’ study approaches&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Cluster 7 and 8: Watch the videos in the first few assignments, but then loses motivation. Cluster 7: submits nearly half of the assignments, but Cluster 8: submit only the first one or two, before switching to the auditing state.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Clusters 9, 10, 11: Start with V_start approach, change to Audit state, and finally wstop watching videos and drop out. Cluster 9: Submit first four assignments and drop out, but in Cluster 10 and 11: stop doing assignments and eventually drop out.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-driven-method&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data-Driven Method&lt;/h2&gt;
+&lt;p&gt;This method invovles unsupervised learning to “discover and track latent study patterns from students’ interaction sequences”.&lt;/p&gt;
+&lt;p&gt;It consists of four steps:
+1) Activity Sequence Modeling
+2) Distance computation
+3) Clustering (Hierarchial Agglomerative Clustering)
+4) Cluster Matching&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;div id=&#34;result&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Result&lt;/h3&gt;
+&lt;p&gt;Identification of 13 different study patterns in Table3.&lt;/p&gt;
+&lt;p&gt;Figure 3 = Transition Probabilities between different study patterns
+* Patterns 10 and 7 are the most predictable study patterns.
+* Pattern 11, &lt;em&gt;inactive learners&lt;/em&gt;, is repeatable with a probability of 0.6
+* Pattern 10 represents a similiar approach to A_start
+* Pattern 7 is the most popular (strongest connections).&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this paper, Boroujeni and Dillenbourg explore two methods to answer their research question: hypothesis method and data-driven method. The hypothesis method reveals that learning approaches definitely change in different manners. Some change to another method and then revert back to their initial method whereas others permanently switch to the new approach. The data-driven method is an unsupervised learning method that uses “action sequences as input”. This revealed 13 different study patterns. Importantly, this research can be “used for analysis of learners’ activities during the course duration”, opening doors to real-time intervention of students facing difficulties. While this paper seeks to analyze different study patterns and their evolutions, our paper will investigate specific patterns that lead to student dropouts. A similar approach is briefly covered in the paper where Table 1 shows the percentage of students who passed the course. This paper only looks into different study patterns and their evolutions, but does not address student retention with respect to the different study patterns students have. On the other hand, we will focus on the problem of student dropouts from MOOCs and its factors using data mining algorithms such as clustering and classification.&lt;/p&gt;
+&lt;p&gt;Our work will directly build on this paper; as mentioned in the Discussion Section, we will capture an overview of the captured behaviors and study pattern sequences into an analytic dashboard to enable intervention and improvement of the course materials by instructors. We will create it with the &lt;a href=&#34;https://shiny.rstudio.com/&#34;&gt;Shiny package in R&lt;/a&gt;. Shiny allows for interactive visualization of data, which will definitely aid instructors in understanding their students and helping those in need.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2018 REU Wine Quality Prediction with caret</title>
+      <link>/post/wine-quality-prediction/</link>
+      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/wine-quality-prediction/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;On June 14th, 2018, I participated in a Data Hackathon as part of the REU program at George Mason University. It was my first ever hackathon and I was excited to finally participate in one. It lasted approximately 4 hours, from 10am to 2pm. Our team, consisting of three undergraduate students, worked with the famous Wine Quality dataset, which is hosted by &lt;a href=&#34;https://archive.ics.uci.edu/ml/index.php&#34;&gt;University of California Irvine’s Center for Machine Learning and Intelligent Systems&lt;/a&gt;. The goal of the hackathon was to accurately predict the Quality variable (“Good”= 1 or “Bad” = 0)&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data&lt;/h1&gt;
+&lt;p&gt;I first import the data and observe it.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load tidyverse and caret package
+library(tidyverse)
+library(caret)
+
+# Import training / test data
+wine_train &amp;lt;- read_csv(&amp;quot;wine_train.csv&amp;quot;)
+wine_test &amp;lt;- read_csv(&amp;quot;wine_test.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glimpse(wine_train)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 799
+## Variables: 12
+## $ `fixed acidity`        &amp;lt;dbl&amp;gt; 7.4, 7.8, 7.8, 11.2, 7.4, 7.4, 7.9, 7.3, …
+## $ `volatile acidity`     &amp;lt;dbl&amp;gt; 0.700, 0.880, 0.760, 0.280, 0.700, 0.660,…
+## $ `citric acid`          &amp;lt;dbl&amp;gt; 0.00, 0.00, 0.04, 0.56, 0.00, 0.00, 0.06,…
+## $ `residual sugar`       &amp;lt;dbl&amp;gt; 1.9, 2.6, 2.3, 1.9, 1.9, 1.8, 1.6, 1.2, 2…
+## $ chlorides              &amp;lt;dbl&amp;gt; 0.076, 0.098, 0.092, 0.075, 0.076, 0.075,…
+## $ `free sulfur dioxide`  &amp;lt;dbl&amp;gt; 11, 25, 15, 17, 11, 13, 15, 15, 9, 17, 15…
+## $ `total sulfur dioxide` &amp;lt;dbl&amp;gt; 34, 67, 54, 60, 34, 40, 59, 21, 18, 102, …
+## $ density                &amp;lt;dbl&amp;gt; 0.9978, 0.9968, 0.9970, 0.9980, 0.9978, 0…
+## $ pH                     &amp;lt;dbl&amp;gt; 3.51, 3.20, 3.26, 3.16, 3.51, 3.51, 3.30,…
+## $ sulphates              &amp;lt;dbl&amp;gt; 0.56, 0.68, 0.65, 0.58, 0.56, 0.56, 0.46,…
+## $ alcohol                &amp;lt;dbl&amp;gt; 9.4, 9.8, 9.8, 9.8, 9.4, 9.4, 9.4, 10.0, …
+## $ Quality                &amp;lt;chr&amp;gt; &amp;quot;B&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;G&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;G&amp;quot;, &amp;quot;…&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glimpse(wine_test)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Observations: 800
+## Variables: 11
+## $ `fixed acidity`        &amp;lt;dbl&amp;gt; 9.4, 7.2, 8.6, 5.1, 7.7, 8.4, 8.2, 8.4, 8…
+## $ `volatile acidity`     &amp;lt;dbl&amp;gt; 0.500, 0.610, 0.550, 0.585, 0.560, 0.520,…
+## $ `citric acid`          &amp;lt;dbl&amp;gt; 0.34, 0.08, 0.09, 0.00, 0.08, 0.22, 0.40,…
+## $ `residual sugar`       &amp;lt;dbl&amp;gt; 3.60, 4.00, 3.30, 1.70, 2.50, 2.70, 2.40,…
+## $ chlorides              &amp;lt;dbl&amp;gt; 0.082, 0.082, 0.068, 0.044, 0.114, 0.084,…
+## $ `free sulfur dioxide`  &amp;lt;dbl&amp;gt; 5, 26, 8, 14, 14, 4, 4, 4, 4, 4, 4, 4, 7,…
+## $ `total sulfur dioxide` &amp;lt;dbl&amp;gt; 14, 108, 17, 86, 46, 18, 10, 10, 10, 12, …
+## $ density                &amp;lt;dbl&amp;gt; 0.99870, 0.99641, 0.99735, 0.99264, 0.997…
+## $ pH                     &amp;lt;dbl&amp;gt; 3.29, 3.25, 3.23, 3.56, 3.24, 3.26, 3.33,…
+## $ sulphates              &amp;lt;dbl&amp;gt; 0.52, 0.51, 0.44, 0.94, 0.66, 0.57, 0.70,…
+## $ alcohol                &amp;lt;dbl&amp;gt; 10.7, 9.4, 10.0, 12.9, 9.6, 9.9, 12.8, 12…&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Training data has 799 observations and 12 variables, including the target variable, Quality, while the testing data has 800 observations and exactly the same attributes except Quality.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-manipulation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data Manipulation&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Change columns names- Take out single quotations and underscores from names 
+names(wine_train) &amp;lt;- gsub(&amp;quot;&amp;#39;&amp;quot;, &amp;#39;&amp;#39;, names(wine_train))
+names(wine_train) &amp;lt;- gsub(&amp;quot; &amp;quot;, &amp;quot;_&amp;quot;, names(wine_train))
+names(wine_train)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;fixed_acidity&amp;quot;        &amp;quot;volatile_acidity&amp;quot;     &amp;quot;citric_acid&amp;quot;         
+##  [4] &amp;quot;residual_sugar&amp;quot;       &amp;quot;chlorides&amp;quot;            &amp;quot;free_sulfur_dioxide&amp;quot; 
+##  [7] &amp;quot;total_sulfur_dioxide&amp;quot; &amp;quot;density&amp;quot;              &amp;quot;pH&amp;quot;                  
+## [10] &amp;quot;sulphates&amp;quot;            &amp;quot;alcohol&amp;quot;              &amp;quot;Quality&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(wine_test) &amp;lt;- gsub(&amp;quot;&amp;#39;&amp;quot;, &amp;#39;&amp;#39;, names(wine_test))
+names(wine_test) &amp;lt;- gsub(&amp;quot; &amp;quot;, &amp;quot;_&amp;quot;, names(wine_test))
+names(wine_test)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] &amp;quot;fixed_acidity&amp;quot;        &amp;quot;volatile_acidity&amp;quot;     &amp;quot;citric_acid&amp;quot;         
+##  [4] &amp;quot;residual_sugar&amp;quot;       &amp;quot;chlorides&amp;quot;            &amp;quot;free_sulfur_dioxide&amp;quot; 
+##  [7] &amp;quot;total_sulfur_dioxide&amp;quot; &amp;quot;density&amp;quot;              &amp;quot;pH&amp;quot;                  
+## [10] &amp;quot;sulphates&amp;quot;            &amp;quot;alcohol&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Change values in Quality column: &amp;quot;B&amp;quot; = 0 &amp;amp; &amp;quot;G&amp;quot; = 1
+wine_train &amp;lt;- wine_train %&amp;gt;% 
+  mutate(Quality = ifelse(Quality == &amp;quot;B&amp;quot;, 0, 1))
+
+# Observe number of 0s and 1s
+table(wine_train$Quality)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+##   0   1 
+## 425 374&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;feature-selection&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Feature Selection&lt;/h1&gt;
+&lt;p&gt;I first wanted to select the relevant and useful features by means of feature selection in the &lt;a href=&#34;https://topepo.github.io/caret/index.html&#34;&gt;caret package&lt;/a&gt;, a popular R package for statistical machine learning. This tutorial got me started: &lt;a href=&#34;https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/&#34; class=&#34;uri&#34;&gt;https://machinelearningmastery.com/feature-selection-with-the-caret-r-package/&lt;/a&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Feature Selection #1
+set.seed(7) # Bring me luck
+train_cor &amp;lt;- cor(wine_train[, -length(names(wine_train))])
+
+# summarize the correlation matrix
+print(train_cor)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                      fixed_acidity volatile_acidity citric_acid
+## fixed_acidity         1.0000000000      -0.30241919  0.69369727
+## volatile_acidity     -0.3024191923       1.00000000 -0.54708405
+## citric_acid           0.6936972747      -0.54708405  1.00000000
+## residual_sugar        0.1732066025      -0.03046016  0.13322604
+## chlorides            -0.0003612805      -0.01426396  0.19704211
+## free_sulfur_dioxide  -0.1562296716       0.03287532 -0.04284979
+## total_sulfur_dioxide -0.2105196234       0.08831363 -0.01356392
+## density               0.7293551024      -0.13418708  0.44405907
+## pH                   -0.6865541686       0.26154512 -0.56343133
+## sulphates             0.1618399522      -0.26807580  0.28944979
+## alcohol               0.1261203673      -0.08160458  0.18895405
+##                      residual_sugar     chlorides free_sulfur_dioxide
+## fixed_acidity            0.17320660 -0.0003612805        -0.156229672
+## volatile_acidity        -0.03046016 -0.0142639627         0.032875319
+## citric_acid              0.13322604  0.1970421057        -0.042849793
+## residual_sugar           1.00000000 -0.0293970980         0.171178339
+## chlorides               -0.02939710  1.0000000000         0.001938843
+## free_sulfur_dioxide      0.17117834  0.0019388434         1.000000000
+## total_sulfur_dioxide     0.14129767  0.0228490477         0.730655240
+## density                  0.39166663  0.0754952020        -0.033797520
+## pH                      -0.05858156 -0.2466119148         0.086088169
+## sulphates                0.02657419  0.4123789331         0.050006477
+## alcohol                  0.19244357 -0.1500365030        -0.019738532
+##                      total_sulfur_dioxide     density           pH
+## fixed_acidity                -0.210519623  0.72935510 -0.686554169
+## volatile_acidity              0.088313629 -0.13418708  0.261545116
+## citric_acid                  -0.013563916  0.44405907 -0.563431327
+## residual_sugar                0.141297672  0.39166663 -0.058581563
+## chlorides                     0.022849048  0.07549520 -0.246611915
+## free_sulfur_dioxide           0.730655240 -0.03379752  0.086088169
+## total_sulfur_dioxide          1.000000000 -0.08564002  0.009654689
+## density                      -0.085640019  1.00000000 -0.379103361
+## pH                            0.009654689 -0.37910336  1.000000000
+## sulphates                     0.054326009  0.13497642 -0.284837597
+## alcohol                      -0.112954461 -0.18361374  0.124704335
+##                        sulphates     alcohol
+## fixed_acidity         0.16183995  0.12612037
+## volatile_acidity     -0.26807580 -0.08160458
+## citric_acid           0.28944979  0.18895405
+## residual_sugar        0.02657419  0.19244357
+## chlorides             0.41237893 -0.15003650
+## free_sulfur_dioxide   0.05000648 -0.01973853
+## total_sulfur_dioxide  0.05432601 -0.11295446
+## density               0.13497642 -0.18361374
+## pH                   -0.28483760  0.12470433
+## sulphates             1.00000000  0.09629489
+## alcohol               0.09629489  1.00000000&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# find attributes that are highly corrected (ideally &amp;gt;0.75)
+high_cor &amp;lt;- findCorrelation(train_cor, cutoff=0.5)
+
+# print indexes of highly correlated attributes
+print(high_cor)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1 3 7&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Index 1 = &lt;code&gt;fixed_acidity&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Index 2 = &lt;code&gt;citric_acid&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Index 3 = &lt;code&gt;total_sulfur_dioxide&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-fitting&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Model Fitting&lt;/h1&gt;
+&lt;p&gt;Since &lt;code&gt;fixed_acidity&lt;/code&gt;, &lt;code&gt;citric_acid&lt;/code&gt; and &lt;code&gt;total_sulfur_dioxide&lt;/code&gt; are highly correlated (redundant), I only used one of these features (&lt;code&gt;total_sulfur_dioxide&lt;/code&gt;) and disposed of the two redundant ones (&lt;code&gt;fixed_acidity&lt;/code&gt;, &lt;code&gt;citric_acid&lt;/code&gt;). At this point, I formulated a hypothesis: a model without redundant features performs better than a model with redundant features. Let’s find out if this is true.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Since the target variable is binary, I fit a logistic regression.&lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Logistic Regression
+wine_train$Quality &amp;lt;- factor(wine_train$Quality, levels = c(0, 1))
+train_log &amp;lt;- createDataPartition(wine_train$Quality, p=0.6, list=FALSE)
+training &amp;lt;- wine_train[train_log, ]
+testing &amp;lt;- wine_train[ -train_log, ]
+
+# Hypothesis: Try logistic regression with all the predictor variables
+mod_log &amp;lt;- train(Quality ~ .,  data=training, method=&amp;quot;glm&amp;quot;, family=&amp;quot;binomial&amp;quot;)
+
+exp(coef(mod_log$finalModel))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          (Intercept)        fixed_acidity     volatile_acidity 
+##         1.864623e+09         1.156801e+00         2.673347e-02 
+##          citric_acid       residual_sugar            chlorides 
+##         2.471207e-01         8.966535e-01         5.374189e-02 
+##  free_sulfur_dioxide total_sulfur_dioxide              density 
+##         1.043678e+00         9.709662e-01         3.506618e-14 
+##                   pH            sulphates              alcohol 
+##         1.598339e+00         1.750577e+01         2.315406e+00&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred &amp;lt;- predict(mod_log, newdata=testing)
+accuracy &amp;lt;- table(pred, testing$Quality)
+sum(diag(accuracy))/sum(accuracy)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.7021944&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Hypothesis: Try logistic regression without the redundant variables
+# Try logistic regression without highly correlated variables
+mod_log_2 &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide + total_sulfur_dioxide + density + pH + sulphates + alcohol,  data=training, method=&amp;quot;glm&amp;quot;, family=&amp;quot;binomial&amp;quot;)
+
+pred_2 &amp;lt;- predict(mod_log_2, newdata = testing)
+accuracy_2 &amp;lt;- table(pred_2, testing$Quality)
+sum(diag(accuracy_2))/sum(accuracy_2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.6959248&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first hypothesis yields an accuracy rate of 71.5%! while the first hypothesis yields 70.8%!
+Apparently, including all the variables yields higher accuracy.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;cross-validation&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Cross Validation&lt;/h1&gt;
+&lt;p&gt;At this point, I looked on the tutorial page for the caret package to learn how to cross validate. I learned about &lt;code&gt;trainControl&lt;/code&gt;, a function “used to specify the type of resampling”. The parameter, &lt;code&gt;method&lt;/code&gt;, specifies &lt;code&gt;repeatedcv&lt;/code&gt;, which stands for repeated cross validation.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Cross validation on the second model where I took out the redundant variables
+ctrl &amp;lt;- trainControl(method = &amp;quot;repeatedcv&amp;quot;, repeats = 10)
+
+# Train logistic regression model
+mod_log_2_ctrl &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                     total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                     trControl = ctrl, method=&amp;quot;glm&amp;quot;, family=&amp;quot;binomial&amp;quot;)
+pred_2_ctrl &amp;lt;- predict(mod_log_2, newdata = testing)
+accuracy_2_ctrl &amp;lt;- table(pred_2, testing$Quality)
+sum(diag(accuracy_2_ctrl))/sum(accuracy_2_ctrl)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.6959248&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I got the same accuracy, which means that I didn’t use cross validation properly…I’ll have to learn more.&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;advanced-models&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Advanced Models&lt;/h1&gt;
+&lt;p&gt;In an effort to achieve a higher accuracy score, I looked for more accurate and powerful models, such as XgBoost, Random Forests, etc.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# XgBoost -----------------------------------------------------------------
+mod_xgboost &amp;lt;- train(Quality ~ ., data=training, 
+      trControl = ctrl, method=&amp;quot;xgbTree&amp;quot;, family=&amp;quot;binomial&amp;quot;)
+pred_xgboost &amp;lt;- predict(mod_xgboost, newdata = testing)
+acc_xgboost &amp;lt;- table(pred_xgboost, testing$Quality)
+sum(diag(acc_xgboost))/sum(acc_xgboost)
+# 70.8%
+
+# Random Forest-----------------------------------------------------------------
+mod_rf &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                  total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                trControl = ctrl, method=&amp;quot;rf&amp;quot;, family=&amp;quot;binomial&amp;quot;)
+pred_rf &amp;lt;- predict(mod_rf, newdata = testing)
+acc_rf &amp;lt;- table(pred_rf, testing$Quality)
+sum(diag(acc_rf)) / sum(acc_rf)
+# 80.6% is an improvement!
+
+# Logit Boost-----------------------------------------------------------------
+mod_logit &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                  total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                trControl = ctrl, method=&amp;quot;LogitBoost&amp;quot;)
+pred_logit &amp;lt;- predict(mod_logit, newdata = testing)
+acc_logit &amp;lt;- table(pred_logit, testing$Quality)
+sum(diag(acc_logit)) / sum(acc_logit)
+# 72.1%
+
+# svmRadial-----------------------------------------------------------------
+mod_svm &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                     total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                   trControl = ctrl, method=&amp;quot;svmRadial&amp;quot;)
+pred_svm &amp;lt;- predict(mod_svm, newdata = testing)
+acc_svm &amp;lt;- table(pred_svm, testing$Quality)
+sum(diag(acc_svm)) / sum(acc_svm)
+# 75.2%
+
+# LMT-----------------------------------------------------------------
+mod_svm_linear &amp;lt;- train(Quality ~ volatile_acidity + residual_sugar + chlorides + free_sulfur_dioxide +
+                   total_sulfur_dioxide + density + pH + sulphates + alcohol, data=training, 
+                 trControl = ctrl, method=&amp;quot;svmLinearWeights2&amp;quot;)
+pred_svm_linear &amp;lt;- predict(mod_svm_linear, newdata = testing)
+acc_svm_linear &amp;lt;- table(pred_svm_linear, testing$Quality)
+sum(diag(acc_svm_linear)) / sum(acc_svm_linear)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I learned about a totally new field in machine learning. Importantly, is very interesting and motivating since coming up with machine learning models feels like creating and refining a crystal ball that shows the future. In the future, I plan on reading through &lt;a href=&#34;https://topepo.github.io/caret/index.html&#34;&gt;this comprehensive tutorial of the caret package&lt;/a&gt;, take machine learning courses on &lt;a href=&#34;www.datacamp.com&#34;&gt;DataCamp&lt;/a&gt;, and hope to learn from the mistakes I made during this hackathon.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2018 REU What does it mean to do research?</title>
+      <link>/post/what-does-it-mean-to-do-research/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/what-does-it-mean-to-do-research/</guid>
+      <description>
+
+
+&lt;p&gt;Drawing upon my experience so far, I believe that research is the act of contributing new knowledge to society through hard work, creativity, and belief. In the next few paragraphs, I want to explain what each of these components mean and their connections to research.&lt;/p&gt;
+&lt;p&gt;Research requires hard work. In order to start a research project, I need to read through many research papers that cover similar topics to understand the current knowledge in the field. Ultimately, I would like to think of what is missing. This whole process requires a lot of hard work that entails hours and hours of solitary thinking and reading. After putting in the hard work, I think collaboration with professors and fellow researchers is important. This means presenting my ideas and findings to my collaborators and listening to other people’s work. After months of continued effort and sacrifice, I will have written a research paper that hopefully displays the amount of time and effort I put into it.&lt;/p&gt;
+&lt;p&gt;Furthermore, I think excellent research requires brilliance and creativity. After reading many papers, I would need to think of new ways to improve upon the current state of research. Rather than coming up with small, incremental results that don’t really change the current state of knowledge, I believe excellent research is characterized by significant discoveries. I can’t currently think of any other method to do so other than putting in the hard work to understand and learn as much as possible about the field and discover new methods and approaches to a problem. Going back to the last paragraph, this means that creativity and some luck can only exist when I put in hard work.&lt;/p&gt;
+&lt;p&gt;The most important aspect of research is belief in the importance of research to society. I have met and studied prominent researchers in the field of statistics and machine learning. They all believe in the importance of their work and its everlasting impact on society. Fundamentally, their work improves society in the long run even though it may not be considered as a hot research project that garners attention from the media and the general public.&lt;/p&gt;
+&lt;p&gt;As a researcher who has just took his first steps, I have many aspirations and high expectations for this summer. I believe hard work, creativity, and belief in the process are going to help me achieve my goals and meet my expectations.&lt;/p&gt;
 </description>
     </item>
     

@@ -1,0 +1,166 @@
+---
+title: Data Visualization of Kaggle ML / Data Science Survey 2017
+author: Howard Baik
+date: '2017-12-23'
+slug: data-visualization-of-kaggle-ml-data-science-survey-2017
+categories:
+  - R
+tags:
+  - Data Analysis
+subtitle: ''
+summary: 'This is my first ever data analysis on my blog and I am excited to show what I have worked on with the Kaggle ML and Data Science Survey 2017.'
+authors: []
+lastmod: '2019-08-17T10:16:35+09:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+# Python vs R
+
+  This is my first ever data analysis on my blog and I'm excited to show what I have worked on with the Kaggle ML and Data Science Survey 2017. For those of you not familiar with this survey, "Kaggle conducted an industry-wide survey to establish a comprehensive view of the state of data science and machine learning. The survey received over 16,000 responses and we learned a ton about who is working with data, what's happening at the cutting edge of machine learning across industries, and how new data scientists can best break into the field." Source: [Kaggle ML and Data Science Survey 2017](https://www.kaggle.com/kaggle/kaggle-survey-2017).
+
+  I will primarily be using the multiple choice responses. I am definitely open to any feedback on my code and any ideas for more visualizations! I want to make more visualizations of this dataset that generate better insights in the battle between Python and R.
+
+<br>
+
+## Data Visualizations I will be walking you through:
+
+1. Barchart of responses to a question of job skill importance between Python and R
+2. Barchart of Job Satisfaction of Code Writers vs Non code writers
+3. Barchart of Work tools frequency between Python and R
+4. Density Plot of Compensation for Recommended Languages
+
+
+```{r warning=FALSE, message= FALSE}
+# Load the most important package in R
+library(tidyverse)
+
+# Read in kaggle multiple choice data
+kaggle_mc <- read_csv("kaggle_mc.csv")
+```
+
+<br>
+
+## Purpose of below graph:
+I visualize how Kagglers responded to the survey question: How important do you think the below skills or certifications are in getting a data science job? The skills: Fluent in R / Python
+
+```{r warning=FALSE}
+kaggle_mc %>% 
+  select(JobSkillImportancePython, JobSkillImportanceR) %>% 
+# tidy the data so that there is a column with language and  another column with responses
+  gather(coding_lang, response, JobSkillImportancePython, JobSkillImportanceR) %>%  
+  filter(!is.na(response)) %>% 
+# Let's draw a barchart of the responses segmented by the programming language
+  ggplot(aes(x = response)) +
+  geom_bar(aes(fill = coding_lang), position = "dodge") +
+  guides(fill=guide_legend(title="Coding Languages")) +
+  xlab("Responses")
+```
+
+<br>
+
+## Reasoning:
+More people responded "Necessary" to Python as the data science skill important to getting a data science job.
+More people responded "Nice to have" and "Unnecessary" to R as the data science skill important for employment.
+
+<br>
+
+## Key Takeaway of above graph: 
+Learning (knowing) Python is absolutely necessary to getting a data science job while learning (knowing) R is secondary in its importance. I agree with this result based upon Stack Overflow Data Scientist David Robinson's blog posts: [The Incredible Growth of Python](https://stackoverflow.blog/2017/09/06/incredible-growth-python/) and [Why is Python Growing So Quickly?](https://stackoverflow.blog/2017/09/14/python-growing-quickly/) 
+
+<br>
+
+## Purpose of  below graph:
+I look at *current* job satisfaction of code writers vs non-code writers.
+
+```{r warning=FALSE}
+kaggle_mc %>% 
+  select(CodeWriter, JobSatisfaction) %>% 
+  ggplot(aes(x = JobSatisfaction)) +
+  geom_bar(aes(fill = CodeWriter), position = "dodge") +
+  coord_flip() +
+xlab("Job Satisfaction Score") +
+ylab("Count") +
+guides(fill=guide_legend(title="Code Writer?")) 
+```
+
+<br>
+
+## Key Takeaway from above graph:
+Non-coders did not respond to the job satisfaction question; it is hard to comment on the job satisfaction of non-coders. On the other hand, the job satisfaction of coders is skewed to the left. Thus, coders are mostly satisfied with their *current* jobs.
+
+<br>
+
+## Purpose of below graph: 
+I find work tools frequency between Python and R.
+
+```{r}
+kaggle_mc %>% 
+  select(WorkToolsFrequencyPython, WorkToolsFrequencyR) %>% 
+  filter(!is.na(WorkToolsFrequencyPython), !is.na(WorkToolsFrequencyR)) %>% 
+  # tidy the data so that we have one column with the coding language and another column with the frequency of usage.
+  gather(coding_lang, frequency, WorkToolsFrequencyPython, WorkToolsFrequencyR) %>% 
+ # plot a barchart of frequency segmented by coding languages 
+ggplot(aes(x = frequency)) +
+  geom_bar(aes(fill = coding_lang), position = "dodge") +
+xlab("Frequency") +
+guides(fill=guide_legend(title="Worktools")) 
+```
+
+
+<br>
+
+## Key Takeaway:
+In the "Most of the time" and "Often" responses, Python has a slight edge over R while in the "Rarely" and "Sometimes" responses, it is R with the advantage. I think I can infer Python is used more than R in the workplace. This makes sense. From what I've read on Linkedin, Twitter, and blog posts, Python is used more than R in industry while the usage of R increases in academia.
+
+<br>
+
+## Purpose of below graph:
+I find the difference of compensation among different *recommended* coding languages, which are determined based on the survey question: What programming language would you recommend a new data scientist learn first? 
+
+```{r warning = F, message = F}
+library(ggridges) # A graphing library that adds life to the ggplot
+
+kaggle_mc_comp <- kaggle_mc %>% 
+  filter(CompensationCurrency == "USD") %>%
+  select(LanguageRecommendationSelect, CompensationAmount)
+   #remove commas in the numbers
+kaggle_mc_comp[["CompensationAmount"]] <- gsub(',', '', kaggle_mc_comp$CompensationAmount)  
+kaggle_mc_comp %>% 
+  mutate(CompensationAmountMillions = as.numeric(CompensationAmount)/1000000) %>% 
+  filter(!is.na(LanguageRecommendationSelect), !is.na(CompensationAmountMillions)) %>% 
+  ggplot(aes(x = CompensationAmountMillions,
+             y = LanguageRecommendationSelect,
+             fill = factor(LanguageRecommendationSelect))) +
+  geom_density_ridges() +
+  xlim(c(0, 4.0)) +
+  xlab("Compensation in Millions") +
+  ylab("Recommended Languages") +
+  ggtitle("Compensation for Recommended Languages") +
+  guides(fill=guide_legend(title="Recommended Languages")) +
+  theme_ridges()
+
+```
+
+
+<br>
+
+
+## Key Takeaway from above graph:
+It is hard to tell the difference in height of these density plots. I may have to find another plot (boxplots?). However, what I do see is that there are some who recommend Julia and earn approximately $1 million USD. These may be outliers.
+
+
+<br>
+
+# Summary of the four visualizations
+* Learning Python is very important in getting a data science job.
+* Workers who code are mostly satisfied with their jobs.
+* Python is used more frequently than R in the workplace.
+
+I look forward to reading your comments / feedback (If anyone knows how to change the contents of the legend, please do leave me a note.)
+
+Thanks for reading. Merry Christmas!
