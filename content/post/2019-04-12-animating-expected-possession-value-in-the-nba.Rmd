@@ -42,9 +42,7 @@ Since EPV is calculated in _real time_, the authors of the paper interpret EPV a
 
 The above graph is best explained by the authors:
 
-> Consider the following possession from the Spurs/Cavaliers game on February 13, 2013. Down by 2 with less than 10 seconds left, the Spurs inbounded to Tony Parker, who drove to the basket, drawing defenders into the paint and leaving Kawhi Leonard wide open in the corner. Instead of attempting the tightly contested layup that would tie the game, Parker dished to a wide-open Leonard, who promptly sank the game-winning 3-pointer, almost unchallenged by the defense. While Leonard's 3-pointer was this possession's (and game's) âcheckmateâ, we see from Figure 2
-how valuable Parker was in setting it up. Parker actually dramatically increased the value of the possession twice â first by driving towards the basket, and then by passing to Leonard.
-
+> Consider the following possession from the Spurs/Cavaliers game on February 13, 2013. Down by 2 with less than 10 seconds left, the Spurs inbounded to Tony Parker, who drove to the basket, drawing defenders into the paint and leaving Kawhi Leonard wide open in the corner. Instead of attempting the tightly contested layup that would tie the game, Parker dished to a wide-open Leonard, who promptly sank the game-winning 3-pointer, almost unchallenged by the defense. While Leonard’s 3-pointer was this possession’s (and game’s) “checkmate”, we see from Figure 2 how valuable Parker was in setting it up. Parker actually dramatically increased the value of the possession twice - first by driving towards the basket, and then by passing to Leonard.
 <br>
 
 **I would like to extend this work by animating the above graph using [`gganimate`](https://gganimate.com/) and interpreting each movement during final minute of a NBA game on November 10th, 2013, between the [Miami Heat vs Brooklyn Nets](https://www.youtube.com/watch?v=K6twYcwd45U) within the context of Expected Possession Value. Unlike a static graph, an animated graph conveys a strong, clear narrative that help teams understand their tracking data.**
