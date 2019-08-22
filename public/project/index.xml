@@ -13,10 +13,28 @@
     
     <item>
       <title>Medium Clap Predictor App</title>
-      <link>/project/external-project/</link>
+      <link>/project/medium-claps-predictor/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/project/external-project/</guid>
+      <guid>/project/medium-claps-predictor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NBA Chuckers App</title>
+      <link>/project/nba-chuckers-app/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/project/nba-chuckers-app/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NHL PBP App</title>
+      <link>/project/nhl-pbp-app/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/project/nhl-pbp-app/</guid>
       <description></description>
     </item>
     
