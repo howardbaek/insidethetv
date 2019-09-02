@@ -31,6 +31,8 @@ _From New York Civil Liberties Union:_
 
 In this post, I will be performing an exploratory data analysis of the stop-and-frisk dataset provided by the [New York Civil Liberties Union.](https://www.nyclu.org/en/stop-and-frisk-data) The data contains 11008 rows and 83 variables. Then, I will use hypothesis testing with the `infer` [package](https://infer.netlify.com/) to assess if there is a statistical difference in police action when approaching a black New Yorker vs a non-black New Yorker.
 
+Code is available [here](https://github.com/howardbaik/insidethetv-code/tree/master/stop-and-frisk)
+
 <br>
 
 ## Exploratory Data Analysis
@@ -44,7 +46,8 @@ library(ggmap)
 library(infer)
 library(cowplot)
 theme_set(theme_light())
-register_google(key = "AIzaSyAqcHj2vykSo2ewu0LS1mdlHxNigBli1FY")
+
+register_google(key = Sys.getenv("MY_GOOGLEKEY"))
 
 # Source of Data: https://www.nyclu.org/en/stop-and-frisk-data
 sqf <- read_excel("2018_sqf_database.xlsx") %>% 

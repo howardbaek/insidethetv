@@ -29,6 +29,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;In this post, I will be performing an exploratory data analysis of the stop-and-frisk dataset provided by the &lt;a href=&#34;https://www.nyclu.org/en/stop-and-frisk-data&#34;&gt;New York Civil Liberties Union.&lt;/a&gt; The data contains 11008 rows and 83 variables. Then, I will use hypothesis testing with the &lt;code&gt;infer&lt;/code&gt; &lt;a href=&#34;https://infer.netlify.com/&#34;&gt;package&lt;/a&gt; to assess if there is a statistical difference in police action when approaching a black New Yorker vs a non-black New Yorker.&lt;/p&gt;
+&lt;p&gt;Code is available &lt;a href=&#34;https://github.com/howardbaik/insidethetv-code/tree/master/stop-and-frisk&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;exploratory-data-analysis&#34; class=&#34;section level2&#34;&gt;
