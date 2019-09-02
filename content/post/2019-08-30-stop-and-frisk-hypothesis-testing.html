@@ -1,0 +1,178 @@
+---
+title: 'Stop and Frisk: Hypothesis Testing'
+author: Howard Baik
+date: '2019-08-30'
+slug: stop-and-frisk-hypothesis-testing
+categories:
+  - R
+tags:
+  - Computational Social Science
+subtitle: ''
+summary: 'I will be performing an exploratory data analysis of the stop and frisk dataset provided by the New York Civil Liberties Union'
+authors: []
+lastmod: '2019-08-30T16:26:42+09:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<p><br></p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p><em>From New York Civil Liberties Union:</em></p>
+<blockquote>
+<p>Every time a police officer stops a person in NYC, the officer is supposed to fill out a form recording the details of the stop. The forms were filled out by hand and manually entered into an NYPD database until 2017, when the forms became electronic. The annual database includes nearly all of the data recorded by the police officer after a stop such as the age of the person stopped, if a person was frisked, if there was a weapon or firearm recovered, if physical force was used, and the exact location of the stop within the precinct.</p>
+</blockquote>
+<p><br></p>
+<p>In this post, I will be performing an exploratory data analysis of the stop-and-frisk dataset provided by the <a href="https://www.nyclu.org/en/stop-and-frisk-data">New York Civil Liberties Union.</a> The data contains 11008 rows and 83 variables. Then, I will use hypothesis testing with the <code>infer</code> <a href="https://infer.netlify.com/">package</a> to assess if there is a statistical difference in police action when approaching a black New Yorker vs a non-black New Yorker.</p>
+<p><br></p>
+</div>
+<div id="exploratory-data-analysis" class="section level2">
+<h2>Exploratory Data Analysis</h2>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><br></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="understanding-police-stops-with-maps" class="section level2">
+<h2>Understanding Police Stops with Maps</h2>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ul>
+<li>In this map, I’m using a couple tricks I learned from <a href="https://www.youtube.com/user/safe4democracy/videos">David Robinson’s screencasts</a>. First, in order to better show the higher values of <code>stop_duration_minutes</code>, I arrange in increasing order of <code>stop_duration_minutes</code>. This allows ggplot to plot the lower values (lighter colors) first and then plot the higher values (redder colors) next, allowing me to emphasize regions with long stop duration in redder colors. Second, the histogram shows that the stop duration is skewed to the right- according to David, “you can go a little bit below the median, but way above”. As a result, I transform the scale using the <code>trans</code> argument and choose the midpoint to be <code>log10(median(value))</code>. This way, the color scale gives more meaning to the data.</li>
+</ul>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><br></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ul>
+<li>We can see that suspects are predominantly white or black, with apparently more black suspects than white suspects.</li>
+</ul>
+<p><br></p>
+</div>
+<div id="racial-discrimination-in-friskingsearching-suspects" class="section level2">
+<h2>Racial discrimination in frisking/searching suspects</h2>
+<p>I will perform hypothesis testing to find whether police engage in an action, specified by each of these columns, more on black suspects than non-black suspects in a statistically significant manner. Specfically, I will use the <code>infer</code> package, following the steps layed out in <a href="https://moderndive.com/9-hypothesis-testing.html">Modern Dive Chapter 9</a></p>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<ul>
+<li>This facetted plot shows that the police frisk, handcuff, use restraint and verbal instruction on black suspects more than non-black suspects</li>
+</ul>
+<p><br></p>
+<div id="using-infer-for-hypothesis-testing" class="section level3">
+<h3>Using <code>infer</code> for hypothesis testing</h3>
+<ul>
+<li>Let’s first create the processed version of <code>sqf</code> by taking out <code>(null)</code> inside <code>suspect_race_description</code> and lumping <code>suspect_race_description</code> into two groups of race: <code>BLACK</code> and <code>NON-BLACK</code>.</li>
+</ul>
+<pre class="r"><code>sqf_testing &lt;- sqf %&gt;% 
+  filter(suspect_race_description != &quot;(null)&quot;) %&gt;% 
+  mutate(suspect_race_description = if_else(suspect_race_description == &quot;BLACK HISPANIC&quot;, &quot;BLACK&quot;,
+                                                         suspect_race_description)) %&gt;% 
+  mutate(suspect_race_description = if_else(suspect_race_description != &quot;BLACK&quot;, &quot;NON-BLACK&quot;,
+                                                         suspect_race_description))</code></pre>
+<p><br></p>
+<ul>
+<li>Then, we use <code>specify</code> to formulate the response and explanatory variables. Let’s use <code>frisked_flag</code> as the response variable and obviously, <code>suspect_race_description</code> as the explanatory variable. The argument <code>success = &quot;Y&quot;</code> reveals that we are interested in the proportion of “Y” in the <code>frisked_flag</code> column.</li>
+</ul>
+<pre class="r"><code>sqf_testing %&gt;% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = &quot;Y&quot;) </code></pre>
+<p><br></p>
+<ul>
+<li>Now, we set meta data required for hyphotesis testing where we set <code>null = &quot;independence&quot;</code> for two sample (<code>BLACK</code> and <code>NON-BLACK</code>) hypothesis testing.</li>
+</ul>
+<pre class="r"><code>sqf_testing %&gt;% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = &quot;Y&quot;) %&gt;% 
+  hypothesize(null = &quot;independence&quot;) </code></pre>
+<p><br></p>
+<ul>
+<li>Here, we <code>generate</code> replicates of “shuffled” datasets assuming the null hypothesis is true.</li>
+</ul>
+<pre class="r"><code>sqf_testing %&gt;% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = &quot;Y&quot;) %&gt;% 
+  hypothesize(null = &quot;independence&quot;) %&gt;% 
+  generate(reps = 1000, type = &quot;permute&quot;)</code></pre>
+<p><br></p>
+<ul>
+<li>Now, we <code>calculate</code> the appropriate summary statistic for each of our 1000 shuffles, called the test statistic. According to Modern Dive, <em>“…since the unknown population parameter of interest is the difference in population proportions, the test statistic of interest here is the difference in sample proportions”</em> We have 1000 values of <code>stat</code> and we assign this dataframe to <code>null_distribution</code></li>
+</ul>
+<pre class="r"><code>null_distribution &lt;- sqf_testing %&gt;% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = &quot;Y&quot;) %&gt;% 
+  hypothesize(null = &quot;independence&quot;) %&gt;% 
+  generate(reps = 1000, type = &quot;permute&quot;) %&gt;% 
+  calculate(stat = &quot;diff in props&quot;, order = c(&quot;BLACK&quot;, &quot;NON-BLACK&quot;))</code></pre>
+<p><br></p>
+<ul>
+<li>Here, we calculate the observed difference in proportion between blacks and non-blacks by using the same code as above except we remove <code>hypothesize</code> and <code>generate</code></li>
+</ul>
+<pre class="r"><code>obs_diff_prop &lt;- sqf_testing %&gt;% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = &quot;Y&quot;) %&gt;% 
+  calculate(stat = &quot;diff in props&quot;, order = c(&quot;BLACK&quot;, &quot;NON-BLACK&quot;))</code></pre>
+<p><br></p>
+<ul>
+<li>Now, we visualize the <code>null_distribution</code> (values of the difference in proportions assuming that there is no racial discrimination) with a histogram and then “add what happened in real-life” with a red line and shades. Here, the shaded region is the p-value:</li>
+</ul>
+<blockquote>
+<p>A p-value is the probability of obtaining a test statistic just as or more extreme than the observed test statistic assuming the null hypothesis is true.</p>
+</blockquote>
+<pre class="r"><code>visualize(null_distribution, bins = 10) + 
+  shade_p_value(obs_stat = obs_diff_prop, direction = &quot;right&quot;)</code></pre>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><br></p>
+<ul>
+<li>In the above graph, we clearly see that the p-value is extremely low. We calculate the exact p-value (“fraction that the null distribution is shaded”) with <code>get_p_value</code></li>
+</ul>
+<pre class="r"><code>null_distribution %&gt;% 
+  get_p_value(obs_stat = obs_diff_prop, direction = &quot;right&quot;)</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
+<p><br></p>
+<ul>
+<li>Below, we create a wrapper function that does all the steps we just covered so that we can iterate this hypothesis testing on all our desired columns.</li>
+</ul>
+<pre class="r"><code># Wrapper Function
+run_hypothesis_test &lt;- function(response_var) {
+  
+  f &lt;- as.formula(
+  paste(response_var, 
+        &quot;suspect_race_description&quot;, 
+        sep = &quot; ~ &quot;))
+  
+  null_distribution &lt;- sqf_testing  %&gt;% 
+    specify(formula = f, success = &quot;Y&quot;) %&gt;% 
+    # &quot;independence&quot; for hypotheses involving two samples
+    hypothesize(null = &quot;independence&quot;) %&gt;% 
+    generate(reps = 1000, type = &quot;permute&quot;) %&gt;% 
+    calculate(stat = &quot;diff in props&quot;, order = c(&quot;BLACK&quot;, &quot;NON-BLACK&quot;))
+  
+  
+  obs_diff_prop &lt;- sqf_testing %&gt;% 
+    specify(formula = f, success = &quot;Y&quot;) %&gt;% 
+    calculate(stat = &quot;diff in props&quot;, order = c(&quot;BLACK&quot;, &quot;NON-BLACK&quot;))
+  
+  # Calculate P-value
+  null_distribution %&gt;% 
+    get_p_value(obs_stat = obs_diff_prop, direction = &quot;right&quot;) # Because P(BLACK) &gt; P(NON-BLACK)
+}
+
+
+# Find desired variables
+testing_names &lt;- sqf %&gt;% 
+  select(contains(&quot;physical&quot;), contains(&quot;frisked&quot;), contains(&quot;searched&quot;)) %&gt;% 
+  names()
+
+results &lt;- testing_names %&gt;% 
+  map_df(~(data.frame(p_value = run_hypothesis_test(.x))),
+         .id = &quot;response_variable&quot;)</code></pre>
+<p><img src="/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<blockquote>
+<p>All response variables have p-values that are bigger than 0.05 except for <code>physical_force_restraint_used_flag</code> and <code>frisked_flag</code>. This signifies that we reject the null hypothesis for these variables and conclude that there is evidence to suggest that police frisk and use physical force on blacks suspects more than non-black suspects.</p>
+</blockquote>
+</div>
+</div>

@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Statistics Undergrad at the University of Washington who works on data analytics projects using R
+bio: Statistics Undergraduate at the University of Washington who works on data analytics projects using R
 education:
   courses:
   - course: BS in Statistics
@@ -10,7 +10,7 @@ education:
 email: ""
 interests:
 - Tidyverse
-- Sports Analytics
+- Computational Social Science
 - Interactive Web Applications (Shiny, Shinydashboard)
 name: Howard Baik
 organizations:

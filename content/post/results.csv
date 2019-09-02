@@ -1,0 +1,11 @@
+response_variable,p_value
+physical_force_cew_flag,0.958
+physical_force_draw_point_firearm_flag,0.784
+physical_force_handcuff_suspect_flag,0.3
+physical_force_oc_spray_used_flag,1
+physical_force_other_flag,0.874
+physical_force_restraint_used_flag,0.001
+physical_force_verbal_instruction_flag,0.123
+physical_force_weapon_impact_flag,0.892
+frisked_flag,0
+searched_flag,1
