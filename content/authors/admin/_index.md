@@ -1,10 +1,10 @@
 ---
 authors:
 - admin
-bio: Statistics Undergraduate at the University of Washington who works on data analytics projects using R
+bio: Undergraduate at the University of Washington who works on data analytics projects using R
 education:
   courses:
-  - course: BS in Statistics
+  - course: BS
     institution: University of Washington
     year: Present
 email: ""
@@ -33,4 +33,4 @@ user_groups:
 - Visitors
 ---
 
-Statistics Undergrad at the University of Washington who works on data analytics projects using R
+Undergrad at the University of Washington who works on data analytics projects using R
