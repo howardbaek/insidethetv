@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Undergraduate at the University of Washington who works on data analytics projects using R
+bio: Undergraduate at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaik@gmail.com
 education:
   courses:
   - course: BS
@@ -33,4 +33,4 @@ user_groups:
 - Visitors
 ---
 
-Undergrad at the University of Washington who works on data analytics projects using R
+Undergrad at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaik@gmail.com
