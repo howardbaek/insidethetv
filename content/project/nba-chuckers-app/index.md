@@ -1,6 +1,6 @@
 ---
 date: "2016-04-27T00:00:00Z"
-external_link: https://jsonbaik.shinyapps.io/nba-chuckers/
+external_link: https://howiebaek.shinyapps.io/nba-chuckers/
 image:
   caption: NBA Lineups
   focal_point: Smart

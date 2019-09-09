@@ -1,6 +1,6 @@
 ---
 date: "2016-04-27T00:00:00Z"
-external_link: https://jsonbaik.shinyapps.io/nhl-pbp/
+external_link: https://howiebaek.shinyapps.io/nhl-pbp/
 image:
   caption: NHL PBP App
   focal_point: Smart
