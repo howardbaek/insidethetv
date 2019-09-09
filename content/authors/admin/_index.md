@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Undergraduate at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaik@gmail.com
+bio: Undergraduate at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaek@gmail.com
 education:
   courses:
   - course: BS
@@ -12,7 +12,7 @@ interests:
 - Tidyverse
 - Computational Social Science
 - Interactive Web Applications (Shiny, Shinydashboard)
-name: Howard Baik
+name: Howard Baek
 organizations:
 - name: University of Washington
   url: ""
@@ -23,14 +23,14 @@ social:
   link: '#contact'
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/howard_baik
+  link: https://twitter.com/howard_baek
 - icon: github
   icon_pack: fab
-  link: https://github.com/howardbaik
+  link: https://github.com/howardbaek
 superuser: true
 user_groups:
 - Researchers
 - Visitors
 ---
 
-Undergrad at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaik@gmail.com
+Undergrad at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaek@gmail.com
