@@ -46,7 +46,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;p&gt;&lt;strong&gt;I would like to extend this work by animating the above graph using &lt;a href=&#34;https://gganimate.com/&#34;&gt;&lt;code&gt;gganimate&lt;/code&gt;&lt;/a&gt; and interpreting each movement during a NBA game on November 10th, 2013, between the &lt;a href=&#34;https://www.youtube.com/watch?v=K6twYcwd45U&#34;&gt;Miami Heat vs Brooklyn Nets&lt;/a&gt; within the context of Expected Possession Value. Unlike a static graph, an animated graph conveys a strong, clear narrative that help teams understand their tracking data.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;A couple of notes: EPV is calculated as soon as the ball crosses the mid court line and the jersey numbers on each player are scraped from &lt;a href=&#34;https://www.swishanalytics.com/nba/players/player?id=214152&#34;&gt;Swish Analytics.&lt;/a&gt; The site reflects recent jersey numbers, which means Lebron James is #23 in the animations even though he wore #6 for the Miami Heat.&lt;/p&gt;
 &lt;p&gt;This work was enabled by Dan Cervone’s &lt;a href=&#34;https://github.com/dcervone/EPVDemo&#34;&gt;data and code&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaek/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;div id=&#34;frantic-action-leading-to-terry-3-pointer&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Frantic Action leading to Terry 3-Pointer&lt;/h3&gt;
@@ -167,7 +167,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;p&gt;Briefly, this game is played at Brooklyn in the early stages of the 2013-2014 NBA season, with Brooklyn expected to challenge Miami for a championship in the spring. The home fans are expecting a victory as their team is up 8 points with one minute left.&lt;/p&gt;
 &lt;p&gt;A couple of notes: EPV is calculated as soon as the ball crosses the mid court line and the jersey numbers on each player are scraped from &lt;a href=&#34;https://www.swishanalytics.com/nba/players/player?id=214152&#34;&gt;Swish Analytics.&lt;/a&gt; The site reflects recent jersey numbers, which means Lebron James is #23 in the animations even though he wore #6 for the Miami Heat.&lt;/p&gt;
 &lt;p&gt;This work was enabled by Dan Cervone’s &lt;a href=&#34;https://github.com/dcervone/EPVDemo&#34;&gt;data and code&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The code used in this post is stored &lt;a href=&#34;https://github.com/howardbaek/nba-animation/blob/master/final-result.Rmd&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;paul-pierce-isolation&#34; class=&#34;section level1&#34;&gt;

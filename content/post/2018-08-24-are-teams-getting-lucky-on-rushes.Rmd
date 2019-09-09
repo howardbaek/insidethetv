@@ -795,4 +795,4 @@ Hockey is an unpredictable sport. This signifies that a team that may have a hor
 
 I would like to thank Sam Ventura for his valuable advice.
 
-[Code](https://github.com/howardbaik/insidethetv-code/blob/master/are-teams-getting-lucky-nhl.Rmd)
+[Code](https://github.com/howardbaek/insidethetv-code/blob/master/are-teams-getting-lucky-nhl.Rmd)

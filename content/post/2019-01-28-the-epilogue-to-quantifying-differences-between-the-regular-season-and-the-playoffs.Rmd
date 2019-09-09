@@ -91,6 +91,6 @@ The reason, I'd argue, is that the power play is a more structured game within t
 * Rate of hits differ the most from regular season to playoffs.
 * On average, there is a larger discrepancy from regular season to playoffs in 5-on-5 situations since 5-on-5 play is more fluid.
 
-Code is available [here](https://github.com/howardbaik/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd)
+Code is available [here](https://github.com/howardbaek/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd)
 
 The author would like to thank Alex Novet and Sam Ventura for their contributions to this article.

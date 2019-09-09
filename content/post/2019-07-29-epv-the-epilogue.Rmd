@@ -62,7 +62,7 @@ A couple of notes: EPV is calculated as soon as the ball crosses the mid court l
 
 This work was enabled by Dan Cervone's [data and code](https://github.com/dcervone/EPVDemo). 
 
-The code used in this post is stored [here](https://github.com/howardbaik/nba-animation/blob/master/final-result.Rmd)
+The code used in this post is stored [here](https://github.com/howardbaek/nba-animation/blob/master/final-result.Rmd)
 
 
 <br>
