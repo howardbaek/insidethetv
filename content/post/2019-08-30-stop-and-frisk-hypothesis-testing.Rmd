@@ -19,3 +19,471 @@ image:
 projects: []
 ---
 
+
+<br>
+
+## Introduction
+
+_From New York Civil Liberties Union_
+
+> Every time a police officer stops a person in NYC, the officer is supposed to fill out a form recording the details of the stop. The forms were filled out by hand and manually entered into an NYPD database until  2017, when the forms became electronic. The annual database includes nearly all of the data recorded by the police officer after a stop such as the age of the person stopped, if a person was frisked, if there was a weapon or firearm recovered, if physical force was used, and the exact location of the stop within the precinct.
+
+<br>
+
+In this post, I will be performing an exploratory data analysis of the stop-and-frisk dataset provided by the [NYPD on the New York Civil Liberties Union website.](https://www.nyclu.org/en/stop-and-frisk-data) The data contains 11008 rows and 83 variables. Then, I will use hypothesis testing with the `infer` [package](https://infer.netlify.com/) to assess if there is a statistical difference in police action when approaching a black New Yorker vs a non-black New Yorker.
+
+Code is available [here](https://github.com/howardbaek/insidethetv-code/tree/master/stop-and-frisk)
+
+# NOTES: 
+
+To date, the project has collected and standardized over 200 million records of traffic stop and search data from across the country.
+
+Stop Rates:
+
+The data show that officers generally stop black drivers at higher rates than white drivers, and stop Hispanic drivers at similar or lower rates than whites
+For example, driving behavior and time spent on the road likely differ by race or ethnicity. The racial composition of the local population also may not be representative of those who drive through an area, especially when dealing with stops on highways.
+
+
+After the Stop:
+
+After accounting for age, gender, and location, we find that officers ticket, search, and arrest black and Hispanic drivers more often than whites. 
+
+
+The outcome test:
+
+Becker proposed looking at search outcomes. If officers don’t discriminate, he argued, they should find contraband — like illegal drugs or weapons — on searched minorities at the same rate as on searched whites. If searches of minorities turn up contraband at lower rates than searches of whites, the outcome test suggests officers are applying a double standard, searching minorities on the basis of less evidence.
+
+In our data, the success rate of searches (or the hit rate) is generally lower for Hispanic drivers compared to whites; so the outcome test indicates Hispanics face discrimination. For black drivers, search hit rates are typically in line with those of white drivers, indicating an absence of discrimination.
+
+
+The threshold test:
+
+
+
+
+
+
+<br>
+
+## Exploratory Data Analysis
+
+
+```{r, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(ggmap)
+library(infer)
+library(cowplot)
+theme_set(theme_light())
+
+register_google(key = Sys.getenv("MY_GOOGLEKEY"))
+
+# Source of Data: https://www.nyclu.org/en/stop-and-frisk-data
+sqf <- read_excel("2018_sqf_database.xlsx") %>% 
+  janitor::clean_names() 
+
+# Geocodes
+geo_1_2500 <- read_csv("geocode_1_2500.csv")
+geo_2501_5000 <- read_csv("geocode_2501_5000.csv")
+geo_5001_7500 <- read_csv("geocode_5001_7500.csv")
+geo_7501_10000 <- read_csv("geocode_7501_10000.csv")
+geo_10001_end <- read_csv("geo_10001_end.csv")
+
+geocodes <- geo_1_2500 %>% 
+  rbind(geo_2501_5000) %>% 
+  rbind(geo_5001_7500) %>% 
+  rbind(geo_7501_10000) %>% 
+  rbind(geo_10001_end)
+
+# Get a map of manhattan
+manhattan_map <- get_map(location = c(lon = -74.00, lat = 40.77), maptype = "terrain", zoom = 11)
+```
+
+
+```{r, echo=FALSE, message = FALSE}
+sqf %>% 
+  filter(stop_duration_minutes < 30) %>% 
+  ggplot(aes(stop_duration_minutes)) +
+  geom_histogram(fill = "cornflowerblue") +
+  scale_x_continuous(breaks = c(0, 3, 5, 10, 15, 20, 25, 30)) +
+  labs(x = "Stop Duration in Minutes",
+       y = NULL) +
+  theme(text = element_text(family = "Avenir")) +
+  ggtitle("Stop duration tends to be in multiples of 5",
+          subtitle = "Stop duration less than 30 minutes")
+```
+
+- This seems like a clear example of the officers just rounding to the nearest 5 as its unlikely that the actual stop durations are always multiples of 5. 
+
+
+<br>
+
+
+```{r, echo = FALSE, warning=FALSE}
+p1 <- sqf %>% 
+  count(suspected_crime_description, sort = TRUE) %>% 
+  mutate(suspected_crime_description = if_else(suspected_crime_description =="CPW",
+                                               "CRIMINAL POSSESSION OF WEAPONS",
+                                               suspected_crime_description)) %>% 
+  head(12) %>% 
+  mutate(suspected_crime_description = fct_reorder(suspected_crime_description, n)) %>% 
+  ggplot(aes(suspected_crime_description, n)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(text = element_text(family = "Avenir")) +
+  coord_flip() +
+  labs(x = NULL,
+       y = NULL) +
+  ggtitle("Top 12 Suspected Crime Descriptions")
+
+
+p2 <- sqf %>% 
+  count(suspect_arrest_offense, sort = TRUE) %>% 
+  filter(suspect_arrest_offense != "(null)") %>% 
+  mutate(suspect_arrest_offense = if_else(suspect_arrest_offense =="CPW",
+                                               "CRIMINAL POSSESSION OF WEAPONS",
+                                               suspect_arrest_offense)) %>% 
+  head(12) %>% 
+  mutate(suspect_arrest_offense = fct_reorder(suspect_arrest_offense, n)) %>% 
+  ggplot(aes(suspect_arrest_offense, n)) +
+  geom_col(fill = "cornflowerblue") +
+  theme(text = element_text(family = "Avenir")) +
+  coord_flip() +
+  labs(x = NULL,
+       y = NULL) +
+  ggtitle("Top 12 Suspect Arrest Offense")
+
+
+plot_grid(p1, p2, ncol = 1, align = "hv")
+```
+
+
+```{r, echo = FALSE, message = FALSE}
+sqf %>% 
+  filter(suspect_reported_age != "(null)") %>% 
+  mutate(suspect_reported_age = as.numeric(suspect_reported_age)) %>% 
+  filter(suspect_reported_age > 0) %>% 
+  ggplot(aes(suspect_reported_age)) +
+  geom_histogram(fill = "cornflowerblue") +
+  geom_vline(xintercept = 26, color = "black", size = 2, lty = 2) +
+  theme(text = element_text(family = "Avenir")) +
+  labs(x = "Suspect Reported Age",
+       y = NULL) +
+  ggtitle("Suspect Reported Age is Skewed to the right & Bimodal",
+          subtitle = "Median Age: 26") 
+```
+
+
+<br>
+
+
+## Understanding Police Stops with Maps
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE}
+geocodes_stop_duration <- geocodes %>%
+  mutate(stop_duration_minutes = sqf$stop_duration_minutes) %>% 
+  # Filter for points in Manhattan, Brooklyn, Bronx, Queens
+  filter(between(lon, -74, -71),
+         between(lat, 40, 41)) %>% 
+  # Arrange so that redder colors appear on top of bluer colors
+  arrange(stop_duration_minutes)
+
+
+
+ggmap(manhattan_map) +
+  geom_point(data = geocodes_stop_duration, aes(x = lon, y = lat, color = stop_duration_minutes)) +
+  scale_color_gradient2(low = "blue",
+                        high = "red",
+                        midpoint = log10(median(sqf$stop_duration_minutes)),
+                        trans = "log10",
+                        labels = scales::comma_format()) +
+  theme_void() +
+  theme(text = element_text(family = "Avenir")) +
+  labs(color = "Stop Duration (Min)",
+       title = "Stop duration in New York City",
+       subtitle = "Manhattan, Brooklyn, Bronx, Queens")
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+geocodes_stop_duration %>% 
+  ggplot(aes(stop_duration_minutes)) +
+  geom_histogram() +
+  labs(x = "Stop Duration (Min)",
+       y = NULL,
+       title = "Skewed to the right")
+```
+
+
+- In this map, I'm using a couple tricks I learned from [David Robinson's screencasts](https://www.youtube.com/user/safe4democracy/videos). First, in order to better show the higher values of `stop_duration_minutes`, I arrange in increasing order of `stop_duration_minutes`. This allows ggplot to plot the lower values (lighter colors) first and then plot the higher values (redder colors) next, allowing me to emphasize regions with long stop duration in redder colors. Second, the histogram shows that the stop duration is skewed to the right- according to David, "you can go a little bit below the median, but way above". As a result, I transform the scale using the `trans` argument and choose the midpoint to be `log10(median(value))`. This way, the color scale gives more meaning to the data. 
+
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE}
+geocodes_observed_duration <- geocodes %>%
+  mutate(observed_duration_minutes = sqf$observed_duration_minutes) %>% 
+  # Filter for points in Manhattan, Brooklyn, Bronx, Queens
+  filter(between(lon, -74, -71),
+         between(lat, 40, 41)) %>% 
+  # Arrange so that redder colors appear on top of bluer colors
+  arrange(observed_duration_minutes)
+
+
+
+ggmap(manhattan_map) +
+  geom_point(data = geocodes_observed_duration, aes(x = lon, y = lat, color = observed_duration_minutes)) +
+  scale_color_gradient2(low = "blue",
+                        high = "red",
+                        midpoint = log10(median(sqf$observed_duration_minutes)),
+                        trans = "log10",
+                        labels = scales::comma_format()) +
+  theme_void() +
+  theme(text = element_text(family = "Avenir")) +
+  labs(color = "Observed Duration (Min)",
+       title = "Observed duration in New York City",
+       subtitle = "Manhattan, Brooklyn, Bronx, Queens")
+```
+
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+geocodes_observed_duration %>% 
+  filter(observed_duration_minutes < 250) %>% 
+  ggplot(aes(observed_duration_minutes)) +
+  geom_histogram() +
+  labs(x = "Observed Duration (Min)",
+       y = NULL,
+       title = "Skewed to the right")
+```
+
+<br>
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+geocodes_suspect_race <- geocodes %>%
+  mutate(suspect_race_description = sqf$suspect_race_description) %>% 
+  # Filter for points in Manhattan, Brooklyn, Bronx, Queens
+  filter(between(lon, -74, -71),
+         between(lat, 40, 41)) %>% 
+  # Combine some races into one
+  mutate(suspect_race_description = if_else(suspect_race_description == "BLACK HISPANIC", "BLACK",
+                                            suspect_race_description),
+         suspect_race_description = if_else(suspect_race_description == "WHITE HISPANIC", "WHITE",
+                                            suspect_race_description)) %>%  
+  filter(suspect_race_description != "(null)")
+
+
+ggmap(manhattan_map) +
+  geom_jitter(data = geocodes_suspect_race, aes(x = lon, y = lat, color = suspect_race_description),
+              alpha = 0.25) +
+  labs(color = "Suspect Race",
+       title = "Suspect Races in New York City",
+       subtitle = "Manhattan, Brooklyn, Bronx, Queens") +
+  theme_void() +
+  theme(text = element_text(family = "Avenir")) 
+```
+
+- We can see that suspects are predominantly white or black, with apparently more black suspects than white suspects. 
+
+
+<br>
+
+## Racial discrimination in frisking/searching suspects
+
+I will perform hypothesis testing to find whether police engage in an action, specified by each of these columns, more on black suspects than non-black suspects in a statistically significant manner. Specfically, I will use the `infer` package, following the steps layed out in [Modern Dive Chapter 9](https://moderndive.com/9-hypothesis-testing.html)
+
+```{r, echo=FALSE}
+sqf %>% 
+  filter(suspect_race_description != "(null)") %>% 
+  mutate(suspect_race_description = if_else(suspect_race_description == "BLACK HISPANIC", "BLACK",
+                                                         suspect_race_description)) %>% 
+  mutate(suspect_race_description = if_else(suspect_race_description != "BLACK", "NON-BLACK",
+                                                         suspect_race_description)) %>% 
+  group_by(suspect_race_description) %>% 
+  # Find proportion of Yes 
+  summarise_at(vars(contains("physical"), contains("frisked"), contains("searched")), ~mean(. == "Y")) %>% 
+  # Rename all columns except first column
+  rename_at(-1, ~paste0(., "_prop")) %>% 
+  gather("action", "proportion", -suspect_race_description) %>% 
+  # Filter out non-existent actions
+  filter(!(action %in% c("physical_force_weapon_impact_flag_prop",
+                         "physical_force_oc_spray_used_flag_prop",
+                         "physical_force_cew_flag_prop"))) %>% 
+  mutate(action = case_when(
+    action == "frisked_flag_prop" ~ "Frisked",
+    action == "physical_force_draw_point_firearm_flag_prop" ~ "Draw Firearm",
+    action == "physical_force_handcuff_suspect_flag_prop" ~ "Handcuff",
+    action == "physical_force_other_flag_prop" ~ "Other Physical Force",
+    action == "physical_force_restraint_used_flag_prop" ~ "Restraint Used",
+    action == "physical_force_verbal_instruction_flag_prop" ~ "Verbal Instruction",
+    action == "searched_flag_prop" ~ "Searched"
+    
+  )) %>% 
+  ggplot(aes(action, proportion, fill = suspect_race_description)) +
+  geom_col(position = "dodge") +
+  labs(x = NULL,
+       y = NULL,
+       fill = "Suspect Race Description",
+       title = "Distribution of police action on suspects",
+       subtitle = "Blacks vs Non-Blacks") +
+  facet_wrap(~action, scales = "free") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_x_discrete(labels = NULL) +
+  theme(text = element_text(family = "Avenir")) 
+```
+
+
+- This facetted plot shows that the police frisk, handcuff, use restraint and verbal instruction on black suspects more than non-black suspects
+
+<br>
+
+### Using `infer` for hypothesis testing
+
+- Let's first create the processed version of `sqf` by taking out `(null)` inside `suspect_race_description` and lumping `suspect_race_description` into two groups of race: `BLACK` and `NON-BLACK`. 
+
+```{r}
+sqf_testing <- sqf %>% 
+  filter(suspect_race_description != "(null)") %>% 
+  mutate(suspect_race_description = if_else(suspect_race_description == "BLACK HISPANIC", "BLACK",
+                                                         suspect_race_description)) %>% 
+  mutate(suspect_race_description = if_else(suspect_race_description != "BLACK", "NON-BLACK",
+                                                         suspect_race_description))
+```
+
+<br>
+
+- Then, we use `specify` to formulate the response and explanatory variables. Let's use `frisked_flag` as the response variable and obviously, `suspect_race_description` as the explanatory variable. The argument `success = "Y"` reveals that we are interested in the proportion of "Y" in the `frisked_flag` column. 
+
+```{r, eval = FALSE}
+sqf_testing %>% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = "Y") 
+```
+
+<br>
+
+- Now, we set meta data required for hyphotesis testing where we set `null = "independence"` for two sample (`BLACK` and `NON-BLACK`) hypothesis testing. 
+
+
+```{r, eval = FALSE}
+sqf_testing %>% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = "Y") %>% 
+  hypothesize(null = "independence") 
+```
+
+
+<br>
+
+- Here, we `generate` replicates of “shuffled” datasets assuming the null hypothesis is true. 
+
+```{r, eval = FALSE}
+sqf_testing %>% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = "Y") %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute")
+```
+
+
+<br>
+
+- Now, we `calculate` the appropriate summary statistic for each of our 1000 shuffles, called the test statistic. According to Modern Dive, _"...since the unknown population parameter of interest is the difference in population proportions, the test statistic of interest here is the difference in sample proportions"_ We have 1000 values of `stat` and we assign this dataframe to `null_distribution`
+
+```{r}
+null_distribution <- sqf_testing %>% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = "Y") %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props", order = c("BLACK", "NON-BLACK"))
+```
+
+<br>
+
+- Here, we calculate the observed difference in proportion between blacks and non-blacks by using the same code as above except we remove `hypothesize` and `generate`
+
+```{r}
+obs_diff_prop <- sqf_testing %>% 
+  specify(formula = frisked_flag ~ suspect_race_description, success = "Y") %>% 
+  calculate(stat = "diff in props", order = c("BLACK", "NON-BLACK"))
+```
+
+<br>
+
+- Now, we visualize the `null_distribution` (values of the difference in proportions assuming that there is no racial discrimination) with a histogram and then "add what happened in real-life" with a red line and shades. Here, the shaded region is the p-value:
+
+> A p-value is the probability of obtaining a test statistic just as or more extreme than the observed test statistic assuming the null hypothesis is true.
+
+
+```{r}
+visualize(null_distribution, bins = 10) + 
+  shade_p_value(obs_stat = obs_diff_prop, direction = "right")
+```
+
+
+<br>
+
+- In the above graph, we clearly see that the p-value is extremely low. We calculate the exact p-value ("fraction that the null distribution is shaded") with `get_p_value`
+
+```{r}
+null_distribution %>% 
+  get_p_value(obs_stat = obs_diff_prop, direction = "right")
+```
+
+
+<br>
+
+- Below, we create a wrapper function that does all the steps we just covered so that we can iterate this hypothesis testing on all our desired columns.
+
+```{r, eval = FALSE}
+# Wrapper Function
+run_hypothesis_test <- function(response_var) {
+  
+  f <- as.formula(
+  paste(response_var, 
+        "suspect_race_description", 
+        sep = " ~ "))
+  
+  null_distribution <- sqf_testing  %>% 
+    specify(formula = f, success = "Y") %>% 
+    # "independence" for hypotheses involving two samples
+    hypothesize(null = "independence") %>% 
+    generate(reps = 1000, type = "permute") %>% 
+    calculate(stat = "diff in props", order = c("BLACK", "NON-BLACK"))
+  
+  
+  obs_diff_prop <- sqf_testing %>% 
+    specify(formula = f, success = "Y") %>% 
+    calculate(stat = "diff in props", order = c("BLACK", "NON-BLACK"))
+  
+  # Calculate P-value
+  null_distribution %>% 
+    get_p_value(obs_stat = obs_diff_prop, direction = "right") # Because P(BLACK) > P(NON-BLACK)
+}
+
+
+# Find desired variables
+testing_names <- sqf %>% 
+  select(contains("physical"), contains("frisked"), contains("searched")) %>% 
+  names()
+
+results <- testing_names %>% 
+  map_df(~(data.frame(p_value = run_hypothesis_test(.x))),
+         .id = "response_variable")
+```
+
+
+```{r, include = FALSE, warning=FALSE, message = FALSE}
+results <- read_csv("results.csv")
+```
+
+
+```{r, echo = FALSE}
+results %>% 
+  mutate(response_variable = fct_reorder(response_variable, p_value)) %>% 
+  ggplot(aes(response_variable, p_value)) +
+  geom_point() +
+  geom_hline(yintercept = 0.05, size = 2, lty = 2) +
+  coord_flip() +
+  labs(x = NULL,
+       y = "P-value",
+       title = "Which variables have a p-value greater than alpha?",
+       subtitle = "Alpha = 0.05")
+```
+
+> All response variables have p-values that are bigger than 0.05 except for `physical_force_restraint_used_flag` and `frisked_flag`. This signifies that we reject the null hypothesis for these variables and conclude that there is evidence to suggest that police frisk and use physical force on blacks suspects more than non-black suspects.
+
