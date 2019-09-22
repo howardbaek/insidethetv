@@ -206,3 +206,62 @@ Using EPV to analyze plays like this blog post allows coaches and analysts to pu
 
 <br>
 
+
+# Appendix
+
+This section contains static plots of the above EPV curves with event annotations such as "Pass", "Assist", or "Shot Made". These static curves allow coaches and analysts to attribute a change in EPV to an event in the dataset with pinpoint accuracy.
+
+<br>
+
+
+### Frantic Action leading to Terry 3-Pointer
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-52.png){width=550px height=340px}
+
+
+### Lebron James Alley-Oop
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-97.png){width=550px height=340px}
+
+
+### Miami Heat Set Play
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-108.png){width=550px height=340px}
+
+
+### Elite Passing from Derron Williams
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-222.png){width=550px height=340px}
+
+
+### James flies through the air
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-223.png){width=550px height=340px}
+
+
+### James’ incredible offensive ability
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-90.png){width=550px height=340px}
+
+
+### James' Alley-oop
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-106.png){width=550px height=340px}
+
+
+### Wade's Smarts
+
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-5.png){width=550px height=340px}
+
+### Bosh Wide Open 3-Pointer
+
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-28.png){width=550px height=340px}
+
+### Bosh Long Range 2-Pointer
+
+
+![](/post/2019-07-29-epv-the-epilogue_files/static-86.png){width=550px height=340px}
+
+
