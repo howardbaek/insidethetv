@@ -1913,7 +1913,7 @@ ggplotly(clustering_plot, tooltip = &amp;quot;text&amp;quot;)&lt;/code&gt;&lt;/p
 &lt;/div&gt;
 &lt;div id=&#34;data&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Data&lt;/h2&gt;
-&lt;p&gt;To investigate these questions, I will be using the Passing Project Data from the 2015-2016, 2016-2017, and 2017-2018 NHL seasons organized by &lt;a href=&#34;https://twitter.com/RK_Stimp&#34;&gt;Ryan Stimson&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/ShutdownLine&#34;&gt;Corey Sznajder&lt;/a&gt;. The data was collected by a group of volunteers who tracked &lt;strong&gt;every pass leading to a shot.&lt;/strong&gt; According to Ryan’s &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf&#34;&gt;MIT Sloan Sports Analytics Conference paper&lt;/a&gt;, “Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted.”&lt;/p&gt;
+&lt;p&gt;To investigate these questions, I will be using the Passing Project Data from the 2015~2018 NHL seasons organized by &lt;a href=&#34;https://twitter.com/RK_Stimp&#34;&gt;Ryan Stimson&lt;/a&gt; and &lt;a href=&#34;https://twitter.com/ShutdownLine&#34;&gt;Corey Sznajder&lt;/a&gt;. The data was collected by a group of volunteers who tracked &lt;strong&gt;every pass leading to a shot.&lt;/strong&gt; According to Ryan’s &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf&#34;&gt;MIT Sloan Sports Analytics Conference paper&lt;/a&gt;, “Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted.”&lt;/p&gt;
 &lt;p&gt;There are 44 variables and over 150,000 observations in this dataset. Some notable metrics that I will be using for my analysis include &lt;code&gt;shot_on_goal&lt;/code&gt; (1 for yes and 0 for no), &lt;code&gt;goal&lt;/code&gt; (1 for yes and 0 for no), &lt;code&gt;odd_man&lt;/code&gt; (number of players involved in player advantages during rushes), &lt;code&gt;shooting_percentage&lt;/code&gt; (number of goals / number of shots on goals), &lt;code&gt;shot_type&lt;/code&gt; (one-timer, slap shot, wrist/snap shot, backhand, etc), &lt;code&gt;a1_zone&lt;/code&gt; (zone that the primary assist originated), and &lt;code&gt;rebound_shot_on_goal&lt;/code&gt; (if a rebound occured and resulted in a shot on goal).&lt;/p&gt;
 &lt;p&gt;Many researchers have used this dataset to explore interesting research topics in hockey. For example, &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf&#34;&gt;Ryan Stimson’s paper&lt;/a&gt; discusses repeatability of certain metrics on a team level and player level. Among other analysis, &lt;a href=&#34;https://www.nhlnumbers.com/2016/08/10/passing-project-dangerous-primary-shot-contributions&#34;&gt;this NHL Numbers post&lt;/a&gt; covers repeatability of passes that crosses through the royal road (the line that goes directly through the middle of the ice from one net to the other) and provides visualizations.&lt;/p&gt;
 &lt;p&gt;In this analysis, I will look at repeatability of shots that were preceded by passes and taken during rushes with player advantages, shooting percentages, rebound shots, and rebound shooting percentages in &lt;strong&gt;5v5 situations.&lt;/strong&gt;&lt;/p&gt;
@@ -1927,9 +1927,7 @@ ggplotly(clustering_plot, tooltip = &amp;quot;text&amp;quot;)&lt;/code&gt;&lt;/p
 &lt;li&gt;If I can draw a horizontal line completely within the confidence bands, this means there exists a regression line with a slope of 0 within the 95% confidence band. This indicates that there is &lt;strong&gt;no significant relationship&lt;/strong&gt; between the x-variable and the y-variable.&lt;/li&gt;
 &lt;li&gt;If I &lt;strong&gt;cannot&lt;/strong&gt; draw a horizontal line completely within the confidence bands, this means that a regression line with a slope of 0 falls outside the 95% confidence band. In other words, there is &lt;strong&gt;a significant relationship&lt;/strong&gt; between the x-variable and the y-variable.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;blockquote&gt;
 &lt;p&gt;In each of the graphs below, there are three logos of each team, corresponding to each of the three seasons in the data. In terms of the linear regression graphs, the x-variable is a statistic from the first half of the season and the y-variable is a statistic from the second half of the season. As a result, we are really examining the relationship between the past and future of a statistic, or the &lt;em&gt;repeatability&lt;/em&gt; of a statistic.&lt;/p&gt;
-&lt;/blockquote&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1948,9 +1946,7 @@ ggplotly(clustering_plot, tooltip = &amp;quot;text&amp;quot;)&lt;/code&gt;&lt;/p
 &lt;/div&gt;
 &lt;div id=&#34;repeatability-of-shooting-percentage&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Repeatability of Shooting Percentage&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in &lt;a href=&#34;https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/&#34;&gt;“The roller coaster world of NHL shooting percentages”&lt;/a&gt;. Gretz opens the article with this statement: “A player’s shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he’s actually playing.” Furthermore, he claims, “They’re a wild roller coaster ride from year to year (and even during the season) that are always going up and down.”&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in &lt;a href=&#34;https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/&#34;&gt;“The roller coaster world of NHL shooting percentages”&lt;/a&gt;. Gretz opens the article with this statement: “A player’s shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he’s actually playing.” Furthermore, he claims, “They’re a wild roller coaster ride from year to year (and even during the season) that are always going up and down.”&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -1979,9 +1975,7 @@ ggplotly(clustering_plot, tooltip = &amp;quot;text&amp;quot;)&lt;/code&gt;&lt;/p
 &lt;/div&gt;
 &lt;div id=&#34;repeatability-of-rebound-shots-per-gp&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Repeatability of Rebound Shots per GP&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Hockey literature reveals that “goalies generally do not have an ability to control rebounds” &lt;a href=&#34;https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow&#34;&gt;(Pettapiece, 2018)&lt;/a&gt;. This accounts for the unpredictability of rebounds over a season.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;Hockey literature reveals that “goalies generally do not have an ability to control rebounds” &lt;a href=&#34;https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow&#34;&gt;(Pettapiece, 2018)&lt;/a&gt;. This accounts for the unpredictability of rebounds over a season.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;This graph shows that rebound shots are not repeatable over a given season; there is no significant association between first half and second half rebound shots per GP and any association is minor.&lt;/li&gt;
@@ -2009,7 +2003,7 @@ ggplotly(clustering_plot, tooltip = &amp;quot;text&amp;quot;)&lt;/code&gt;&lt;/p
 &lt;li&gt;&lt;p&gt;Shooting percentages across the whole season are significantly higher in odd player rushes.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Shooting percentages during odd player rushes and other situations are not repeatable within seasons.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The lane of a primary pass does not lead to a discrepancy in repeatability of shooting percentages.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals &lt;em&gt;(goals scored from rebounds)&lt;/em&gt; divided by rebound shots) are repeatable.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals &lt;em&gt;(goals scored from rebounds)&lt;/em&gt; divided by rebound shots) are not repeatable.&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;

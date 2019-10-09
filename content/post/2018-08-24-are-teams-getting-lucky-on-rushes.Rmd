@@ -38,7 +38,7 @@ In the later parts of this analysis, I will be using the terms, "rebound shot" a
 
 ## Data
 
-To investigate these questions, I will be using the Passing Project Data from the 2015-2016, 2016-2017, and 2017-2018 NHL seasons organized by [Ryan Stimson](https://twitter.com/RK_Stimp) and [Corey Sznajder](https://twitter.com/ShutdownLine). The data was collected by a group of volunteers who tracked **every pass leading to a shot.** According to Ryan's [MIT Sloan Sports Analytics Conference paper](http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf), "Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted."
+To investigate these questions, I will be using the Passing Project Data from the 2015~2018 NHL seasons organized by [Ryan Stimson](https://twitter.com/RK_Stimp) and [Corey Sznajder](https://twitter.com/ShutdownLine). The data was collected by a group of volunteers who tracked **every pass leading to a shot.** According to Ryan's [MIT Sloan Sports Analytics Conference paper](http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf), "Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted."
 
 
 ```{r, warning = FALSE, include = FALSE}
@@ -334,7 +334,7 @@ I utilized [Hadley Wickham's](http://hadley.nz/) `ggplot2` package, a ["system d
 * If I can draw a horizontal line completely within the confidence bands, this means there exists a regression line with a slope of 0 within the 95% confidence band. This indicates that there is **no significant relationship** between the x-variable and the y-variable.
 * If I **cannot** draw a horizontal line completely within the confidence bands, this means that a regression line with a slope of 0 falls outside the 95% confidence band. In other words, there is **a significant relationship** between the x-variable and the y-variable.
 
->In each of the graphs below, there are three logos of each team, corresponding to each of the three seasons in the data. In terms of the linear regression graphs, the x-variable is a statistic from the first half of the season and the y-variable is a statistic from the second half of the season. As a result, we are really examining the relationship between the past and future of a statistic, or the _repeatability_ of a statistic.
+In each of the graphs below, there are three logos of each team, corresponding to each of the three seasons in the data. In terms of the linear regression graphs, the x-variable is a statistic from the first half of the season and the y-variable is a statistic from the second half of the season. As a result, we are really examining the relationship between the past and future of a statistic, or the _repeatability_ of a statistic.
 
 
 <br>
@@ -425,7 +425,7 @@ pass_odd_man %>%
 
 # Repeatability of Shooting Percentage
 
-> The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in ["The roller coaster world of NHL shooting percentages"](https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/). Gretz opens the article with this statement: "A player's shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he's actually playing." Furthermore, he claims, "They're a wild roller coaster ride from year to year (and even during the season) that are always going up and down."
+_The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in ["The roller coaster world of NHL shooting percentages"](https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/). Gretz opens the article with this statement: "A player's shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he's actually playing." Furthermore, he claims, "They're a wild roller coaster ride from year to year (and even during the season) that are always going up and down."_
 
 ```{r, fig.width = 7, fig.height = 7, echo = FALSE}
 pass_shooting_percentage <- pass_final %>% 
@@ -619,7 +619,7 @@ pass_shooting_percentage_zone %>%
 
 # Repeatability of Rebound Shots per GP
 
-> Hockey literature reveals that "goalies generally do not have an ability to control rebounds" [(Pettapiece, 2018)](https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow). This accounts for the unpredictability of rebounds over a season.
+_Hockey literature reveals that "goalies generally do not have an ability to control rebounds" [(Pettapiece, 2018)](https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow). This accounts for the unpredictability of rebounds over a season._
 
 ```{r, fig.width = 7, fig.height = 7, echo = FALSE}
 pass_final %>% 
@@ -784,7 +784,7 @@ pass_final %>%
 
 * The lane of a primary pass does not lead to a discrepancy in repeatability of shooting percentages.
 
-* Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals _(goals scored from rebounds)_ divided by rebound shots) are repeatable.
+* Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals _(goals scored from rebounds)_ divided by rebound shots) are not repeatable.
 
 
 <br>

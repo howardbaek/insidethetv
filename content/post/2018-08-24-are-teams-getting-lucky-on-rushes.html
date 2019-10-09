@@ -34,7 +34,7 @@ projects: []
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
-<p>To investigate these questions, I will be using the Passing Project Data from the 2015-2016, 2016-2017, and 2017-2018 NHL seasons organized by <a href="https://twitter.com/RK_Stimp">Ryan Stimson</a> and <a href="https://twitter.com/ShutdownLine">Corey Sznajder</a>. The data was collected by a group of volunteers who tracked <strong>every pass leading to a shot.</strong> According to Ryan’s <a href="http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf">MIT Sloan Sports Analytics Conference paper</a>, “Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted.”</p>
+<p>To investigate these questions, I will be using the Passing Project Data from the 2015~2018 NHL seasons organized by <a href="https://twitter.com/RK_Stimp">Ryan Stimson</a> and <a href="https://twitter.com/ShutdownLine">Corey Sznajder</a>. The data was collected by a group of volunteers who tracked <strong>every pass leading to a shot.</strong> According to Ryan’s <a href="http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf">MIT Sloan Sports Analytics Conference paper</a>, “Each tracker was required to complete 2 - 3 training games for validation by the project leader to ensure consistency in classification of passes and recording of data. Occasional spot-checking of games was also conducted.”</p>
 <p>There are 44 variables and over 150,000 observations in this dataset. Some notable metrics that I will be using for my analysis include <code>shot_on_goal</code> (1 for yes and 0 for no), <code>goal</code> (1 for yes and 0 for no), <code>odd_man</code> (number of players involved in player advantages during rushes), <code>shooting_percentage</code> (number of goals / number of shots on goals), <code>shot_type</code> (one-timer, slap shot, wrist/snap shot, backhand, etc), <code>a1_zone</code> (zone that the primary assist originated), and <code>rebound_shot_on_goal</code> (if a rebound occured and resulted in a shot on goal).</p>
 <p>Many researchers have used this dataset to explore interesting research topics in hockey. For example, <a href="http://www.sloansportsconference.com/wp-content/uploads/2017/02/1614.pdf">Ryan Stimson’s paper</a> discusses repeatability of certain metrics on a team level and player level. Among other analysis, <a href="https://www.nhlnumbers.com/2016/08/10/passing-project-dangerous-primary-shot-contributions">this NHL Numbers post</a> covers repeatability of passes that crosses through the royal road (the line that goes directly through the middle of the ice from one net to the other) and provides visualizations.</p>
 <p>In this analysis, I will look at repeatability of shots that were preceded by passes and taken during rushes with player advantages, shooting percentages, rebound shots, and rebound shooting percentages in <strong>5v5 situations.</strong></p>
@@ -48,9 +48,7 @@ projects: []
 <li>If I can draw a horizontal line completely within the confidence bands, this means there exists a regression line with a slope of 0 within the 95% confidence band. This indicates that there is <strong>no significant relationship</strong> between the x-variable and the y-variable.</li>
 <li>If I <strong>cannot</strong> draw a horizontal line completely within the confidence bands, this means that a regression line with a slope of 0 falls outside the 95% confidence band. In other words, there is <strong>a significant relationship</strong> between the x-variable and the y-variable.</li>
 </ul>
-<blockquote>
 <p>In each of the graphs below, there are three logos of each team, corresponding to each of the three seasons in the data. In terms of the linear regression graphs, the x-variable is a statistic from the first half of the season and the y-variable is a statistic from the second half of the season. As a result, we are really examining the relationship between the past and future of a statistic, or the <em>repeatability</em> of a statistic.</p>
-</blockquote>
 <p><br></p>
 </div>
 </div>
@@ -69,9 +67,7 @@ projects: []
 </div>
 <div id="repeatability-of-shooting-percentage" class="section level1">
 <h1>Repeatability of Shooting Percentage</h1>
-<blockquote>
-<p>The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in <a href="https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/">“The roller coaster world of NHL shooting percentages”</a>. Gretz opens the article with this statement: “A player’s shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he’s actually playing.” Furthermore, he claims, “They’re a wild roller coaster ride from year to year (and even during the season) that are always going up and down.”</p>
-</blockquote>
+<p><em>The below analysis on shooting percentages is parallel to the argument presented by Adam Gretz in <a href="https://www.cbssports.com/nhl/news/the-roller-coaster-world-of-nhl-shooting-percentages/">“The roller coaster world of NHL shooting percentages”</a>. Gretz opens the article with this statement: “A player’s shooting percentage in a given season has more to do with his luck as a shooter than his skill or the way he’s actually playing.” Furthermore, he claims, “They’re a wild roller coaster ride from year to year (and even during the season) that are always going up and down.”</em></p>
 <p><img src="/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p><img src="/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <ul>
@@ -100,9 +96,7 @@ projects: []
 </div>
 <div id="repeatability-of-rebound-shots-per-gp" class="section level1">
 <h1>Repeatability of Rebound Shots per GP</h1>
-<blockquote>
-<p>Hockey literature reveals that “goalies generally do not have an ability to control rebounds” <a href="https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow">(Pettapiece, 2018)</a>. This accounts for the unpredictability of rebounds over a season.</p>
-</blockquote>
+<p><em>Hockey literature reveals that “goalies generally do not have an ability to control rebounds” <a href="https://www.nhlnumbers.com/2013/7/15/can-goalies-control-the-number-of-rebounds-they-allow">(Pettapiece, 2018)</a>. This accounts for the unpredictability of rebounds over a season.</em></p>
 <p><img src="/post/2018-08-24-are-teams-getting-lucky-on-rushes_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ul>
 <li>This graph shows that rebound shots are not repeatable over a given season; there is no significant association between first half and second half rebound shots per GP and any association is minor.</li>
@@ -130,7 +124,7 @@ projects: []
 <li><p>Shooting percentages across the whole season are significantly higher in odd player rushes.</p></li>
 <li><p>Shooting percentages during odd player rushes and other situations are not repeatable within seasons.</p></li>
 <li><p>The lane of a primary pass does not lead to a discrepancy in repeatability of shooting percentages.</p></li>
-<li><p>Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals <em>(goals scored from rebounds)</em> divided by rebound shots) are repeatable.</p></li>
+<li><p>Rebound shots are not repeatable over a given season. Furthermore, rebound shooting percentages (rebound goals <em>(goals scored from rebounds)</em> divided by rebound shots) are not repeatable.</p></li>
 </ul>
 <p><br></p>
 </div>

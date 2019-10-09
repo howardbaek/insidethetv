@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Statistics Major at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaek@gmail.com
+bio: Statistics Major at the University of Washington who works on data analytics projects using R. My email is howardba@uw.edu
 education:
   courses:
   - course: BS in Statistics
@@ -33,4 +33,4 @@ user_groups:
 - Visitors
 ---
 
-Statistics Major at the University of Washington who works on data analytics projects using R. Email me at howardhowiebaek@gmail.com
+Statistics Major at the University of Washington who works on data analytics projects using R. My email is howardba@uw.edu
