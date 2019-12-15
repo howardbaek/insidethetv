@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  
+  
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.3.1">
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/slides/example/animating-epv/">
+
+  <title>Animating Expected Possession Value&lt;br /&gt; in the NBA | Inside the Tidyverse</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/black.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous">
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/reveal_custom.min.css">
+
+  
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/css/print/pdf.css' : 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+
+</head>
+<body>
+
+  
+<div class="reveal">
+  <div class="slides">
+    
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    <section>
+    
+      
+
+
+<p>class: center</p>
+<div id="stumblng-into-data-driven-curiosity" class="section level1">
+<h1>Stumblng into data-driven curiosity</h1>
+<p>.center[<img src="img/pointwise-abstract.png" />]</p>
+<p>class: center</p>
+</div>
+<div id="thankfully-the-authors-shared-r-code" class="section level1">
+<h1>Thankfully, the authors shared R code</h1>
+<p>.center[<img src="img/github-code-edited.png" />]</p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+<p>class: inverse</p>
+</div>
+<div id="nba-optical-tracking-system-stats-sportvu" class="section level1">
+<h1>NBA Optical Tracking System: STATS SportVU</h1>
+<p>.pull-left[</p>
+<ul>
+<li><p>Tracks 2-D locations of every player on court (x-y coordinates) as well as 3-D coordinates of ball (x,y,z coordinates).</p></li>
+<li><p>25 times a second</p></li>
+<li><p>72,000 times a game</p></li>
+<li><p>1 billion times a season.</p></li>
+</ul>
+<p>]</p>
+<p>.pull-right[</p>
+<p><img src="img/sportvu-demo.gif" width="580px" height="300px" /></p>
+<p>]</p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="expected-possession-value-epv" class="section level1">
+<h1>Expected Possession Value (EPV)</h1>
+<p>–</p>
+<ul>
+<li><strong>Multi-resolution model</strong></li>
+</ul>
+<p>–</p>
+<ul>
+<li>Macrotransition &amp; Microtransition models are <strong>combined</strong> to account for discrete and continuous nature of the sport</li>
+</ul>
+<p>–</p>
+<ul>
+<li><em>Macrotransition</em>: passes, shots, turnovers.</li>
+</ul>
+<p>–</p>
+<ul>
+<li><em>Microtransition</em>: every other movement that players make with ball.</li>
+</ul>
+<p>–</p>
+<p><br></p>
+<p><img src="img/epv-equation.png" /><!-- --></p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="static-image-that-could-be-animated" class="section level1">
+<h1>Static image that could be animated!</h1>
+<p>.center[<img src="img/static-image.png" />]</p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="static-image-that-is-now-gg-animated" class="section level1">
+<h1>Static image that is now gg-animated!</h1>
+<p>.center[<img src="img/anim-231.GIF" />]</p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="lets-dig-into-the-code" class="section level1">
+<h1>Let’s dig into the code</h1>
+<p><img src="img/adventure.gif" width="380px" height="300px" /></p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="future-work" class="section level1">
+<h1>Future Work</h1>
+<p>.pull-left[</p>
+<p><img src="img/shiny-app.png" width="270px" height="300px" /></p>
+<p>]</p>
+<p>.pull-right[</p>
+<ul>
+<li><p>Improve usability by allowing for <em>interactivity</em></p></li>
+<li><p>Real-time rendering of animation(?)</p></li>
+<li><p><strong>Your</strong> Suggestions?</p></li>
+</ul>
+<p>]</p>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="resources" class="section level1">
+<h1>Resources</h1>
+<ul>
+<li><p><a href="https://github.com/dcervone/EPVDemo">GitHub Repo</a></p></li>
+<li><p><a href="http://www.sloansportsconference.com/content/pointwise-predicting-points-and-valuing-decisions-in-real-time-with-nba-optical-tracking-data/">Paper + Video of Presentation</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=2fYa7M_H3S4">Preliminary Talk by Author</a></p></li>
+<li><p><a href="https://arxiv.org/pdf/1408.0777.pdf">Theoretical Paper</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=21ZWDrTukEs">Presentation of Grammar of Animation</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=3UY7Or0v_dI">Intro to gganimate</a></p></li>
+</ul>
+
+    </section>
+    
+
+    
+    
+    
+    <section>
+    
+      
+</div>
+<div id="thank-you" class="section level1">
+<h1>Thank You!</h1>
+<p><a href="https://twitter.com/howard_baek"><i class="fa fa-twitter fa-fw"></i>  <span class="citation">@howard_baek</span></a><br>
+<a href="https://github.com/howardbaek"><i class="fa fa-github fa-fw"></i>  <span class="citation">@howardbaek</span></a><br></p>
+<div id="slides-created-via-the-r-package-xaringan." class="section level4">
+<h4>Slides created via the R package <a href="https://github.com/yihui/xaringan"><strong>xaringan</strong></a>.</h4>
+</div>
+</div>
+
+    </section>
+    
+
+    
+    
+  </div>
+</div>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/head.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.min.js"></script>
+
+  <script>
+    window.revealPlugins = { dependencies: [
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/zoom-js/zoom.js', async: true },
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/math/math.js', async: true },
+      { src: 'https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/reveal.js\/3.8.0/plugin/print-pdf/print-pdf.js', async: true },
+      
+      { src: '\/js\/vendor\/reveal.js\/plugin\/notes\/notes.js', async: true }
+    ]};
+
+    let revealDefaults = { center: true, controls: true, history: true, progress: true, transition: 'slide', mouseWheel: true };
+    let revealOptions = Object.assign({}, revealDefaults, revealPlugins);
+    Reveal.initialize(revealOptions);
+  </script>
+
+</body>
+</html>
