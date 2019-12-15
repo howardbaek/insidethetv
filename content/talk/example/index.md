@@ -1,5 +1,5 @@
 ---
-abstract: In this talk, I will talk about the steps I took to generate the graphics and the actionable insights gained. The first part of this talk will cover the process I took to create the animations in R, mainly focusing on the gganimate R package but covering other supplementary tidyverse functions. The second part of this talk will be on the knowledge gained from these animations, most of which confirm our intuition about basketball. Hopefully, after this talk, I inspire the audience to go out and look for interesting data to work on. Test test test
+abstract: In this talk, I will talk about the steps I took to generate the graphics and the actionable insights gained. The first part of this talk will cover the process I took to create the animations in R, mainly focusing on the gganimate R package but covering other supplementary tidyverse functions. The second part of this talk will be on the knowledge gained from these animations, most of which confirm our intuition about basketball. Hopefully, after this talk, I inspire the audience to go out and look for interesting data to work on.
 all_day: false
 authors: []
 date: "2019-12-12"
