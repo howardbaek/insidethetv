@@ -111,20 +111,8 @@
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;In this post, I will be performing an exploratory data analysis of the stop-and-frisk dataset provided by the &lt;a href=&#34;https://www.nyclu.org/en/stop-and-frisk-data&#34;&gt;NYPD on the New York Civil Liberties Union website.&lt;/a&gt; The data contains 11008 rows and 83 variables. Then, I will use hypothesis testing with the &lt;code&gt;infer&lt;/code&gt; &lt;a href=&#34;https://infer.netlify.com/&#34;&gt;package&lt;/a&gt; to assess if there is a statistical difference in police action when approaching a black New Yorker vs a non-black New Yorker.&lt;/p&gt;
 &lt;p&gt;Code is available &lt;a href=&#34;https://github.com/howardbaek/insidethetv-code/tree/master/stop-and-frisk&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;notes&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;NOTES:&lt;/h1&gt;
-&lt;p&gt;To date, the project has collected and standardized over 200 million records of traffic stop and search data from across the country.&lt;/p&gt;
-&lt;p&gt;Stop Rates:&lt;/p&gt;
-&lt;p&gt;The data show that officers generally stop black drivers at higher rates than white drivers, and stop Hispanic drivers at similar or lower rates than whites
-For example, driving behavior and time spent on the road likely differ by race or ethnicity. The racial composition of the local population also may not be representative of those who drive through an area, especially when dealing with stops on highways.&lt;/p&gt;
-&lt;p&gt;After the Stop:&lt;/p&gt;
-&lt;p&gt;After accounting for age, gender, and location, we find that officers ticket, search, and arrest black and Hispanic drivers more often than whites.&lt;/p&gt;
-&lt;p&gt;The outcome test:&lt;/p&gt;
-&lt;p&gt;Becker proposed looking at search outcomes. If officers don’t discriminate, he argued, they should find contraband — like illegal drugs or weapons — on searched minorities at the same rate as on searched whites. If searches of minorities turn up contraband at lower rates than searches of whites, the outcome test suggests officers are applying a double standard, searching minorities on the basis of less evidence.&lt;/p&gt;
-&lt;p&gt;In our data, the success rate of searches (or the hit rate) is generally lower for Hispanic drivers compared to whites; so the outcome test indicates Hispanics face discrimination. For black drivers, search hit rates are typically in line with those of white drivers, indicating an absence of discrimination.&lt;/p&gt;
-&lt;p&gt;The threshold test:&lt;/p&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
 &lt;div id=&#34;exploratory-data-analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Exploratory Data Analysis&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-08-30-stop-and-frisk-hypothesis-testing_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
@@ -270,7 +258,6 @@ results &amp;lt;- testing_names %&amp;gt;%
 &lt;blockquote&gt;
 &lt;p&gt;All response variables have p-values that are bigger than 0.05 except for &lt;code&gt;physical_force_restraint_used_flag&lt;/code&gt; and &lt;code&gt;frisked_flag&lt;/code&gt;. This signifies that we reject the null hypothesis for these variables and conclude that there is evidence to suggest that police frisk and use physical force on blacks suspects more than non-black suspects.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
