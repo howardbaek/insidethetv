@@ -19,7 +19,7 @@ image:
 projects: []
 ---
 
-I created a web application for interactively visualizing shot data for all games in the 2017-2018 season. In this article, I will walk through a month-long process building the [National Hockey League Play-by-Play App](https://jsonbaik.shinyapps.io/nhl-pbp/) from scratch, giving a behind-the-scenes look.
+I created a web application for interactively visualizing shot data for all games in the 2017-2018 season. In this article, I will walk through a month-long process building the [National Hockey League Play-by-Play App](https://howiebaek.shinyapps.io/nhl-pbp/) from scratch, giving a behind-the-scenes look.
 
 What started this project was this [#rstats Shiny contest tweet](https://twitter.com/rstudio/status/1082349589922041858). Shiny is a R package built by RStudio for creating interactive web applications. It allows R programmers to create web applications without having to exclusively code in HTML, CSS or JavaScript. I had looked at several sports visualizations (e.g. [Ryo's Visualize the World Cup](https://ryo-n7.github.io/2018-07-24-visualize-worldcup-part-3/)) and wanted to create something similar in hockey. This announcement provided the motivation for me to start. 
 
