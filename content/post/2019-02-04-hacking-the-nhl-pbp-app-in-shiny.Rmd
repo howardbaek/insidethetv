@@ -75,7 +75,7 @@ Some neat features I added to the app include a short tour using the rintrojs pa
 ![Figure 6: Illustration of the rintrojs package](/post/2019-02-04-hacking-the-nhl-pbp-app-in-shiny_files/rintrojs-example.gif)
 
 
-The final product is available here: [NHL Play-by-Play App](https://jsonbaik.shinyapps.io/nhl-pbp/)
+The final product is available here: [NHL Play-by-Play App](https://howiebaek.shinyapps.io/nhl-pbp/)
 
 Update: This app received a Honorable Mention from [RStudio's 1st Shiny Contest](https://blog.rstudio.com/2019/04/05/first-shiny-contest-winners/?utm_content=buffere0bd9&utm_medium=social&utm_source=twitter&utm_campaign=buffer)
 
