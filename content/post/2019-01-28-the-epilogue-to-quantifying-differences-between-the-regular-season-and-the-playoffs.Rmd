@@ -93,4 +93,4 @@ The reason, I'd argue, is that the power play is a more structured game within t
 
 Code is available [here](https://github.com/howardbaek/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd)
 
-The author would like to thank Alex Novet and Sam Ventura for their contributions to this article.
+The author would like to thank Sam Ventura for his contribution to this article.

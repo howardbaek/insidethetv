@@ -188,6 +188,6 @@ Let's finally look at coach's challenges. This event displays a wide confidence 
 * Power play survival curves for hits are the most different out of all the survival curves.
 
 
-The author would like to thank Sam Ventura for the original idea for this article and feedback, Alex Novet for his feedback, and Corey Sznajder and Evan Oppenheimer for reading over the initial version of this article.
+The author would like to thank Sam Ventura for the original idea for this article and feedback and Corey Sznajder and Evan Oppenheimer for reading over the initial version of this article.
 
 [Code](https://github.com/howardbaek/insidethetv-code/blob/master/diff-regular-season-playoffs-nhl.Rmd)
