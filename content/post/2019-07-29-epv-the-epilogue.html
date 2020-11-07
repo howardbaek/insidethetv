@@ -24,10 +24,10 @@ projects: []
 <p><em>This is the second post about EPV. Click here for the <a href="http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/">first post.</a></em></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>In this <a href="http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf">MIT Sloan Sports Analytics Conference Research Paper</a>, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession <em>in real time</em>, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)</p>
+<p>In a MIT Sloan Sports Analytics Conference Research Paper, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession <em>in real time</em>, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)</p>
 <p>The optical player tracking data is generated with <a href="https://www.stats.com/sportvu-basketball/">STATS SPORTVU</a>, a six-camera system installed in basketball arenas to track the real-time positions of players and the ball 25 times per second.</p>
 <div class="figure">
-<img src="/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif" alt="Above: Demo of STATS SportVU" />
+<img src="/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif" alt="" />
 <p class="caption">Above: Demo of STATS SportVU</p>
 </div>
 <p><br></p>
@@ -124,7 +124,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 <p><img src="/post/2019-07-29-epv-the-epilogue_files/anim-214.GIF" /></p>
 <p>EPV does not account for defensive plays such as blocks. In the first possession, Bosh blocks the shot, but EPV doesn’t decrease at all. Instead, it just plateaus at 1.3 while the ball is rolling towards the sidelines. In the second possession, Pierce swats away a James layup, but EPV also just plateaus at 1.15. The reason is elaborated by the authors of EPV in their theoretical paper, <a href="https://arxiv.org/abs/1408.0777">“A Multiresolution Stochastic Process Model for Predicting Basketball Possession Outcomes”</a></p>
 <blockquote>
-<p>A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert&quot;</p>
+<p>A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert"</p>
 </blockquote>
 <p><br></p>
 </div>

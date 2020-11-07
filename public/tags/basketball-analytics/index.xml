@@ -23,10 +23,10 @@
 &lt;p&gt;&lt;em&gt;This is the second post about EPV. Click here for the &lt;a href=&#34;http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/&#34;&gt;first post.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
-&lt;p&gt;In this &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf&#34;&gt;MIT Sloan Sports Analytics Conference Research Paper&lt;/a&gt;, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
+&lt;p&gt;In a MIT Sloan Sports Analytics Conference Research Paper, Cervone, D’Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
 &lt;p&gt;The optical player tracking data is generated with &lt;a href=&#34;https://www.stats.com/sportvu-basketball/&#34;&gt;STATS SPORTVU&lt;/a&gt;, a six-camera system installed in basketball arenas to track the real-time positions of players and the ball 25 times per second.&lt;/p&gt;
 &lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif&#34; alt=&#34;Above: Demo of STATS SportVU&#34; /&gt;
+&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/sportvu-demo.gif&#34; alt=&#34;&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;Above: Demo of STATS SportVU&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
@@ -123,7 +123,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 &lt;p&gt;&lt;img src=&#34;/post/2019-07-29-epv-the-epilogue_files/anim-214.GIF&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;EPV does not account for defensive plays such as blocks. In the first possession, Bosh blocks the shot, but EPV doesn’t decrease at all. Instead, it just plateaus at 1.3 while the ball is rolling towards the sidelines. In the second possession, Pierce swats away a James layup, but EPV also just plateaus at 1.15. The reason is elaborated by the authors of EPV in their theoretical paper, &lt;a href=&#34;https://arxiv.org/abs/1408.0777&#34;&gt;“A Multiresolution Stochastic Process Model for Predicting Basketball Possession Outcomes”&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert&amp;quot;&lt;/p&gt;
+&lt;p&gt;A number of smaller details could also be addressed…we also do not distinguish between different types of turnovers (steals, bad passes, ball out of bounds, etc.), though this is due to a technical feature of our data set. Indeed, regardless of the complexity and refinement of an EPV model, we stress that the full resolution data still omits key information, such as the positioning of players’ hands and feet, their heights when jumping, and other variables that impact basketball outcomes. As such, analyses based on EPV are best accompanied by actual game film and the insight of a basketball expert&#34;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
 &lt;/div&gt;
@@ -195,7 +195,7 @@ how valuable Parker was in setting it up. Parker actually dramatically increased
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Introduction&lt;/h1&gt;
-&lt;p&gt;In this &lt;a href=&#34;http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf&#34;&gt;MIT Sloan Sports Analytics Conference Research Paper&lt;/a&gt;, Cervone, D’Amour, Bornn, and Kirk Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
+&lt;p&gt;In a MIT Sloan Sports Analytics Conference Research Paper, Cervone, D’Amour, Bornn, and Kirk Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession &lt;em&gt;in real time&lt;/em&gt;, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)&lt;/p&gt;
 &lt;p&gt;The model breaks down a possession into discrete (macrotransitions) and continuous actions (microtransitions). Macrotransitions include passes, shots, and turnovers whereas microtransitions are defined as every other movement that players make with the ball.&lt;/p&gt;
 &lt;p&gt;Mathematically,&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/epv-equation.png&#34; width=&#34;650&#34; height=&#34;70&#34; /&gt;&lt;/p&gt;

@@ -21,7 +21,7 @@ projects: []
 
 # Introduction
 
-In this [MIT Sloan Sports Analytics Conference Research Paper](http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf),  Cervone, D'Amour, Bornn, and Kirk Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession _in real time_, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)
+In a MIT Sloan Sports Analytics Conference Research Paper,  Cervone, D'Amour, Bornn, and Kirk Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession _in real time_, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)
 
 The model breaks down a possession into discrete (macrotransitions) and continuous actions (microtransitions). Macrotransitions include passes, shots, and turnovers whereas microtransitions are defined as every other movement that players make with the ball. 
 

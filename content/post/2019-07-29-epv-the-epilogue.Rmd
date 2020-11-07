@@ -27,7 +27,7 @@ _This is the second post about EPV. Click here for the [first post.](http://insi
 # Introduction
 
 
-In this [MIT Sloan Sports Analytics Conference Research Paper](http://www.sloansportsconference.com/wp-content/uploads/2018/09/cervone_ssac_2014.pdf),  Cervone, D'Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession _in real time_, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)
+In a MIT Sloan Sports Analytics Conference Research Paper, Cervone, D'Amour, Bornn, and Goldsberry create a metric called Expected Possession Value, EPV. They use optical player tracking data to calculate the number of points the offense is expected to score by the end of the possession _in real time_, given everything we know now. In other words, EPV of a possession is the weighted average of the outcomes of all future paths that the possession could take (Cervone et al.)
 
 The optical player tracking data is generated with [STATS SPORTVU](https://www.stats.com/sportvu-basketball/), a six-camera system installed in basketball arenas to track the real-time positions of players and the ball 25 times per second. 
 
