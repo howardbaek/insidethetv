@@ -216,12 +216,22 @@
   </url>
   
   <url>
+    <loc>/project/upwork-example/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/project/medium-claps-predictor/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/project/nba-chuckers-app/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/nba-epv-app/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   

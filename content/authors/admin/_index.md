@@ -1,16 +1,15 @@
 ---
 authors:
 - admin
-bio: Statistics Major at the University of Washington who works on data analytics projects using R. My email is howardba@uw.edu
+bio: Statistics Major (Mathematics Minor) at the University of Washington. My email is howardba@uw.edu
 education:
   courses:
-  - course: BS in Statistics
+  - course: BS in Statistics with a Minor in Mathematics
     institution: University of Washington
     year: 2021
 email: ""
 interests:
 - Tidyverse
-- Computational Social Science
 - Interactive Web Applications (Shiny, Shinydashboard)
 name: Howard Baek
 organizations:
@@ -33,4 +32,4 @@ user_groups:
 - Visitors
 ---
 
-Statistics Major at the University of Washington who works on data analytics projects using R. My email is howardba@uw.edu
+Statistics Major (Mathematics Minor) at the University of Washington. My email is howardba@uw.edu
