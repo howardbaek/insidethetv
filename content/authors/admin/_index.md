@@ -4,7 +4,7 @@ authors:
 bio: Statistics Major (Mathematics Minor) at the University of Washington. My email is howardba@uw.edu
 education:
   courses:
-  - course: BS in Statistics with a Minor in Mathematics
+  - course: BS in Statistics (Minor in Mathematics)
     institution: University of Washington
     year: 2021
 email: ""
