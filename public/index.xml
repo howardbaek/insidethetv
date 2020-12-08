@@ -1568,6 +1568,15 @@ package_downloads %&amp;gt;%
     </item>
     
     <item>
+      <title>TryR Workshop</title>
+      <link>/talk/tryr-workshop/</link>
+      <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/talk/tryr-workshop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Hacking the NHL PBP App in Shiny</title>
       <link>/post/hacking-the-nhl-pbp-app-in-shiny/</link>
       <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
