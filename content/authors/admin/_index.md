@@ -9,7 +9,7 @@ education:
     year: 2021
 email: ""
 interests:
-- Tidyverse
+- Quantitative Biomedical Sciences
 - Interactive Web Applications (Shiny, Shinydashboard)
 name: Howard Baek
 organizations:
