@@ -274,6 +274,8 @@ defensemen were more involved in the offense than Toronto’s right defensemen.&
       
       <guid>/post/epv-the-epilogue/</guid>
       <description>
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;p&gt;&lt;em&gt;This is the second post about EPV. Click here for the &lt;a href=&#34;http://insidethetv.rbind.io/post/animating-expected-possession-value-in-the-nba/&#34;&gt;first post.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
@@ -1381,6 +1383,8 @@ package_downloads %&amp;gt;%
       
       <guid>/post/animating-expected-possession-value-in-the-nba/</guid>
       <description>
+&lt;link href=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;/rmarkdown-libs/anchor-sections/anchor-sections.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;

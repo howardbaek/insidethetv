@@ -99,8 +99,8 @@ At 50.4 seconds, Williams slowly dribbles toward the basket before Garnett sets 
 
 At 33.0 seconds, James dribbles up the court and attempts a pass, which bounces off Anderson's head to the sidelines. While the ball is in no-man's land, EPV plateuas around 1.035, then takes quite a significant plunge when Allen runs over to the sidelines to retrieve the ball! As Allen passes up top to Chalmers who sets up the offense, EPV climbs back up, showing the recovery of offense's value. Interestingly, as Chalmers dribbles on the periphery of the 3-point line, EPV spikes up to around 1.075 from 1.025. As Chalmers passes off to Bosh who then passes to James, EPV plateuas each time. As James gets ready to drive the basket, EPV increases, until he dishes off to Chalmers. This offensive possession shows hectic action starting with the ball bouncing off Anderson's head to the sidelines. As Allen recovers possession and passes off to Chalmers, both sides are in a tumultous state as they try to reset formation. One example of this is shown in the beginning of the game film, when Ray Allen is tustling with Kevin Garnett to regain formation. Fortunately for the Heat, they are rewarded with a Chalmers 3-point shot.
 
-![](/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/chalmers-celebration.gif)
 
+![](/post/2019-04-12-animating-expected-possession-value-in-the-nba_files/chalmers-celebration.gif)
 
 <br>
 
